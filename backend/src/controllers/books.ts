@@ -1,6 +1,8 @@
 import Book from '../models/book';
 import { RequestHandler } from 'express';
 
-export const getBooks: RequestHandler = async (req, res, next) => {
+const books: any[] = [];
 
+export const getBooks: RequestHandler = async (req, res, next) => {
+  res.status(200).json({ books: books })
 }
