@@ -1,0 +1,5 @@
+{
+  "env": {
+    "MONGO_CONNECTION": "mongodb+srv://dongcuong0621:NdLTGXBI5TpinOVK@cluster0.qhvix.mongodb.net/d-books?retryWrites=true&w=majority&appName=Cluster0"
+  }
+}
