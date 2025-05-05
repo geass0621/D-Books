@@ -2,10 +2,15 @@ import express from 'express';
 import bookRoutes from './routes/books';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import { defaultErrorResponse } from './middleware/defaultErrorResponse';
+import { allowCORS } from './middleware/allowCORS';
 
 const app = express();
 
+app.use(bodyParser.json())
+app.use(allowCORS);
 app.use(bookRoutes);
+app.use(defaultErrorResponse);
 
 mongoose
   .connect(process.env.MONGO_CONNECTION || '')
