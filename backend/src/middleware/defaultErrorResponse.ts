@@ -1,16 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { ErrorRequestHandler } from 'express';
 
-interface ErrorWithStatusCode extends Error {
-  statusCode?: number;
-  data?: any;
-}
-
-export function defaultErrorResponse(
-  error: ErrorWithStatusCode,
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export const defaultErrorResponse: ErrorRequestHandler = (error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
@@ -21,4 +11,4 @@ export function defaultErrorResponse(
       message: message,
       data: data
     });
-};
+}; 
