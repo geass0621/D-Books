@@ -1,8 +1,16 @@
 import Book from '../models/book';
 import { RequestHandler } from 'express';
 
-const books: any[] = [];
+
 
 export const getBooks: RequestHandler = async (req, res, next) => {
-  res.status(200).json({ books: books })
+  try {
+    const books = await Book.find()
+    res.status(200).json({ message: "All books!", books: books });
+  } catch (err: any) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }
