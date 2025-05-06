@@ -34,7 +34,35 @@ export const postBook: RequestHandler = async (req, res, next) => {
 };
 
 
-export const updateBook: RequestHandler = (req, res, next) => {
+export const updateBook: RequestHandler = async (req, res, next) => {
+  const bookId = req.params.bookId;
+  const name = req.body.name;
+  const description = req.body.description;
+  const author = req.body.author;
+  const price = +req.body.price;
+  const discount = +req.body.discount;
+  let imageUrl = req.body.imageUrl;
+
+  try {
+    const book = await Book.findById(bookId);
+    if (!book) {
+      const error = new CustomHttpError('Could not find book!', 404);
+      throw error;
+    }
+    book.name = name;
+    book.description = description;
+    book.author = author;
+    book.price = price;
+    book.discount = discount;
+    book.imageUrl = imageUrl;
+    const updatedBook = await book.save();
+    res.status(200).json({ message: 'Book updated!', book: updatedBook });
+  } catch (err: any) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 
 }
 
