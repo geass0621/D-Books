@@ -1,11 +1,12 @@
-import React, { JSX } from "react"
-import MainNavigation from "../Components/MainNavigarion"
+import MainNavigation from "../Components/MainNavigation"
+import { Outlet } from "react-router-dom"
 
-const RootLayout: React.FC = (): JSX.Element => {
+const RootLayout = () => {
 
   return <>
     <MainNavigation />
     <main>
+      <Outlet />
     </main >
     <footer>
 
