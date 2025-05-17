@@ -1,4 +1,4 @@
-import { CartItem } from "./CartItem"
+import { CartItem } from "./CartItemModel"
 
 export type Cart = {
   userId: String,

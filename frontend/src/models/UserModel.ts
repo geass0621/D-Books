@@ -1,6 +1,6 @@
-import { Cart } from "./Cart"
+import { Cart } from "./CartModel"
 
-type User = {
+export type User = {
   id: String,
   email: String,
   name: String,
