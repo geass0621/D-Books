@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-interface IBook {
+export interface IBook {
   name: string;
   author: string;
   description: string;
