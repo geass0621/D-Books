@@ -8,7 +8,7 @@ import { allowCORS } from './middleware/allowCORS';
 
 const app = express();
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(allowCORS);
 app.use(adminRoutes);
 app.use(bookRoutes);
