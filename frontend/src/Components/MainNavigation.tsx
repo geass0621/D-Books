@@ -1,4 +1,4 @@
-import ThemeController from "./ThemeController"
+import ThemeController from "./ThemeSelector"
 
 const MainNavigation = () => {
   return <>
