@@ -1,9 +1,10 @@
-import { CartItem } from "./CartItemModel"
+import { Book } from "./BookModel"
 
 type Order = {
-  items: CartItem[],
+  items: Book[],
   address: String,
   userName: String,
   userId: String,
-  status: 'Ongoing' | 'Delivered'
+  status: 'Ongoing' | 'Delivered',
+  totalAmount: Number
 }
