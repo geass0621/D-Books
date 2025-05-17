@@ -3,6 +3,7 @@ export type Book = {
   title: String,
   author: String,
   description: String,
+  imageUrl: String,
   price: Number,
   discount: Number
 }
