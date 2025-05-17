@@ -1,7 +1,6 @@
 import { model, Schema } from "mongoose";
 
 export interface IUser {
-  name: String;
   email: String;
   password: String
   cart: Schema.Types.ObjectId[];
@@ -9,10 +8,6 @@ export interface IUser {
 }
 
 const userSchema = new Schema<IUser>({
-  name: {
-    type: String,
-    required: false,
-  },
   email: {
     type: String,
     required: true
