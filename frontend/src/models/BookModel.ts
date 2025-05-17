@@ -1,6 +1,6 @@
 export type Book = {
   id: String,
-  title: String,
+  name: String,
   author: String,
   description: String,
   imageUrl: String,

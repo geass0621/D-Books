@@ -1,9 +1,9 @@
-import { CartItem } from "./CartItemModel"
+import { Book } from "./BookModel"
 
 export type Cart = {
   userId: String,
   userName: String,
   address: String,
-  items: CartItem[],
+  items: Book[],
   totalPrice: Number
 }

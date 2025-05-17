@@ -5,4 +5,5 @@ export type User = {
   email: String,
   name: String,
   cart: Cart,
+  role: 'admin' | 'user'
 }

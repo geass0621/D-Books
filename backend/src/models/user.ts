@@ -5,6 +5,7 @@ export interface IUser {
   email: String;
   password: String
   cart: Schema.Types.ObjectId[];
+  role: 'admin' | 'user'
 }
 
 const userSchema = new Schema<IUser>({
@@ -25,7 +26,11 @@ const userSchema = new Schema<IUser>({
       type: Schema.Types.ObjectId,
       ref: 'Book'
     }
-  ]
+  ],
+  role: {
+    type: String,
+    required: true
+  }
 }, { timestamps: true });
 
 const User = model<IUser>('User', userSchema);
