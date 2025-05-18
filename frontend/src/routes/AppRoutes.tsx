@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import RootLayout from '../pages/RootLayout';
 import Home from '../pages/Home';
-import { Authentication } from '../pages/Authentication';
+import Authentication, { action as authAction } from '../pages/Authentication';
 
 const router = createBrowserRouter(
   [
@@ -15,7 +15,8 @@ const router = createBrowserRouter(
         },
         {
           path: 'auth',
-          element: <Authentication />
+          element: <Authentication />,
+          action: authAction
         }
 
       ]

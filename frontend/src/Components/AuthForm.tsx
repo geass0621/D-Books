@@ -17,6 +17,10 @@ export const AuthForm: React.FC = () => {
         <label className="w-full block" htmlFor="password">Password</label>
         <input className="w-full block bg-base-300" type="password" name="password" required />
       </p>
+      <p className="w-full block">
+        <label className="w-full block" htmlFor="confirmPassword">Confirm Password</label>
+        <input className="w-full block bg-base-300" type="password" name="confirmPassword" required />
+      </p>
       <div className="flex gap-4 content-end justify-center">
         <Link to={`?mode=${isLogin ? 'signup' : 'login'}`}>
           {isLogin ? 'Create new user' : 'Login'}
