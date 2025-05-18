@@ -1,6 +1,5 @@
 import { redirect } from "react-router-dom"
 import { AuthForm } from "../Components/AuthForm"
-import { emailValidation, matchPassword, passwordValidation } from "../utils/validators"
 
 const Authentication: React.FC = () => {
   return (
@@ -22,12 +21,25 @@ export const action = async ({ request }: { request: Request }) => {
   }
 
   const data = await request.formData();
+  const email = data.get('email')?.toString().trim() || '';
+  const password = data.get('password')?.toString().trim() || '';
+  const confirmPassword = data.get('confirmPassword')?.toString().trim() || '';
 
-  const authData = {
-    email: data.get('email')?.toString().trim() || '',
-    password: data.get('password')?.toString().trim() || '',
-    confirmPassword: data.get('confirmPassword')?.toString().trim() || ''
-  };
+  let authData;
+  if (mode === 'signup') {
+    authData = {
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
+    };
+  }
+  if (mode === 'login') {
+    authData = {
+      email: email,
+      password: password,
+    };
+  }
+
 
   const response = await fetch('http://localhost:3000/' + mode, {
     method: mode === "signup" ? "PUT" : "POST",

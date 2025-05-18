@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose";
 
 export interface IUser {
-  email: String;
-  password: String
+  email: string;
+  password: string
   cart: Schema.Types.ObjectId[];
   role: 'admin' | 'user'
 }

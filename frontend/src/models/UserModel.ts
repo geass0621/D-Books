@@ -1,9 +1,8 @@
 import { Cart } from "./CartModel"
 
 export type User = {
-  id: String,
-  email: String,
-  name: String,
+  id: string,
+  email: string,
   cart: Cart,
   role: 'admin' | 'user'
 }

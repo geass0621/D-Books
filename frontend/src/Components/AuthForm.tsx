@@ -2,7 +2,6 @@ import { Form, Link, useActionData, useNavigation, useSearchParams } from "react
 
 export const AuthForm: React.FC = () => {
   const data = useActionData();
-  console.log(data);
   const [searchParams, setSearchParams] = useSearchParams();
   const isLogin = searchParams.get('mode') === 'login';
   const navigation = useNavigation();
@@ -20,12 +19,12 @@ export const AuthForm: React.FC = () => {
       </p>
       <p className="w-full block">
         <label className="w-full block" htmlFor="password">Password</label>
-        <input className="w-full block bg-base-300" type="password" name="password" required />
+        <input className="w-full block bg-base-300" type="password" name="password" required autoComplete="on" />
       </p>
-      <p className="w-full block">
+      {!isLogin && <p className="w-full block">
         <label className="w-full block" htmlFor="confirmPassword">Confirm Password</label>
-        <input className="w-full block bg-base-300" type="password" name="confirmPassword" required />
-      </p>
+        <input className="w-full block bg-base-300" type="password" name="confirmPassword" required autoComplete="on" />
+      </p>}
       <div className="flex gap-4 content-end justify-center">
         <Link to={`?mode=${isLogin ? 'signup' : 'login'}`}>
           {isLogin ? 'Create new user' : 'Login'}

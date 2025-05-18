@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.3"
   }
 }

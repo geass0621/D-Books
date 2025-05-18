@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signup } from "../controllers/auth";
+import { signup, login } from "../controllers/auth";
 import { body } from "express-validator";
 import User from "../models/user";
 
@@ -31,6 +31,19 @@ router.put('/signup',
         }
       })
       .withMessage('Passwords do not match!')
-  ], signup)
+  ], signup);
+
+router.post('/login',
+  [
+    body('email')
+      .trim()
+      .isEmail()
+      .withMessage('Please enter a valid email!')
+      .normalizeEmail(),
+    body('password')
+      .isAlphanumeric()
+      .isLength({ min: 8, max: 20 })
+      .withMessage('Password must be alphanumeric and between 8 and 20 characters!'),
+  ], login)
 
 export default router
