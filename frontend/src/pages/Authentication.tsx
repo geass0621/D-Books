@@ -29,22 +29,6 @@ export const action = async ({ request }: { request: Request }) => {
     confirmPassword: data.get('confirmPassword')?.toString().trim() || ''
   };
 
-  if (!emailValidation(authData.email)) {
-    throw new Response(JSON.stringify({ message: 'Not a valid email!' }), {
-      status: 422
-    });
-  };
-  if (!passwordValidation(authData.password)) {
-    throw new Response(JSON.stringify({ message: 'Not a valid password!' }), {
-      status: 422
-    });
-  };
-  if (!matchPassword(authData.password, authData.confirmPassword)) {
-    throw new Response(JSON.stringify({ message: 'Passwords do not match!' }), {
-      status: 422
-    });
-  };
-
   const response = await fetch('http://localhost:3000/' + mode, {
     method: mode === "signup" ? "PUT" : "POST",
     headers: {
@@ -53,7 +37,7 @@ export const action = async ({ request }: { request: Request }) => {
     body: JSON.stringify(authData)
   });
 
-  console.log(response);
+  console.log(response.json());
 
   if (response.status === 422 || response.status === 401) {
     return response
