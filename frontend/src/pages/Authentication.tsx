@@ -37,7 +37,7 @@ export const action = async ({ request }: { request: Request }) => {
     body: JSON.stringify(authData)
   });
 
-  console.log(response.json());
+  console.log(response);
 
   if (response.status === 422 || response.status === 401) {
     return response

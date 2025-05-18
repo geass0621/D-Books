@@ -5,11 +5,11 @@ import { validationResult } from "express-validator";
 import { CustomHttpError } from "../models/customError";
 
 export const signup: RequestHandler = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    console.log(errors);
-    const error = new CustomHttpError('Validation failed!', 422);
-    throw error;
+  const validationsErrors = validationResult(req);
+  if (!validationsErrors.isEmpty()) {
+    let errors: any[] = [];
+    validationsErrors.array().map(el => errors.push(el.msg))
+    res.status(422).json({ message: '', errors: errors });
   }
   const email = req.body.email;
   const password = req.body.password;

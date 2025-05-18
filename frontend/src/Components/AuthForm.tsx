@@ -2,6 +2,7 @@ import { Form, Link, useActionData, useNavigation, useSearchParams } from "react
 
 export const AuthForm: React.FC = () => {
   const data = useActionData();
+  console.log(data);
   const [searchParams, setSearchParams] = useSearchParams();
   const isLogin = searchParams.get('mode') === 'login';
   const navigation = useNavigation();

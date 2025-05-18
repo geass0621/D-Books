@@ -20,7 +20,8 @@ router.put('/signup',
       .normalizeEmail(),
     body('password')
       .isAlphanumeric()
-      .isLength({ min: 6, max: 12 }),
+      .isLength({ min: 8, max: 20 })
+      .withMessage('Password must be alphanumeric and between 8 and 20 characters!'),
     body('confirmPassword')
       .custom((value, { req }) => {
         if (value !== req.body.password) {
@@ -29,6 +30,7 @@ router.put('/signup',
           return true
         }
       })
+      .withMessage('Passwords do not match!')
   ], signup)
 
 export default router
