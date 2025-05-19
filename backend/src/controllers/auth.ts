@@ -86,5 +86,17 @@ export const login: RequestHandler = async (req, res, next) => {
       err.statusCode = 500;
     }
     next(err);
+  };
+};
+
+export const getUser: RequestHandler = async (req, res, next) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId);
+
+  if (!user) {
+    const error = new CustomHttpError('A user can not be found!', 401);
+    throw error;
   }
+
+  res.status(200).json({ message: 'User found!', user: user });
 }

@@ -1,14 +1,11 @@
 import { useContext, useEffect } from "react"
 import MainNavigation from "../Components/MainNavigation"
-import { Outlet } from "react-router-dom"
+import { Outlet, useLoaderData, useSubmit } from "react-router-dom"
 import { UserContext } from "../store/UserContext"
+import { getTokenDuration } from "../utils/auth"
 
 const RootLayout = () => {
-  const userCtx = useContext(UserContext);
 
-  useEffect(() => {
-
-  }, [])
 
   return <>
     <MainNavigation />

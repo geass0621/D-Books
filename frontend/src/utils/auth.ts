@@ -31,6 +31,8 @@ export const tokenLoader = (): string | null => {
   return getAuthToken();
 }
 
+
+
 export function checkAuthLoader() {
   const token = getAuthToken();
 

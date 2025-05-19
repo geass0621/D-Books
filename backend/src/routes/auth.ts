@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signup, login } from "../controllers/auth";
+import { signup, login, getUser } from "../controllers/auth";
 import { body } from "express-validator";
 import User from "../models/user";
 
@@ -44,6 +44,8 @@ router.post('/login',
       .isAlphanumeric()
       .isLength({ min: 8, max: 20 })
       .withMessage('Password must be alphanumeric and between 8 and 20 characters!'),
-  ], login)
+  ], login);
+
+router.get('/user/:userId', getUser)
 
 export default router
