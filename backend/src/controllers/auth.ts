@@ -50,12 +50,12 @@ export const login: RequestHandler = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: email });
     if (!user) {
-      const error = new CustomHttpError('A user with this email can not be found!', 401);
+      const error = new CustomHttpError('A user with this email can not be found!', 401, {});
       throw error;
     }
     const isEqual = await bcrypt.compare(password, user.password);
     if (!isEqual) {
-      const error = new CustomHttpError('Wrong password!', 401);
+      const error = new CustomHttpError('Wrong password!', 401, {});
       throw error;
     }
     let token;
@@ -94,7 +94,7 @@ export const getUser: RequestHandler = async (req, res, next) => {
   try {
     const user = await User.findById(userId).select('id email role');
     if (!user) {
-      const error = new CustomHttpError('A user can not be found!', 401);
+      const error = new CustomHttpError('A user can not be found!', 401, {});
       throw error;
     }
 

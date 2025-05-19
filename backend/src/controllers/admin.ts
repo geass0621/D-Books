@@ -46,7 +46,7 @@ export const updateBook: RequestHandler = async (req, res, next) => {
   try {
     const book = await Book.findById(bookId);
     if (!book) {
-      const error = new CustomHttpError('Could not find book!', 404);
+      const error = new CustomHttpError('Could not find book!', 404, {});
       throw error;
     }
     book.name = name;
@@ -72,7 +72,7 @@ export const deleteBook: RequestHandler = async (req, res, next) => {
   try {
     const book = await Book.findById(bookId);
     if (!book) {
-      const error = new CustomHttpError('Could not find post!', 404);
+      const error = new CustomHttpError('Could not find post!', 404, {});
       throw error;
     }
 

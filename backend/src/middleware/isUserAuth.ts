@@ -5,7 +5,7 @@ import { CustomHttpError } from '../models/customError';
 export const isUserAuth: RequestHandler = (req, res, next) => {
   const authHeader = req.get('Authorization');
   if (!authHeader) {
-    const error = new CustomHttpError('Not authenticated', 401);
+    const error = new CustomHttpError('Not authenticated', 401, {});
     throw error;
   }
   const token = authHeader.split(' ')[1];
@@ -18,7 +18,7 @@ export const isUserAuth: RequestHandler = (req, res, next) => {
   };
 
   if (!decodedToken) {
-    const error = new CustomHttpError('Not authenticated', 401);
+    const error = new CustomHttpError('Not authenticated', 401, {});
     throw error;
   };
 

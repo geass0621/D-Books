@@ -60,8 +60,8 @@ export const action = async ({ request }: { request: Request }) => {
       status: 500,
     });
   };
+
   const responseData = await response.json();
-  console.log(responseData)
   const token = responseData.token;
   localStorage.setItem('DbooksToken', token);
   const expiration = new Date();
