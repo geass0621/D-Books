@@ -69,5 +69,9 @@ export const action = async ({ request }: { request: Request }) => {
   localStorage.setItem('tokenExpiration', expiration.toISOString());
   localStorage.setItem('userId', responseData.user.id);
 
-  return redirect('/');
+  if (mode === 'signup') {
+    return redirect('/auth?mode=login');
+  } else if (mode === 'login') {
+    return redirect('/');
+  }
 }
