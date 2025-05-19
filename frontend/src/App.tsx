@@ -1,15 +1,18 @@
 import { RouterProvider } from 'react-router-dom';
 import router from './routes/AppRoutes'
 import { ThemeProvider } from './store/ThemeContext';
+import { UserContextProvider } from './store/UserContext';
 
 const App: React.FC = () => {
 
   return (
     <>
       <ThemeProvider>
-        <RouterProvider router={router}>
+        <UserContextProvider>
+          <RouterProvider router={router}>
 
-        </RouterProvider>
+          </RouterProvider>
+        </UserContextProvider>
       </ThemeProvider>
     </>
   )

@@ -2,6 +2,7 @@ import { redirect } from "react-router-dom"
 import { AuthForm } from "../Components/AuthForm"
 
 const Authentication: React.FC = () => {
+
   return (
     <>
       <AuthForm />
@@ -49,7 +50,6 @@ export const action = async ({ request }: { request: Request }) => {
     body: JSON.stringify(authData)
   });
 
-  console.log(response);
 
   if (response.status === 422 || response.status === 401) {
     return response
@@ -60,6 +60,14 @@ export const action = async ({ request }: { request: Request }) => {
       status: 500,
     });
   };
+  const responseData = await response.json();
+  console.log(responseData)
+  const token = responseData.token;
+  localStorage.setItem('DbooksToken', token);
+  const expiration = new Date();
+  expiration.setHours(expiration.getHours() + 1);
+  localStorage.setItem('tokenExpiration', expiration.toISOString());
+  localStorage.setItem('userId', responseData.user.id);
 
   return redirect('/');
 }
