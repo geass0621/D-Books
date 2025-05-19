@@ -1,4 +1,4 @@
-import { Form, Link, useActionData, useNavigation, useSearchParams, useLoaderData } from "react-router-dom";
+import { Form, Link, useActionData, useNavigation, useSearchParams } from "react-router-dom";
 
 export const AuthForm: React.FC = () => {
   const data = useActionData();
