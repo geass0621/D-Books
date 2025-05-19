@@ -22,7 +22,6 @@ export const signup: RequestHandler = async (req, res, next) => {
     const user = new User({
       email: email,
       password: hashedPassword,
-      cart: [],
       role: 'user'
     });
 
@@ -77,7 +76,6 @@ export const login: RequestHandler = async (req, res, next) => {
       user: {
         id: user.id.toString(),
         email: user.email,
-        cart: user.cart,
         role: user.role
       }
     });

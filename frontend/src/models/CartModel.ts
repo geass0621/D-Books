@@ -1,9 +1,9 @@
 import { Book } from "./BookModel"
 
 export type Cart = {
-  userId: String,
-  userName: String,
-  address: String,
+  userId: string,
+  userName: string,
+  address: string,
   items: Book[],
-  totalPrice: Number
+  totalPrice: number
 }

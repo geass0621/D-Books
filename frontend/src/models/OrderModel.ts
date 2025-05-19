@@ -2,9 +2,9 @@ import { Book } from "./BookModel"
 
 type Order = {
   items: Book[],
-  address: String,
-  userName: String,
-  userId: String,
+  address: string,
+  userName: string,
+  userId: string,
   status: 'Ongoing' | 'Delivered',
-  totalAmount: Number
+  totalAmount: number
 }

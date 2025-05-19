@@ -1,9 +1,9 @@
 export type Book = {
-  id: String,
-  name: String,
-  author: String,
-  description: String,
-  imageUrl: String,
-  price: Number,
-  discount: Number
+  id: string,
+  name: string,
+  author: string,
+  description: string,
+  imageUrl: string,
+  price: number,
+  discount: number
 }

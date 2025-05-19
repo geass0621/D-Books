@@ -1,8 +1,7 @@
-import { Cart } from "./CartModel"
+import { Book } from "./BookModel"
 
 export type User = {
   id: string,
   email: string,
-  cart: Cart,
   role: 'admin' | 'user'
 }

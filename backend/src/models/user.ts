@@ -3,7 +3,6 @@ import { model, Schema } from "mongoose";
 export interface IUser {
   email: string;
   password: string
-  cart: Schema.Types.ObjectId[];
   role: 'admin' | 'user'
 }
 
@@ -16,12 +15,6 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
   },
-  cart: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Book'
-    }
-  ],
   role: {
     type: String,
     required: true

@@ -1,8 +1,6 @@
 import { Form, Link, useActionData, useNavigation, useSearchParams, useLoaderData } from "react-router-dom";
 
 export const AuthForm: React.FC = () => {
-  const token = useLoaderData();
-  console.log(token);
   const data = useActionData();
   const [searchParams, setSearchParams] = useSearchParams();
   const isLogin = searchParams.get('mode') === 'login';
