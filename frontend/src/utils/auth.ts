@@ -31,8 +31,14 @@ export const tokenLoader = (): string | null => {
   return getAuthToken();
 }
 
-export const getUser = async (id: string) => {
-  const response = await fetch('http://localhost:3000/user/' + id);
+export const getUser = async (id: string, token: string) => {
+  const response = await fetch('http://localhost:3000/user/' + id, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    }
+  });
   if (!response.ok) {
     return null;
   }

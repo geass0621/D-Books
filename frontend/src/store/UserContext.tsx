@@ -28,7 +28,7 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({ children }) =
     if (!token || token === 'EXPIRED') {
       return
     }
-    getUser(userId).then(user => {
+    getUser(userId, token).then(user => {
       setUser(user);
       console.log(user);
     });
