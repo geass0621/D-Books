@@ -13,7 +13,7 @@ export const getTokenDuration = (): number => {
 }
 
 export const getAuthToken = (): string | null => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('DbooksToken');
   const tokenDuration = getTokenDuration();
 
   if (!token) {
@@ -31,8 +31,19 @@ export const tokenLoader = (): string | null => {
   return getAuthToken();
 }
 
+export const getUser = async (id: string) => {
+  const response = await fetch('http://localhost:3000/user/' + id);
+  if (!response.ok) {
+    return null;
+  }
 
+  const responseData = await response.json();
+  if (!responseData.user) {
+    return null;
+  }
 
+  return responseData.user;
+}
 export function checkAuthLoader() {
   const token = getAuthToken();
 

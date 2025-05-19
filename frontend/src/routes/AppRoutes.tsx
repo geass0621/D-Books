@@ -23,7 +23,6 @@ const router = createBrowserRouter(
           element: <Authentication />,
           action: authAction
         }
-
       ]
     }
   ]
