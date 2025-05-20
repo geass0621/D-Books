@@ -1,19 +1,13 @@
-import { useContext } from "react"
 import ThemeController from "./ThemeSelector"
-import { UserContext } from "../store/UserContext"
-import { redirect } from "react-router-dom";
+import { useRouteLoaderData, useSubmit } from "react-router-dom";
 
 const MainNavigation = () => {
-  const user = useContext(UserContext);
+  const user = useRouteLoaderData('root');
+  const submit = useSubmit();
 
   const logoutHandler = () => {
-    user?.setUser(null);
-    localStorage.removeItem('DbooksToken');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('tokenExpiration');
-
-    redirect('/')
-  }
+    submit(null, { method: "post", action: "/logout" });
+  };
 
   return <>
     <header className="flex p-8 m-auto justify-center">

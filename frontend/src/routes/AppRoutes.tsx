@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import Authentication, { action as authAction } from '../pages/Authentication';
 import ErrorPage from '../pages/Error';
 import { tokenLoader } from '../utils/auth';
+import { logoutAction } from '../pages/Logout';
 
 const router = createBrowserRouter(
   [
@@ -25,7 +26,7 @@ const router = createBrowserRouter(
         },
         {
           path: 'logout',
-
+          action: logoutAction
         }
       ]
     }

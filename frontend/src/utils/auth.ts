@@ -27,8 +27,31 @@ export const getAuthToken = (): string | null => {
   return token;
 }
 
-export const tokenLoader = (): string | null => {
-  return getAuthToken();
+export const tokenLoader = async (): Promise<{ user: any } | null> => {
+  const token = getAuthToken();
+  if (!token || token === "EXPIRED") {
+    return null;
+  }
+
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    return null;
+  }
+
+  const response = await fetch(`http://localhost:3000/user/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const responseData = await response.json();
+  return { user: responseData.user };
 }
 
 export const getUser = async (id: string, token: string) => {
