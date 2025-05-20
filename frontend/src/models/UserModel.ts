@@ -1,5 +1,3 @@
-import { Book } from "./BookModel"
-
 export type User = {
   id: string,
   email: string,
