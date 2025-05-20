@@ -1,11 +1,13 @@
+import { useUser } from "../store/UserContext";
 import ThemeController from "./ThemeSelector"
 import { useRouteLoaderData, useSubmit } from "react-router-dom";
 
 const MainNavigation = () => {
-  const user = useRouteLoaderData('root');
+  const { user, setUser } = useUser();
   const submit = useSubmit();
 
   const logoutHandler = () => {
+    setUser(null);
     submit(null, { method: "post", action: "/logout" });
   };
 
@@ -18,7 +20,7 @@ const MainNavigation = () => {
         <div className="navbar-center hidden lg:flex">
         </div>
         <div className="navbar-end">
-          {user?.user && <button className="btn btn-ghost" onClick={logoutHandler}>Logout</button>}
+          {user && <button className="btn btn-ghost" onClick={logoutHandler}>Logout</button>}
           <ThemeController />
         </div>
       </div>
