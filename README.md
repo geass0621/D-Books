@@ -10,6 +10,7 @@
 <p align="left">Password encryption: bcryptjs</p>
 <p align="left">User authentication: jsonwebtoken</p>
 <p align="left">Database: MongoDB</p>
+<p align="left">State: Redux</p>
 <p align="left">Framework Frontend: React</p>
 <p align="left">Routing: react-router-dom</p>
 <p align="left">Two type of user: normal and admin</p>
