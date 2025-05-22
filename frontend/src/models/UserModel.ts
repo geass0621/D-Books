@@ -1,5 +1,6 @@
 export type User = {
-  id: string,
-  email: string,
-  role: 'admin' | 'user'
+  id: string | null,
+  email: string | null,
+  role: 'admin' | 'user' | null,
+  status: 'online' | 'offline'
 }
