@@ -1,8 +1,10 @@
+import BookCard from "../Components/BookCard";
+
 const Books: React.FC = () => {
   return (
-    <div>
-      <h1>Books</h1>
-      <p>List of books will be displayed here.</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <BookCard />
+      <BookCard />
     </div>
   );
 }

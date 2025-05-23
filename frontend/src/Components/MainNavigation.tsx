@@ -3,6 +3,7 @@ import ThemeController from "./ThemeSelector"
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser, userActions } from "../store/user-slice";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const MainNavigation: React.FC = (): JSX.Element => {
   const user = useAppSelector(selectUser);
@@ -34,6 +35,12 @@ const MainNavigation: React.FC = (): JSX.Element => {
           <a className="btn btn-ghost text-lg" > daisyUI </a>
         </div>
         < div className="navbar-center hidden lg:flex" >
+          <ul className="menu menu-horizontal px-1">
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/books">Books</Link></li>
+            <li><Link to="/products">Products</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+          </ul>
         </div>
         <div className="navbar-end">
           {user.id ?

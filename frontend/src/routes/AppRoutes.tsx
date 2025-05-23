@@ -5,6 +5,7 @@ import Authentication, { action as authAction } from '../pages/Authentication';
 import ErrorPage from '../pages/Error';
 import Books from '../pages/Books';
 import BookDetail from '../pages/BookDetail';
+import BooksLayout from '../pages/BooksLayout';
 
 const router = createBrowserRouter(
   [
@@ -20,11 +21,15 @@ const router = createBrowserRouter(
         },
         {
           path: 'books',
-          element: <Books />,
+          element: <BooksLayout />,
           children: [
             {
+              index: true,
+              element: <Books />
+            },
+            {
               path: ':bookId',
-              element: <BookDetail />,
+              element: <BookDetail />
             }
           ]
         },
