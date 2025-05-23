@@ -22,12 +22,13 @@ export const signup: RequestHandler = async (req, res, next) => {
     const user = new User({
       email: email,
       password: hashedPassword,
-      role: 'user'
+      role: 'user',
+      status: 'offline'
     });
 
     const createdUser = await user.save();
 
-    res.status(201).json({ message: 'User created successfully!', user: createdUser })
+    res.status(201).json({ message: 'User created successfully!' });
 
   } catch (err: any) {
     if (!err.statusCode) {
@@ -62,23 +63,37 @@ export const login: RequestHandler = async (req, res, next) => {
     if (user.role === 'admin') {
       token = jwt.sign({
         email: user.email,
-        userId: user.id.toString()
+        userId: user.id.toString(),
+        role: user.role
       }, process.env.ADMIN_JWT_SECRET as string, { expiresIn: '1h' })
     } else if (user.role === 'user') {
       token = jwt.sign({
         email: user.email,
-        userId: user.id.toString()
+        userId: user.id.toString(),
+        role: user.role
       }, process.env.USER_JWT_SECRET as string, { expiresIn: '1h' })
     }
 
-    res.status(200).json({
-      token: token,
-      user: {
-        id: user.id.toString(),
-        email: user.email,
-        role: user.role
-      }
-    });
+    user.status = 'online';
+
+    await user.save();
+
+    res.status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 60 * 60 * 1000,
+        path: "/"
+      })
+      .json({
+        user: {
+          id: user.id.toString(),
+          email: user.email,
+          role: user.role,
+          status: user.status
+        }
+      });
     return;
 
   } catch (err: any) {
@@ -90,15 +105,21 @@ export const login: RequestHandler = async (req, res, next) => {
 };
 
 export const getUser: RequestHandler = async (req, res, next) => {
-  const userId = req.params.userId;
+  const userId = req.userId;
   try {
-    const user = await User.findById(userId).select('id email role');
+    const user = await User.findById(userId).select('id email role status');
     if (!user) {
       const error = new CustomHttpError('A user can not be found!', 401, {});
       throw error;
     }
 
-    res.status(200).json({ message: 'User found!', user: user });
+    const responseUser = {
+      id: user.id.toString(),
+      email: user.email,
+      role: user.role,
+      status: user.status
+    }
+    res.status(200).json({ message: 'User found!', user: responseUser });
 
   } catch (err: any) {
     if (!err.statusCode) {
@@ -107,4 +128,32 @@ export const getUser: RequestHandler = async (req, res, next) => {
     next(err);
   }
 
+}
+
+export const logout: RequestHandler = async (req, res, next) => {
+  const userId = req.userId;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      const error = new CustomHttpError('A user can not be found!', 401, {});
+      throw error;
+    }
+    user.status = 'offline';
+    await user.save();
+
+    res.status(200)
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/"
+      })
+      .json({ message: 'User logged out!' });
+
+  } catch (err: any) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }

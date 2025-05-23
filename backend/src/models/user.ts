@@ -1,9 +1,10 @@
 import { model, Schema } from "mongoose";
 
 export interface IUser {
-  email: string;
-  password: string
-  role: 'admin' | 'user'
+  email: string,
+  password: string,
+  role: 'admin' | 'user',
+  status: 'online' | 'offline'
 }
 
 const userSchema = new Schema<IUser>({
@@ -14,6 +15,10 @@ const userSchema = new Schema<IUser>({
   password: {
     type: String,
     required: true,
+  },
+  status: {
+    type: String,
+    required: true
   },
   role: {
     type: String,

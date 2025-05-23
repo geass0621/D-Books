@@ -1,9 +1,14 @@
-function PageContent({ title, children }: { title: string; children: React.ReactNode }) {
+interface PageContentProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+const PageContent: React.FC<PageContentProps> = ({ title, children }) => {
   return (
     <div>
-      <h1>{title}</h1>
-      {children}
-    </div>
+    <h1>{ title } </h1>
+      { children }
+  </div>
   );
 }
 

@@ -4,7 +4,6 @@ import Home from '../pages/Home';
 import Authentication, { action as authAction } from '../pages/Authentication';
 import ErrorPage from '../pages/Error';
 import { tokenLoader } from '../utils/auth';
-import { logoutAction } from '../pages/Logout';
 
 const router = createBrowserRouter(
   [
@@ -24,10 +23,6 @@ const router = createBrowserRouter(
           element: <Authentication />,
           action: authAction
         },
-        {
-          path: 'logout',
-          action: logoutAction
-        }
       ]
     }
   ]

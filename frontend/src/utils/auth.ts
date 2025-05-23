@@ -54,13 +54,13 @@ export const tokenLoader = async (): Promise<{ user: any } | null> => {
   return { user: responseData.user };
 }
 
-export const getUser = async (id: string, token: string) => {
-  const response = await fetch('http://localhost:3000/user/' + id, {
+export const getUser = async () => {
+  const response = await fetch('http://localhost:3000/user/', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
-    }
+    },
+    credentials: 'include',
   });
   if (!response.ok) {
     return null;

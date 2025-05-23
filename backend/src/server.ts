@@ -6,10 +6,12 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { defaultErrorResponse } from './middleware/defaultErrorResponse';
 import { allowCORS } from './middleware/allowCORS';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(allowCORS);
 app.use(adminRoutes);
 app.use(authRoutes)

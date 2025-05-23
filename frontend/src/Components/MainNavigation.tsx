@@ -1,26 +1,43 @@
-import { useUser } from "../store/UserContext";
+import { JSX } from "react";
 import ThemeController from "./ThemeSelector"
-import { useRouteLoaderData, useSubmit } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { selectUser, userActions } from "../store/user-slice";
+import { useNavigate } from "react-router-dom";
 
-const MainNavigation = () => {
-  const { user, setUser } = useUser();
-  const submit = useSubmit();
+const MainNavigation: React.FC = (): JSX.Element => {
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const logoutHandler = () => {
-    setUser(null);
-    submit(null, { method: "post", action: "/logout" });
-  };
+  const logoutHandler = async () => {
+    // delete cookie
+    const response = await fetch('http://localhost:3000/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error('Logout failed');
+    }
+    // remove user from store
+    dispatch(userActions.setUserLogout());
 
+    return navigate('/');
+  }
+
+  const loginHandler = () => {
+    navigate('/auth?mode=login');
+  }
   return <>
-    <header className="flex p-8 m-auto justify-center">
-      <div className="navbar max-w-5xl h-0.5 bg-base-100">
-        <div className="navbar-start">
-          <a className="btn btn-ghost text-lg">daisyUI</a>
+    <header className="flex p-8 m-auto justify-center" >
+      <div className="navbar max-w-5xl h-0.5 bg-base-100" >
+        <div className="navbar-start" >
+          <a className="btn btn-ghost text-lg" > daisyUI </a>
         </div>
-        <div className="navbar-center hidden lg:flex">
+        < div className="navbar-center hidden lg:flex" >
         </div>
         <div className="navbar-end">
-          {user && <button className="btn btn-ghost" onClick={logoutHandler}>Logout</button>}
+          {user.id ?
+            <button className="btn btn-ghost" onClick={logoutHandler}>Logout</button> : <button className="btn btn-ghost" onClick={loginHandler}>Login</button>}
           <ThemeController />
         </div>
       </div>

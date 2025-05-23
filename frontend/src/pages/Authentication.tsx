@@ -1,7 +1,21 @@
-import { redirect } from "react-router-dom"
+import { redirect, useActionData, useNavigate } from "react-router-dom"
 import { AuthForm } from "../Components/AuthForm"
+import { useAppDispatch } from "../store/hooks"
+import { userActions } from "../store/user-slice"
+import { User } from "../models/UserModel"
+import { use, useEffect } from "react"
 
 const Authentication: React.FC = () => {
+  const actionData = useActionData() as User | undefined;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (actionData && actionData.id) {
+      dispatch(userActions.setUserLogin(actionData));
+      navigate('/');
+    }
+  }, [actionData, dispatch]);
 
   return (
     <>
@@ -41,15 +55,14 @@ export const action = async ({ request }: { request: Request }) => {
     };
   }
 
-
   const response = await fetch('http://localhost:3000/' + mode, {
     method: mode === "signup" ? "PUT" : "POST",
     headers: {
       'Content-Type': 'application/json'
     },
+    credentials: 'include',
     body: JSON.stringify(authData)
   });
-
 
   if (response.status === 422 || response.status === 401) {
     return response
@@ -62,16 +75,16 @@ export const action = async ({ request }: { request: Request }) => {
   };
 
   const responseData = await response.json();
-  const token = responseData.token;
-  localStorage.setItem('DbooksToken', token);
-  const expiration = new Date();
-  expiration.setHours(expiration.getHours() + 1);
-  localStorage.setItem('tokenExpiration', expiration.toISOString());
-  localStorage.setItem('userId', responseData.user.id);
+  const user: User = {
+    id: responseData.user.id,
+    email: responseData.user.email,
+    role: responseData.user.role,
+    status: responseData.user.status,
+  }
 
   if (mode === 'signup') {
     return redirect('/auth?mode=login');
   } else if (mode === 'login') {
-    return redirect('/');
+    return user;
   }
 }

@@ -1,21 +1,15 @@
 import MainNavigation from "../Components/MainNavigation"
-import { Outlet, useRouteLoaderData } from "react-router-dom"
-import { UserProvider } from "../store/UserContext";
-const RootLayout = () => {
-  const data = useRouteLoaderData("root");
-  const user = data?.user;
+import { Outlet } from "react-router-dom"
+const RootLayout: React.FC = () => {
 
   return <>
-    <UserProvider initialUser={user}>
-      <MainNavigation />
-      <main>
-        <Outlet />
-      </main >
-      <footer>
-      </footer>
-
-    </UserProvider>
-  </>
+    <MainNavigation />
+    < main >
+    <Outlet />
+    </main >
+    < footer >
+    </footer>
+    </>
 }
 
 export default RootLayout

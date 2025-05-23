@@ -1,7 +1,7 @@
-const Home = () => {
+const Home: React.FC = () => {
   return <>
-    <p>This is home</p>
-  </>
+    <p>This is home </p>
+      </>
 }
 
 export default Home
