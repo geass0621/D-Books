@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 
 export interface IBook {
   name: string;
+  genre: string;
   author: string;
   description: string;
   price: number;
@@ -11,6 +12,10 @@ export interface IBook {
 
 const bookSchema = new Schema<IBook>({
   name: {
+    type: String,
+    required: true
+  },
+  genre: {
     type: String,
     required: true
   },

@@ -3,7 +3,7 @@ import { AuthForm } from "../Components/AuthForm"
 import { useAppDispatch } from "../store/hooks"
 import { userActions } from "../store/user-slice"
 import { User } from "../models/UserModel"
-import { use, useEffect } from "react"
+import { useEffect } from "react"
 
 const Authentication: React.FC = () => {
   const actionData = useActionData() as User | undefined;

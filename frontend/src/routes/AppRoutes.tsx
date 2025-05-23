@@ -3,7 +3,8 @@ import RootLayout from '../pages/RootLayout';
 import Home from '../pages/Home';
 import Authentication, { action as authAction } from '../pages/Authentication';
 import ErrorPage from '../pages/Error';
-import { tokenLoader } from '../utils/auth';
+import Books from '../pages/Books';
+import BookDetail from '../pages/BookDetail';
 
 const router = createBrowserRouter(
   [
@@ -12,11 +13,20 @@ const router = createBrowserRouter(
       id: 'root',
       element: <RootLayout />,
       errorElement: <ErrorPage />,
-      loader: tokenLoader,
       children: [
         {
           index: true,
           element: <Home />
+        },
+        {
+          path: 'books',
+          element: <Books />,
+          children: [
+            {
+              path: ':bookId',
+              element: <BookDetail />,
+            }
+          ]
         },
         {
           path: 'auth',
