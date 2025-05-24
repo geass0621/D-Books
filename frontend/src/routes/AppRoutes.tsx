@@ -6,6 +6,7 @@ import ErrorPage from '../pages/Error';
 import Books from '../pages/Books';
 import BookDetail from '../pages/BookDetail';
 import BooksLayout from '../pages/BooksLayout';
+import { booksLoader } from '../pages/BooksLayout';
 
 const router = createBrowserRouter(
   [
@@ -21,7 +22,9 @@ const router = createBrowserRouter(
         },
         {
           path: 'books',
+          id: 'books',
           element: <BooksLayout />,
+          loader: booksLoader,
           children: [
             {
               index: true,
