@@ -6,22 +6,19 @@ import { CustomHttpError } from '../models/customError';
 
 export const getBooks: RequestHandler = async (req, res, next) => {
   const genre = req.query.genre as string;
+  const page = req.query.page ? parseInt(req.query.page as string) : 1;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
   console.log('Genre:', genre);
   try {
-    let books;
-    if (genre === 'all') {
-      // books = await Book.find().sort({ createdAt: -1 });
-      res.status(200).json({ message: 'All books fetched successfully!', books: [] });
-      return;
+    let filter: any = {};
+    if (genre && genre !== 'all') {
+      filter.genre = genre.toLowerCase();
     }
-    if (genre) {
-      books = await Book.find({ genre: genre.toLowerCase() }).sort({ createdAt: -1 });
-    }
+    const totalBooks = await Book.countDocuments(filter);
+    const books = await Book.find(filter)
+      .skip((page - 1) * limit)
+      .limit(limit);
 
-    if (!books || books.length === 0) {
-      const error = new CustomHttpError('No books found for the specified genre.', 404, {});
-      throw error;
-    }
 
     const responseBooks = books.map(book => ({
       id: book._id.toString(),
@@ -35,7 +32,13 @@ export const getBooks: RequestHandler = async (req, res, next) => {
     }));
 
 
-    res.status(200).json({ message: 'Books fetched successfully!', books: responseBooks });
+    res.status(200).json({
+      message: 'Books fetched successfully!',
+      books: responseBooks,
+      totalBooks: totalBooks,
+      totalPages: Math.ceil(totalBooks / limit),
+      currentPage: Number(page)
+    });
   } catch (err: any) {
     if (!err.statusCode) {
       err.statusCode = 500;

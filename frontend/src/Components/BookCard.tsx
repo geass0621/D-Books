@@ -33,7 +33,7 @@ const BookCard: React.FC<BookCardProps> = ({
         </h2>
         <p>{description.length > 100 ? description.slice(0, 100) + '...' : description}</p>
         <div className="card-actions justify-end">
-          <div className="badge badge-outline">Fashion</div>
+          <div className="badge badge-outline">Add to Cart</div>
           <div className="badge badge-outline">Products</div>
         </div>
       </div>
