@@ -4,7 +4,7 @@ import Home from '../pages/Home';
 import Authentication, { action as authAction } from '../pages/Authentication';
 import ErrorPage from '../pages/Error';
 import Books from '../pages/Books';
-import BookDetail from '../pages/BookDetail';
+import BookDetail, { bookDetailLoader } from '../pages/BookDetail';
 import BooksLayout from '../pages/BooksLayout';
 import { booksLoader } from '../pages/BooksLayout';
 
@@ -32,7 +32,8 @@ const router = createBrowserRouter(
             },
             {
               path: ':bookId',
-              element: <BookDetail />
+              element: <BookDetail />,
+              loader: bookDetailLoader
             }
           ]
         },

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface BookCardProps {
   id: string;
   name: string;
@@ -22,7 +24,7 @@ const BookCard: React.FC<BookCardProps> = ({
   const discountedPrice = (price * (1 - discount)).toFixed(2);
 
   return (
-    <div className="card bg-base-100 w-96 shadow-sm">
+    <Link to={`/books/${id}`} className="card bg-base-100 w-96 shadow-sm hover:border-accent-content hover:scale-105 transition-transform duration-300">
       <figure className="relative">
         <img
           src={imageUrl}
@@ -44,7 +46,7 @@ const BookCard: React.FC<BookCardProps> = ({
           <div className="btn btn-accent">Add to Cart</div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
