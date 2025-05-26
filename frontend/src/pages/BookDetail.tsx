@@ -1,6 +1,9 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { Book } from "../models/BookModel";
 import { useState } from "react";
+import { useAppDispatch } from "../store/hooks";
+import { cartActions } from "../store/cart-slice";
+
 
 const BookDetail = () => {
   const loaderBook = useLoaderData() as Book;
@@ -8,6 +11,11 @@ const BookDetail = () => {
   const discount = (loaderBook.discount * 100).toFixed(0);
   const discountedPrice = (loaderBook.price * (1 - loaderBook.discount)).toFixed(2);
   const [imgLoading, setImgLoading] = useState(true);
+  const dispatch = useAppDispatch();
+
+  const addToCartHandler = () => {
+    dispatch(cartActions.addItemToCart(loaderBook));
+  }
 
   return (
     <div className="flex flex-row items-center justify-center p-4">
@@ -35,7 +43,7 @@ const BookDetail = () => {
         </div>
         <p>{loaderBook.description}</p>
         <div className="card-actions justify-end mt-4">
-          <div className="btn btn-accent">Add to Cart</div>
+          <div className="btn btn-accent" onClick={addToCartHandler}>Add to Cart</div>
         </div>
       </div>
     </div>
