@@ -27,6 +27,7 @@ const Books: React.FC = () => {
             key={book.id}
             id={book.id}
             name={book.name}
+            genre={book.genre}
             author={book.author}
             imageUrl={book.imageUrl}
             price={book.price}

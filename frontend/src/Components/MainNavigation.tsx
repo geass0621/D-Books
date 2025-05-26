@@ -54,7 +54,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
         <div className="navbar-end">
           {isModalOpen &&
             <Modal modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} >
-              <Cart></Cart>
+              <Cart />
             </Modal>}
           <button className="btn btn-ghost" onClick={openModalHandler}>Cart</button>
           {user.id ?
