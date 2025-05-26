@@ -1,9 +1,9 @@
-import { Book } from "./BookModel"
+import { CartItem } from "./CartItemsModel"
 
 export type Cart = {
   userId: string,
-  userName: string,
-  address: string,
-  items: Book[],
-  totalPrice: number
+  userEmail: string,
+  items: CartItem[],
+  totalPrice: number,
+  totalQuantity: number,
 }

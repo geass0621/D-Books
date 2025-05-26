@@ -1,14 +1,19 @@
-import { JSX } from "react";
+import { JSX, useRef, useState } from "react";
 import ThemeController from "./ThemeSelector"
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser, userActions } from "../store/user-slice";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Modal from "./Modal/Modal";
+import Cart from "./Cart";
 
 const MainNavigation: React.FC = (): JSX.Element => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalRef = useRef<HTMLDialogElement | null>(null);
+
 
   const logoutHandler = async () => {
     // delete cookie
@@ -23,6 +28,10 @@ const MainNavigation: React.FC = (): JSX.Element => {
     dispatch(userActions.setUserLogout());
 
     return navigate('/');
+  }
+
+  const openModalHandler = () => {
+    setIsModalOpen((prevValue) => !prevValue);
   }
 
   const loginHandler = () => {
@@ -43,6 +52,11 @@ const MainNavigation: React.FC = (): JSX.Element => {
           </ul>
         </div>
         <div className="navbar-end">
+          {isModalOpen &&
+            <Modal modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} >
+              <Cart></Cart>
+            </Modal>}
+          <button className="btn btn-ghost" onClick={openModalHandler}>Cart</button>
           {user.id ?
             <button className="btn btn-ghost" onClick={logoutHandler}>Logout</button> : <button className="btn btn-ghost" onClick={loginHandler}>Login</button>}
           <ThemeController />
