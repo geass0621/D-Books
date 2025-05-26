@@ -17,24 +17,31 @@ const BookCard: React.FC<BookCardProps> = ({
   discount,
   description
 }) => {
+  const formattedPrice = price.toFixed(2);
+  const formattedDiscount = (discount * 100).toFixed(0);
+  const discountedPrice = (price * (1 - discount)).toFixed(2);
+
   return (
     <div className="card bg-base-100 w-96 shadow-sm">
-      <figure>
+      <figure className="relative">
         <img
           src={imageUrl}
           className="h-auto w-full object-fill"
           loading="lazy"
           alt={name} />
+        <div className="badge badge-neutral border-0 absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
+          {formattedDiscount}% OFF
+        </div>
       </figure>
       <div className="card-body">
         <h2 className="card-title">
           {name} <span className="text-sm text-gray-500">by {author}</span>
-          <div className="badge badge-secondary">${price}</div>
+          <div className="badge badge-neutral line-through font-bold">${formattedPrice}</div>
+          <div className="badge badge-primary font-bold">${discountedPrice}</div>
         </h2>
         <p>{description.length > 100 ? description.slice(0, 100) + '...' : description}</p>
         <div className="card-actions justify-end">
-          <div className="badge badge-outline">Add to Cart</div>
-          <div className="badge badge-outline">Products</div>
+          <div className="btn btn-accent">Add to Cart</div>
         </div>
       </div>
     </div>
