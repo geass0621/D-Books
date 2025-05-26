@@ -11,18 +11,20 @@ const BookDetail = () => {
 
   return (
     <div className="flex flex-row items-center justify-center p-4">
-      <figure className="relative w-96 h-fit">
-        {imgLoading && <div className="skeleton w-full h-96"></div>}
-        <img
-          src={loaderBook.imageUrl}
-          className="h-auto w-full object-fill"
-          loading="lazy"
-          alt={loaderBook.name}
-          onLoad={() => setImgLoading(false)} />
-        <div className="badge badge-neutral border-0 absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
-          {discount}% OFF
-        </div>
-      </figure>
+      <div>
+        <figure className="relative w-96 h-fit">
+          {imgLoading && <div className="skeleton w-full h-96"></div>}
+          <img
+            src={loaderBook.imageUrl}
+            className="h-auto w-full object-fill"
+            loading="lazy"
+            alt={loaderBook.name}
+            onLoad={() => setImgLoading(false)} />
+          <div className="badge badge-neutral border-0 absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
+            {discount}% OFF
+          </div>
+        </figure>
+      </div>
       <div className="ml-4 flex flex-col ">
         <div className="my-4">
           <h2 className="card-title">
