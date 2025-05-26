@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface BookCardProps {
@@ -22,15 +23,18 @@ const BookCard: React.FC<BookCardProps> = ({
   const formattedPrice = price.toFixed(2);
   const formattedDiscount = (discount * 100).toFixed(0);
   const discountedPrice = (price * (1 - discount)).toFixed(2);
+  const [imgLoading, setImgLoading] = useState(true);
 
   return (
     <Link to={`/books/${id}`} className="card bg-base-100 w-96 shadow-sm hover:border-accent-content hover:scale-105 transition-transform duration-300">
-      <figure className="relative">
+      <figure className="relative w-96 h-fit">
+        {imgLoading && <div className="skeleton w-dvw h-96"></div>}
         <img
           src={imageUrl}
           className="h-auto w-full object-fill"
           loading="lazy"
-          alt={name} />
+          alt={name}
+          onLoad={() => setImgLoading(false)} />
         <div className="badge badge-neutral border-0 absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
           {formattedDiscount}% OFF
         </div>

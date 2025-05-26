@@ -1,25 +1,29 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { Book } from "../models/BookModel";
+import { useState } from "react";
 
 const BookDetail = () => {
   const loaderBook = useLoaderData() as Book;
   const bookPrice = loaderBook.price.toFixed(2);
   const discount = (loaderBook.discount * 100).toFixed(0);
   const discountedPrice = (loaderBook.price * (1 - loaderBook.discount)).toFixed(2);
+  const [imgLoading, setImgLoading] = useState(true);
 
   return (
     <div className="flex flex-row items-center justify-center p-4">
-      <figure className="relative w-6xl h-auto">
+      <figure className="relative w-96 h-fit">
+        {imgLoading && <div className="skeleton w-full h-96"></div>}
         <img
           src={loaderBook.imageUrl}
           className="h-auto w-full object-fill"
           loading="lazy"
-          alt={loaderBook.name} />
+          alt={loaderBook.name}
+          onLoad={() => setImgLoading(false)} />
         <div className="badge badge-neutral border-0 absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
           {discount}% OFF
         </div>
       </figure>
-      <div className="ml-4 flex flex-col justify-between">
+      <div className="ml-4 flex flex-col ">
         <div className="my-4">
           <h2 className="card-title">
             {loaderBook.name} <span className="text-sm text-gray-500">by {loaderBook.author}</span>
