@@ -23,7 +23,7 @@ export const signup: RequestHandler = async (req, res, next) => {
       email: email,
       password: hashedPassword,
       role: 'user',
-      status: 'offline'
+      status: 'offline',
     });
 
     const createdUser = await user.save();
