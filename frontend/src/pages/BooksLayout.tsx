@@ -52,6 +52,7 @@ export const booksLoader = async ({ request }: { request: Request }) => {
 
   const data = await response.json();
 
+
   return {
     books: data.books,
     total: +data.totalBooks,
