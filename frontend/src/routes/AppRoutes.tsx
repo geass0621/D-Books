@@ -8,6 +8,7 @@ import BookDetail, { bookDetailLoader } from '../pages/BookDetail';
 import BooksLayout from '../pages/BooksLayout';
 import { booksLoader } from '../pages/BooksLayout';
 import { homeLoader } from '../pages/Home';
+import Checkout from '../pages/Checkout';
 
 const router = createBrowserRouter(
   [
@@ -44,6 +45,10 @@ const router = createBrowserRouter(
           element: <Authentication />,
           action: authAction
         },
+        {
+          path: 'checkout',
+          element: <Checkout />
+        }
       ]
     }
   ]

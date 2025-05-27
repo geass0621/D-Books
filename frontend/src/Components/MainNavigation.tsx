@@ -57,7 +57,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
         <div className="navbar-end">
           {isModalOpen &&
             <Modal modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} >
-              <Cart />
+              <Cart setIsModalOpen={setIsModalOpen} />
             </Modal>}
           <div className="relative">
             <span className="badge badge-sm absolute ml-8 bg-base-300">{cart.totalQuantity}</span>
