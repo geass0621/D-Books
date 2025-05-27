@@ -9,6 +9,7 @@ import BooksLayout from '../pages/BooksLayout';
 import { booksLoader } from '../pages/BooksLayout';
 import { homeLoader } from '../pages/Home';
 import Checkout from '../pages/Checkout';
+import ProtectedUserRoute from '../pages/ProtectedUserRoute';
 
 const router = createBrowserRouter(
   [
@@ -47,7 +48,13 @@ const router = createBrowserRouter(
         },
         {
           path: 'checkout',
-          element: <Checkout />
+          element: <ProtectedUserRoute />,
+          children: [
+            {
+              index: true,
+              element: <Checkout />
+            }
+          ]
         }
       ]
     }
