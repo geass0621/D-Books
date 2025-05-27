@@ -1,13 +1,14 @@
-import { JSX, useRef, useState } from "react";
+import { JSX, use, useEffect, useRef, useState } from "react";
 import ThemeController from "./ThemeSelector"
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser, userActions } from "../store/user-slice";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Modal from "./Modal/Modal";
-import Cart from "./Cart";
-import { selectCart } from "../store/cart-slice";
+import { selectCart, cartActions } from "../store/cart-slice";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
+import { Cart } from "../models/CartModel";
+import CartComponent from "./CartCompoent";
 
 const MainNavigation: React.FC = (): JSX.Element => {
   const user = useAppSelector(selectUser);
@@ -16,6 +17,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDialogElement | null>(null);
   const cart = useAppSelector(selectCart);
+  const localStorageCart = JSON.parse(localStorage.getItem('cart') || '{}') as Cart;
 
 
   const logoutHandler = async () => {
@@ -27,8 +29,24 @@ const MainNavigation: React.FC = (): JSX.Element => {
     if (!response.ok) {
       throw new Error('Logout failed');
     }
+
     // remove user from store
     dispatch(userActions.setUserLogout());
+
+    // remove user from local storage
+    localStorageCart.userEmail = '';
+    localStorageCart.userId = '';
+    localStorage.setItem('cart', JSON.stringify(localStorageCart));
+
+    // // remove cart from store
+    // const emptyCart: Cart = {
+    //   items: [],
+    //   totalPrice: 0,
+    //   totalQuantity: 0,
+    //   userId: '',
+    //   userEmail: ''
+    // };
+    // dispatch(cartActions.setCart(emptyCart));
 
     return navigate('/');
   }
@@ -57,7 +75,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
         <div className="navbar-end">
           {isModalOpen &&
             <Modal modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} >
-              <Cart setIsModalOpen={setIsModalOpen} />
+              <CartComponent setIsModalOpen={setIsModalOpen} />
             </Modal>}
           <div className="relative">
             <span className="badge badge-sm absolute ml-8 bg-base-300">{cart.totalQuantity}</span>

@@ -8,7 +8,7 @@ interface cartProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Cart: React.FC<cartProps> = ({ setIsModalOpen }) => {
+const CartComponent: React.FC<cartProps> = ({ setIsModalOpen }) => {
   const cart = useAppSelector(selectCart);
   const { items, totalPrice, totalQuantity } = cart;
   const navigate = useNavigate();
@@ -45,4 +45,4 @@ const Cart: React.FC<cartProps> = ({ setIsModalOpen }) => {
   );
 }
 
-export default Cart;
+export default CartComponent;
