@@ -1,6 +1,8 @@
 import BookCard from "../Components/BookCard";
 import { useLocation, useNavigate, useRouteLoaderData } from "react-router-dom";
 import { Book } from "../models/BookModel";
+import { SlArrowLeft } from "react-icons/sl";
+import { SlArrowRight } from "react-icons/sl";
 
 const Books: React.FC = () => {
   const loaderData = useRouteLoaderData('books');
@@ -37,9 +39,9 @@ const Books: React.FC = () => {
         ))}
       </div>
       <div className="flex justify-center items-center mt-4">
-        <button className="btn" disabled={currentPage <= 1} onClick={() => goToPage(currentPage - 1)}>Previous</button>
+        <button className="btn mr-4" disabled={currentPage <= 1} onClick={() => goToPage(currentPage - 1)}><SlArrowLeft /></button>
         <span>Page {currentPage} of {totalPages}</span>
-        <button className="btn" disabled={currentPage >= totalPages} onClick={() => goToPage(currentPage + 1)}>Next</button>
+        <button className="btn ml-4" disabled={currentPage >= totalPages} onClick={() => goToPage(currentPage + 1)}><SlArrowRight /></button>
       </div>
     </div>
   );

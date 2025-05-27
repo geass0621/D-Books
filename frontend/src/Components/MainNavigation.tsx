@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Modal from "./Modal/Modal";
 import Cart from "./Cart";
+import { selectCart } from "../store/cart-slice";
+import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 
 const MainNavigation: React.FC = (): JSX.Element => {
   const user = useAppSelector(selectUser);
@@ -13,6 +15,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDialogElement | null>(null);
+  const cart = useAppSelector(selectCart);
 
 
   const logoutHandler = async () => {
@@ -56,7 +59,10 @@ const MainNavigation: React.FC = (): JSX.Element => {
             <Modal modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} >
               <Cart />
             </Modal>}
-          <button className="btn btn-ghost" onClick={openModalHandler}>Cart</button>
+          <div className="relative">
+            <span className="badge badge-sm absolute ml-8 bg-base-300">{cart.totalQuantity}</span>
+            <button className="btn btn-ghost" onClick={openModalHandler}><MdOutlineShoppingCartCheckout className="scale-150" /></button>
+          </div>
           {user.id ?
             <button className="btn btn-ghost" onClick={logoutHandler}>Logout</button> : <button className="btn btn-ghost" onClick={loginHandler}>Login</button>}
           <ThemeController />

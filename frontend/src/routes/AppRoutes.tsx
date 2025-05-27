@@ -7,6 +7,7 @@ import Books from '../pages/Books';
 import BookDetail, { bookDetailLoader } from '../pages/BookDetail';
 import BooksLayout from '../pages/BooksLayout';
 import { booksLoader } from '../pages/BooksLayout';
+import { homeLoader } from '../pages/Home';
 
 const router = createBrowserRouter(
   [
@@ -18,7 +19,8 @@ const router = createBrowserRouter(
       children: [
         {
           index: true,
-          element: <Home />
+          element: <Home />,
+          loader: homeLoader
         },
         {
           path: 'books',

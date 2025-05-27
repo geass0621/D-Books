@@ -52,7 +52,7 @@ const BookCard: React.FC<BookCardProps> = ({
           {imgLoading && <div className="skeleton w-dvw h-96"></div>}
           <img
             src={imageUrl}
-            className="h-auto w-full object-fill"
+            className="h-auto w-full object-cover rounded-box"
             loading="lazy"
             alt={name}
             onLoad={() => setImgLoading(false)} />
