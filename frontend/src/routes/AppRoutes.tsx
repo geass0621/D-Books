@@ -10,6 +10,7 @@ import { booksLoader } from '../pages/BooksLayout';
 import { homeLoader } from '../pages/Home';
 import Checkout from '../pages/Checkout';
 import ProtectedUserRoute from '../pages/ProtectedUserRoute';
+import UserOrders from '../pages/UserOrders';
 
 const router = createBrowserRouter(
   [
@@ -53,6 +54,10 @@ const router = createBrowserRouter(
             {
               index: true,
               element: <Checkout />
+            },
+            {
+              path: 'orders',
+              element: <UserOrders />
             }
           ]
         }

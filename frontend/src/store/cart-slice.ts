@@ -28,7 +28,8 @@ export const cartSlice = createSlice({
           bookId: book.id,
           quantity: 1,
           discountPrice: discountedPrice,
-          name: book.name
+          name: book.name,
+          imageUrl: book.imageUrl,
         } as CartItem);
       }
 

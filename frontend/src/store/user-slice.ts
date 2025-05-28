@@ -7,7 +7,8 @@ const initialState: User = {
   email: null,
   id: null,
   role: null,
-  status: 'offline'
+  status: 'offline',
+  loading: true,
 }
 
 export const userSlice = createSlice({
@@ -20,13 +21,18 @@ export const userSlice = createSlice({
       state.id = user.id;
       state.role = user.role;
       state.status = 'online';
+      state.loading = false;
     },
     setUserLogout(state) {
-      state.email = null,
-        state.id = null,
-        state.role = null,
-        state.status = 'offline'
-    }
+      state.email = null;
+      state.id = null;
+      state.role = null;
+      state.status = 'offline';
+      state.loading = false;
+    },
+    setUserLoading(state, action) {
+      state.loading = action.payload;
+    },
   }
 });
 

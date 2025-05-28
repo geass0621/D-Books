@@ -10,10 +10,7 @@ const Checkout: React.FC = () => {
 
 export default Checkout;
 
+// loader function for the checkout page to synchronize the cart with the backend
 const checkoutLoader = async () => {
-  const cart = JSON.parse(localStorage.getItem('cart') || '{}') as Cart;
-  if (cart && cart.userId) {
-    return cart;
-  }
-  return {};
+
 }

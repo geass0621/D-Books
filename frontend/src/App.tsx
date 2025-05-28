@@ -15,7 +15,6 @@ const App: React.FC = () => {
   const user = useAppSelector(selectUser);
   const localCart = JSON.parse(localStorage.getItem('cart') || '{}') as Cart;
   const dispatch = useAppDispatch();
-  const cookie = document.cookie;
 
   // useEffect(() => {
   //   const socket = openSocket('http://localhost:3000', {
@@ -38,10 +37,10 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (user.id === null) {
+        // If user is not logged in, try to fetch user data
+        dispatch(userActions.setUserLoading(true));
         try {
           const userData = await getUser();
-          console.log('User data fetched:', userData);
-          console.log('Cookie:', cookie);
           if (userData) {
             dispatch(userActions.setUserLogin(userData));
             localCart.userId = userData.id;
@@ -56,6 +55,8 @@ const App: React.FC = () => {
             // Log other errors
             console.error(err);
           }
+        } finally {
+          dispatch(userActions.setUserLoading(false));
         }
       } else {
         return;

@@ -12,7 +12,8 @@ export interface IUser {
       bookId: string,
       quantity: number,
       discountPrice: number,
-      name: string
+      name: string,
+      imageUrl: string
     }[],
     totalPrice: number,
     totalQuantity: number
@@ -44,7 +45,8 @@ const userSchema = new Schema<IUser>({
         bookId: { type: String, required: true },
         quantity: { type: Number, required: true },
         discountPrice: { type: Number, required: true },
-        name: { type: String, required: true }
+        name: { type: String, required: true },
+        imageUrl: { type: String, required: true }
       }],
       totalPrice: { type: Number, default: 0 },
       totalQuantity: { type: Number, default: 0 },
