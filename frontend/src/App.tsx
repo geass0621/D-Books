@@ -46,6 +46,8 @@ const App: React.FC = () => {
             localCart.userId = userData.id;
             localCart.userEmail = userData.email;
             localStorage.setItem('cart', JSON.stringify(localCart));
+            dispatch(cartActions.setCart(localCart));
+            // Navigate to home after successful login
           }
         } catch (err: any) {
           if (err?.response?.status === 401 || err?.status === 401) {
@@ -66,7 +68,7 @@ const App: React.FC = () => {
       }
     };
     fetchUser();
-  }, [user.id, dispatch]);
+  }, []);
 
   return (
     <>

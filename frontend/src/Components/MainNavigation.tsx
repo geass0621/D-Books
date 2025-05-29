@@ -1,4 +1,4 @@
-import { JSX, use, useEffect, useRef, useState } from "react";
+import { JSX, useRef, useState } from "react";
 import ThemeController from "./ThemeSelector"
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser, userActions } from "../store/user-slice";
@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import Modal from "./Modal/Modal";
 import { selectCart, cartActions } from "../store/cart-slice";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
-import { Cart } from "../models/CartModel";
 import CartComponent from "./CartCompoent";
 
 const MainNavigation: React.FC = (): JSX.Element => {
@@ -32,10 +31,9 @@ const MainNavigation: React.FC = (): JSX.Element => {
       // Only clear user info from cart, not the whole cart
       const updatedCart = { ...cart, userId: null, userEmail: null };
       dispatch(cartActions.setCart(updatedCart));
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      setIsModalOpen(false);
       navigate('/');
     } catch (err) {
-      // Optionally show a toast or message
       console.error(err);
     }
   }

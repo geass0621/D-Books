@@ -7,7 +7,6 @@ const ProtectedUserRoute: React.FC = () => {
   if (user.loading) {
     return <div>Loading...</div>; // or a spinner component
   }
-
   return user && user.id ? <Outlet /> : <Navigate to="/auth?mode=login" replace />;
 }
 

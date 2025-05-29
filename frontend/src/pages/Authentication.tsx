@@ -82,6 +82,11 @@ export const action = async ({ request }: { request: Request }) => {
     status: responseData.user.status,
   }
 
+  const localCart = JSON.parse(localStorage.getItem('cart') || '{}');
+  localCart.userId = user.id;
+  localCart.userEmail = user.email;
+  localStorage.setItem('cart', JSON.stringify(localCart));
+
   if (mode === 'signup') {
     return redirect('/auth?mode=login');
   } else if (mode === 'login') {
