@@ -18,7 +18,7 @@ export const cartSlice = createSlice({
   reducers: {
     addItemToCart(state: Cart, action: { payload: Book }) {
       const book = action.payload;
-      const discountedPrice = book.price - (book.price * (book.discount));
+      const discountedPrice = Number((book.price - (book.price * (book.discount))).toFixed(2));
       const existingItem = state.items.find(item => item.bookId === book.id);
 
       if (existingItem) {
@@ -30,10 +30,13 @@ export const cartSlice = createSlice({
           discountPrice: discountedPrice,
           name: book.name,
           imageUrl: book.imageUrl,
+          price: Number(book.price.toFixed(2)),
+          discount: book.discount,
+          author: book.author
         } as CartItem);
       }
 
-      state.totalPrice += discountedPrice;
+      state.totalPrice = Number((state.totalPrice + discountedPrice).toFixed(2));
       state.totalQuantity += 1;
       localStorage.setItem('cart', JSON.stringify(state));
     },
@@ -42,7 +45,7 @@ export const cartSlice = createSlice({
       const existingItem = state.items.find(item => item.bookId === bookId);
       if (existingItem) {
         existingItem.quantity += 1;
-        state.totalPrice += existingItem.discountPrice;
+        state.totalPrice = Number((state.totalPrice + existingItem.discountPrice).toFixed(2));
         state.totalQuantity += 1;
       }
       localStorage.setItem('cart', JSON.stringify(state));
@@ -51,7 +54,7 @@ export const cartSlice = createSlice({
       const bookId = action.payload;
       const existingItem = state.items.find(item => item.bookId === bookId);
       if (existingItem) {
-        state.totalPrice -= existingItem.discountPrice;
+        state.totalPrice = Number((state.totalPrice - existingItem.discountPrice).toFixed(2));
         existingItem.quantity -= 1;
         if (existingItem.quantity <= 0) {
           state.items = state.items.filter(item => item.bookId !== bookId);
@@ -65,7 +68,7 @@ export const cartSlice = createSlice({
       const bookId = action.payload;
       const existingItem = state.items.find(item => item.bookId === bookId);
       if (existingItem) {
-        state.totalPrice -= existingItem.discountPrice;
+        state.totalPrice = Number((state.totalPrice - existingItem.discountPrice).toFixed(2));
         existingItem.quantity -= 1;
         if (existingItem.quantity <= 0) {
           state.items = state.items.filter(item => item.bookId !== bookId);
@@ -80,7 +83,7 @@ export const cartSlice = createSlice({
       state.userId = cart.userId;
       state.userEmail = cart.userEmail;
       state.items = cart.items;
-      state.totalPrice = cart.totalPrice;
+      state.totalPrice = Number(cart.totalPrice.toFixed(2));
       state.totalQuantity = cart.totalQuantity;
       localStorage.setItem('cart', JSON.stringify(state));
     }

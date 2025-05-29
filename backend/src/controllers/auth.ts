@@ -27,6 +27,14 @@ export const signup: RequestHandler = async (req, res, next) => {
     });
 
     const createdUser = await user.save();
+    createdUser.cart = {
+      userId: createdUser.id.toString(),
+      userEmail: createdUser.email,
+      items: [],
+      totalPrice: 0,
+      totalQuantity: 0
+    };
+    await createdUser.save();
 
     res.status(201).json({ message: 'User created successfully!' });
 

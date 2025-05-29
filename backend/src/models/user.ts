@@ -1,23 +1,29 @@
 import { model, Schema } from "mongoose";
 
+export interface ICartItem {
+  bookId: string,
+  quantity: number,
+  discountPrice: number,
+  name: string,
+  imageUrl: string,
+  price: number,
+  discount: number,
+}
+
+export interface ICart {
+  userId: string,
+  userEmail: string,
+  items: ICartItem[],
+  totalPrice: number,
+  totalQuantity: number
+}
+
 export interface IUser {
   email: string,
   password: string,
   role: 'admin' | 'user',
   status: 'online' | 'offline'
-  cart?: {
-    userId: string,
-    userEmail: string,
-    items: {
-      bookId: string,
-      quantity: number,
-      discountPrice: number,
-      name: string,
-      imageUrl: string
-    }[],
-    totalPrice: number,
-    totalQuantity: number
-  }
+  cart?: ICart
 }
 
 const userSchema = new Schema<IUser>({
@@ -38,21 +44,24 @@ const userSchema = new Schema<IUser>({
     required: true
   },
   cart: {
-    type: {
+    type: new Schema<ICart>({
       userId: { type: String, required: true },
       userEmail: { type: String, required: true },
-      items: [{
-        bookId: { type: String, required: true },
-        quantity: { type: Number, required: true },
-        discountPrice: { type: Number, required: true },
-        name: { type: String, required: true },
-        imageUrl: { type: String, required: true }
-      }],
-      totalPrice: { type: Number, default: 0 },
-      totalQuantity: { type: Number, default: 0 },
-    },
-    required: false,
-    default: undefined
+      items: {
+        type: [new Schema<ICartItem>({
+          bookId: { type: String, required: true },
+          quantity: { type: Number, required: true },
+          discountPrice: { type: Number, required: true },
+          name: { type: String, required: true },
+          imageUrl: { type: String, required: true },
+          price: { type: Number, required: true },
+          discount: { type: Number, required: true }
+        })],
+        default: []
+      },
+      totalPrice: { type: Number, required: true, default: 0 },
+      totalQuantity: { type: Number, required: true, default: 0 }
+    })
   }
 }, { timestamps: true });
 

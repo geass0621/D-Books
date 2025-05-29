@@ -2,6 +2,7 @@ import express from 'express';
 import bookRoutes from './routes/books';
 import adminRoutes from './routes/admin';
 import authRoutes from './routes/auth';
+import checkoutRoutes from './routes/checkout';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { defaultErrorResponse } from './middleware/defaultErrorResponse';
@@ -18,6 +19,7 @@ app.use(allowCORS);
 app.use(adminRoutes);
 app.use(authRoutes)
 app.use(bookRoutes);
+app.use(checkoutRoutes);
 app.use(defaultErrorResponse);
 
 mongoose
