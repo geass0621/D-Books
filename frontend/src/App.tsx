@@ -48,11 +48,14 @@ const App: React.FC = () => {
             localStorage.setItem('cart', JSON.stringify(localCart));
           }
         } catch (err: any) {
-          // If 401 Unauthorized, ignore silently
           if (err?.response?.status === 401 || err?.status === 401) {
-            // Do nothing, user is not logged in
+            // If user is not authenticated, clear user data and cart
+            dispatch(userActions.setUserLogout());
+            localCart.userId = null;
+            localCart.userEmail = null;
+            localStorage.setItem('cart', JSON.stringify(localCart));
+            dispatch(cartActions.setCart(localCart));
           } else {
-            // Log other errors
             console.error(err);
           }
         } finally {

@@ -17,38 +17,27 @@ const MainNavigation: React.FC = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDialogElement | null>(null);
   const cart = useAppSelector(selectCart);
-  const localStorageCart = JSON.parse(localStorage.getItem('cart') || '{}') as Cart;
 
 
   const logoutHandler = async () => {
-    // delete cookie
-    const response = await fetch('http://localhost:3000/logout', {
-      method: 'POST',
-      credentials: 'include',
-    });
-    if (!response.ok) {
-      throw new Error('Logout failed');
+    try {
+      const response = await fetch('http://localhost:3000/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+      dispatch(userActions.setUserLogout());
+      // Only clear user info from cart, not the whole cart
+      const updatedCart = { ...cart, userId: null, userEmail: null };
+      dispatch(cartActions.setCart(updatedCart));
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      navigate('/');
+    } catch (err) {
+      // Optionally show a toast or message
+      console.error(err);
     }
-
-    // remove user from store
-    dispatch(userActions.setUserLogout());
-
-    // remove user from local storage
-    localStorageCart.userEmail = '';
-    localStorageCart.userId = '';
-    localStorage.setItem('cart', JSON.stringify(localStorageCart));
-
-    // // remove cart from store
-    // const emptyCart: Cart = {
-    //   items: [],
-    //   totalPrice: 0,
-    //   totalQuantity: 0,
-    //   userId: '',
-    //   userEmail: ''
-    // };
-    // dispatch(cartActions.setCart(emptyCart));
-
-    return navigate('/');
   }
 
   const openModalHandler = () => {
