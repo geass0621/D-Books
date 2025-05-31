@@ -15,7 +15,8 @@ export interface ICart {
   userEmail: string,
   items: ICartItem[],
   totalPrice: number,
-  totalQuantity: number
+  totalQuantity: number,
+  isSync: boolean,
 }
 
 export interface IUser {
@@ -23,7 +24,8 @@ export interface IUser {
   password: string,
   role: 'admin' | 'user',
   status: 'online' | 'offline'
-  cart?: ICart
+  cart?: ICart,
+  orders?: string[],
 }
 
 const userSchema = new Schema<IUser>({
@@ -60,8 +62,16 @@ const userSchema = new Schema<IUser>({
         default: []
       },
       totalPrice: { type: Number, required: true, default: 0 },
-      totalQuantity: { type: Number, required: true, default: 0 }
+      totalQuantity: { type: Number, required: true, default: 0 },
+      isSync: { type: Boolean, required: true, default: false }
     })
+  },
+  orders: {
+    type: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Order'
+    }],
+    default: []
   }
 }, { timestamps: true });
 

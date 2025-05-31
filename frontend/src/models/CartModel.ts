@@ -6,4 +6,5 @@ export type Cart = {
   items: CartItem[],
   totalPrice: number,
   totalQuantity: number,
+  isSync: boolean,
 }

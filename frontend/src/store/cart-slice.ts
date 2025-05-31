@@ -9,7 +9,8 @@ const initialState: Cart = {
   userEmail: '',
   items: [],
   totalPrice: 0,
-  totalQuantity: 0
+  totalQuantity: 0,
+  isSync: false,
 }
 
 export const cartSlice = createSlice({
@@ -38,6 +39,7 @@ export const cartSlice = createSlice({
 
       state.totalPrice = Number((state.totalPrice + discountedPrice).toFixed(2));
       state.totalQuantity += 1;
+      state.isSync = false;
       localStorage.setItem('cart', JSON.stringify(state));
     },
     incrementItemQuantity(state: Cart, action: { payload: string }) {
@@ -48,6 +50,7 @@ export const cartSlice = createSlice({
         state.totalPrice = Number((state.totalPrice + existingItem.discountPrice).toFixed(2));
         state.totalQuantity += 1;
       }
+      state.isSync = false;
       localStorage.setItem('cart', JSON.stringify(state));
     },
     decrementItemQuantity(state: Cart, action: { payload: string }) {
@@ -62,6 +65,7 @@ export const cartSlice = createSlice({
         state.totalQuantity -= 1;
       }
       if (state.totalPrice < 0.01) state.totalPrice = 0;
+      state.isSync = false;
       localStorage.setItem('cart', JSON.stringify(state));
     },
     removeItemFromCart(state: Cart, action: { payload: string }) {
@@ -76,6 +80,7 @@ export const cartSlice = createSlice({
         state.totalQuantity -= 1;
       }
       if (state.totalPrice < 0.01) state.totalPrice = 0;
+      state.isSync = false;
       localStorage.setItem('cart', JSON.stringify(state));
     },
     setCart(state: Cart, action: { payload: Cart }) {
@@ -85,6 +90,7 @@ export const cartSlice = createSlice({
       state.items = cart.items;
       state.totalPrice = Number(cart.totalPrice.toFixed(2));
       state.totalQuantity = cart.totalQuantity;
+      state.isSync = cart.isSync;
       localStorage.setItem('cart', JSON.stringify(state));
     }
   }

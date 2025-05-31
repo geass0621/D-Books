@@ -75,6 +75,7 @@ export const syncCart: RequestHandler = async (req, res, next) => {
     items: clientCart.items,
     totalPrice: Number(totalPrice.toFixed(2)),
     totalQuantity: totalQuantity,
+    isSync: true, // Mark the cart as synchronized
   };
 
   await user.save();
@@ -84,4 +85,31 @@ export const syncCart: RequestHandler = async (req, res, next) => {
     message: 'Cart synchronized successfully!',
     cart: user.cart,
   });
+};
+
+export const getCart: RequestHandler = async (req, res, next) => {
+  const userId = req.userId;
+
+  // Fetch the user from the database
+  const user = await User.findById(userId);
+  if (!user) {
+    res.status(404).json({
+      message: 'User not found. Please log in.',
+    });
+    return;
+  }
+  // Check if the user has a cart
+  if (!user.cart) {
+    res.status(404).json({
+      message: 'Cart not found for this user.',
+    });
+    return;
+  }
+  // Respond with the user's cart
+  res.status(200).json({
+    message: 'Cart retrieved successfully.',
+    cart: user.cart,
+  });
+
 }
+

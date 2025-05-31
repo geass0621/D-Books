@@ -32,7 +32,8 @@ export const signup: RequestHandler = async (req, res, next) => {
       userEmail: createdUser.email,
       items: [],
       totalPrice: 0,
-      totalQuantity: 0
+      totalQuantity: 0,
+      isSync: false
     };
     await createdUser.save();
 
