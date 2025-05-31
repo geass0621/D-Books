@@ -92,6 +92,13 @@ export const cartSlice = createSlice({
       state.totalQuantity = cart.totalQuantity;
       state.isSync = cart.isSync;
       localStorage.setItem('cart', JSON.stringify(state));
+    },
+    clearCart(state: Cart) {
+      state.items = [];
+      state.totalPrice = 0;
+      state.totalQuantity = 0;
+      state.isSync = false;
+      localStorage.removeItem('cart');
     }
   }
 })

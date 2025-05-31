@@ -1,4 +1,4 @@
-import { Form, Navigate, useLoaderData } from "react-router-dom";
+import { Form, Navigate, redirect, useActionData, useLoaderData, useNavigate } from "react-router-dom";
 import { cartActions, selectCart } from "../store/cart-slice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/user-slice";
@@ -11,6 +11,16 @@ const UserOrder: React.FC = () => {
   const dispatch = useAppDispatch();
   const cartServer = useLoaderData() as Cart;
   const cart = useAppSelector(selectCart);
+  const isOrdered = useActionData() as { message: string; success: boolean } | undefined;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isOrdered && isOrdered.success) {
+      alert(isOrdered.message);
+      dispatch(cartActions.clearCart());
+      navigate('/'); // Redirect to home or another page after order is placed
+    }
+  }, [isOrdered, dispatch]);
 
   useEffect(() => {
     if (cart && cartServer && JSON.stringify(cart) !== JSON.stringify(cartServer)) {
@@ -45,7 +55,7 @@ const UserOrder: React.FC = () => {
           </div>
         </div>
       </div>
-      <Form className="flex flex-wrap gap-4 mt-6 bg-base-300 shadow-md rounded-lg p-6">
+      <Form method="post" className="flex flex-wrap gap-4 mt-6 bg-base-300 shadow-md rounded-lg p-6">
         <div className="flex-1 min-w-[45%]">
           <h2 className="text-xl font-semibold mb-4">Your Name</h2>
           <input className="w-full bg-base-200 p-2 rounded-md shadow-2xl" type="text" name="name" />
@@ -66,7 +76,7 @@ const UserOrder: React.FC = () => {
         <input type="hidden" name="items" value={JSON.stringify(cartServer.items)} />
         <input type="hidden" name="totalAmount" value={cartServer.totalPrice.toFixed(2)} />
         <div className="flex-1 min-w-[45%]">
-          <button className="btn btn-primary w-full" type="submit">
+          <button className="btn btn-primary w-full">
             Place Order
           </button>
         </div>
@@ -132,7 +142,10 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
       throw new Error('Failed to place order');
     }
 
-    return { success: true };
+    return {
+      message: 'Order placed successfully',
+      success: true,
+    }
   } catch (error) {
     console.error("Error placing order:", error);
     throw new Response(JSON.stringify({ message: 'Failed to place order' }), {

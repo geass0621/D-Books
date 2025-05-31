@@ -64,7 +64,7 @@ export const syncCartWithServerAction = async ({ request }: { request: Request }
       throw new Error('Failed to sync cart with server');
     }
 
-    return redirect('/checkout/order-success');
+    return redirect('/checkout/order');
   } catch (error) {
     console.error('Error syncing cart:', error);
   }
