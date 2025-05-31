@@ -1,4 +1,4 @@
-import { Form, Navigate, redirect, useActionData, useLoaderData, useNavigate } from "react-router-dom";
+import { Form, Navigate, useActionData, useLoaderData, useNavigate } from "react-router-dom";
 import { cartActions, selectCart } from "../store/cart-slice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/user-slice";
@@ -16,17 +16,17 @@ const UserOrder: React.FC = () => {
 
   useEffect(() => {
     if (isOrdered && isOrdered.success) {
-      alert(isOrdered.message);
+      localStorage.removeItem('cart'); // Clear local cart storage
       dispatch(cartActions.clearCart());
       navigate('/'); // Redirect to home or another page after order is placed
     }
   }, [isOrdered, dispatch]);
 
   useEffect(() => {
-    if (cart && cartServer && JSON.stringify(cart) !== JSON.stringify(cartServer)) {
+    if (!isOrdered && cart && cartServer && JSON.stringify(cart) !== JSON.stringify(cartServer)) {
       dispatch(cartActions.setCart(cartServer));
     }
-  }, [cart, cartServer, dispatch]);
+  }, [cart, cartServer, dispatch, isOrdered]);
 
   if (user.loading) {
     return <div>Loading...</div>; // or a spinner component
