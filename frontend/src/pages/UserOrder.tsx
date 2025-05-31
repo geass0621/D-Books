@@ -1,4 +1,4 @@
-import { Navigate, useLoaderData } from "react-router-dom";
+import { Form, Navigate, useLoaderData } from "react-router-dom";
 import { cartActions, selectCart } from "../store/cart-slice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/user-slice";
@@ -32,18 +32,43 @@ const UserOrder: React.FC = () => {
         <ul className="space-y-4">
           {cartServer.items.map((item, index) => (
             <li key={index} className="flex justify-between">
-              <span>{item.name} (x{item.quantity})</span>
-              <span>${(item.discountPrice * item.quantity).toFixed(2)}</span>
+              <span className="font-semibold">{item.name} (x{item.quantity})</span>
+              <span className="font-semibold">${(item.discountPrice * item.quantity).toFixed(2)}</span>
             </li>
           ))}
         </ul>
         <div className="mt-4 border-t pt-4">
           <div className="flex justify-between">
-            <span className="font-semibold">Total:</span>
+            <span className="font-semibold text-2xl">Total:</span>
             <span className="font-bold text-2xl">${cartServer.totalPrice.toFixed(2)}</span>
           </div>
         </div>
       </div>
+      <Form className="flex flex-wrap gap-4 mt-6 bg-base-300 shadow-md rounded-lg p-6">
+        <div className="flex-1 min-w-[45%]">
+          <h2 className="text-xl font-semibold mb-4">Your Name</h2>
+          <input className="w-full bg-base-200 p-2 rounded-md shadow-2xl" type="text" name="name" />
+        </div>
+        <div className="flex-1 min-w-[45%]">
+          <h2 className="text-xl font-semibold mb-4">Email</h2>
+          <input className="w-full bg-base-200 p-2 rounded-md shadow-2xl" type="email" name="email" defaultValue={user.email ?? ''} />
+        </div>
+        <div className="flex-1 min-w-[45%]">
+          <h2 className="text-xl font-semibold mb-4">Phone Number</h2>
+          <input className="w-full bg-base-200 p-2 rounded-md shadow-2xl" type="tel" name="phone" />
+        </div>
+        <div className="flex-1 min-w-[45%]">
+          <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
+          <input className="w-full p-2 bg-base-200 rounded-md shadow-2xl" type="text" name="shippingAddress" />
+        </div>
+        <input type="hidden" name="userId" value={user.id ?? ''} />
+        <input type="hidden" name="items" value={JSON.stringify(cartServer.items)} />
+        <div className="flex-1 min-w-[45%]">
+          <button className="btn btn-primary w-full" type="submit">
+            Place Order
+          </button>
+        </div>
+      </Form>
     </div>
   );
 }

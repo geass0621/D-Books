@@ -10,7 +10,7 @@ import { booksLoader } from '../pages/BooksLayout';
 import { homeLoader } from '../pages/Home';
 import Checkout from '../pages/Checkout';
 import ProtectedUserRoute from '../pages/ProtectedUserRoute';
-import UserOrder, { userOrderLoader } from '../pages/UserOrders';
+import UserOrder, { userOrderLoader } from '../pages/UserOrder';
 import { syncCartWithServerAction } from '../pages/Checkout';
 
 const router = createBrowserRouter(

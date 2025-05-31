@@ -5,7 +5,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 const ProtectedUserRoute: React.FC = () => {
   const user = useAppSelector(selectUser);
   if (user.loading) {
-    return <div>Loading...</div>; // or a spinner component
+    return <div>Loading...</div>;
   }
   return user && user.id ? <Outlet /> : <Navigate to="/auth?mode=login" replace />;
 }
