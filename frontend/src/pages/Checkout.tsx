@@ -1,8 +1,7 @@
-import { Form, redirect, useNavigate, useNavigation, } from "react-router-dom";
+import { Form, redirect, useNavigation, } from "react-router-dom";
 import CheckoutItem from "../Components/CheckoutItem";
 import { useAppSelector } from "../store/hooks";
 import { selectCart } from "../store/cart-slice";
-import { useState } from "react";
 
 const Checkout: React.FC = () => {
   const cart = useAppSelector(selectCart);
@@ -51,7 +50,6 @@ export default Checkout;
 
 export const syncCartWithServerAction = async ({ request }: { request: Request }) => {
   const formData = await request.formData();
-  console.log('Syncing cart with server:', formData.get('cart'));
   try {
     const response = await fetch('http://localhost:3000/checkout', {
       method: 'POST',
