@@ -58,7 +58,10 @@ export const syncCart: RequestHandler = async (req, res, next) => {
       return;
     }
   };
-  if (totalPrice !== clientCart.totalPrice || totalQuantity !== clientCart.totalQuantity) {
+
+  const roundedTotalPrice = Number(totalPrice.toFixed(2));
+  const roundedClientTotalPrice = Number(clientCart.totalPrice.toFixed(2));
+  if (roundedTotalPrice !== roundedClientTotalPrice || totalQuantity !== clientCart.totalQuantity) {
     res.status(400).json({
       message: 'Cart totals do not match. Please check the cart items.',
     });

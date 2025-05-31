@@ -11,6 +11,7 @@ import { homeLoader } from '../pages/Home';
 import Checkout from '../pages/Checkout';
 import ProtectedUserRoute from '../pages/ProtectedUserRoute';
 import UserOrders from '../pages/UserOrders';
+import { syncCartWithServerAction } from '../pages/Checkout';
 
 const router = createBrowserRouter(
   [
@@ -53,10 +54,11 @@ const router = createBrowserRouter(
           children: [
             {
               index: true,
-              element: <Checkout />
+              element: <Checkout />,
+              action: syncCartWithServerAction
             },
             {
-              path: 'orders',
+              path: 'order-success',
               element: <UserOrders />
             }
           ]

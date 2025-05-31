@@ -1,16 +1,13 @@
-import { useEffect } from "react";
-import { Cart } from "../models/CartModel";
-import { useNavigate } from "react-router-dom";
+import { Form, redirect, useNavigate, useNavigation, } from "react-router-dom";
 import CheckoutItem from "../Components/CheckoutItem";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { cartActions, selectCart } from "../store/cart-slice";
+import { useAppSelector } from "../store/hooks";
+import { selectCart } from "../store/cart-slice";
+import { useState } from "react";
 
 const Checkout: React.FC = () => {
   const cart = useAppSelector(selectCart);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
 
   return (
     <>
@@ -36,9 +33,11 @@ const Checkout: React.FC = () => {
                   <span className="font-semibold">Total:</span>
                   <span className="font-bold text-2xl">${cart.totalPrice.toFixed(2)}</span>
                 </div>
-                <div className="mt-2">
-                  <button className="btn btn-primary w-full" onClick={() => navigate('/payment')}>Proceed to Payment</button>
-                </div>
+                <Form method="post" className="mt-2">
+                  <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+                  <button className="btn btn-primary w-full" disabled={isSubmitting}>{
+                    isSubmitting ? 'Submitting' : 'Order Now!'}</button>
+                </Form>
               </div>
             </div>
           </div>
@@ -50,7 +49,9 @@ const Checkout: React.FC = () => {
 
 export default Checkout;
 
-const syncCartWithServer = async (cart: Cart) => {
+export const syncCartWithServerAction = async ({ request }: { request: Request }) => {
+  const formData = await request.formData();
+  console.log('Syncing cart with server:', formData.get('cart'));
   try {
     const response = await fetch('http://localhost:3000/checkout', {
       method: 'POST',
@@ -58,15 +59,14 @@ const syncCartWithServer = async (cart: Cart) => {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify(cart),
+      body: formData.get('cart') as string,
     });
 
     if (!response.ok) {
       throw new Error('Failed to sync cart with server');
     }
 
-    const data = await response.json();
-    return data.cart;
+    return redirect('/checkout/order-success');
   } catch (error) {
     console.error('Error syncing cart:', error);
   }
