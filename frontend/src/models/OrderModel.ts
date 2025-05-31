@@ -1,13 +1,13 @@
 import { CartItem } from "./CartItemsModel"
 
-type Order = {
+export type Order = {
   items: CartItem[],
   shippingAddress: string,
   email: string,
   phone: string,
-  userName: string,
+  name: string,
   userId: string,
-  status: 'Ongoing' | 'Delivered',
-  paymentStatus: 'Pending' | 'Paid',
+  status: 'ongoing' | 'delivered',
+  paymentStatus: 'pending' | 'paid',
   totalAmount: number
 }

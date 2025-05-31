@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/user-slice";
 import { Cart } from "../models/CartModel";
 import React, { useEffect } from "react";
+import { Order } from "../models/OrderModel";
 
 const UserOrder: React.FC = () => {
   const user = useAppSelector(selectUser);
@@ -63,6 +64,7 @@ const UserOrder: React.FC = () => {
         </div>
         <input type="hidden" name="userId" value={user.id ?? ''} />
         <input type="hidden" name="items" value={JSON.stringify(cartServer.items)} />
+        <input type="hidden" name="totalAmount" value={cartServer.totalPrice.toFixed(2)} />
         <div className="flex-1 min-w-[45%]">
           <button className="btn btn-primary w-full" type="submit">
             Place Order
@@ -92,5 +94,49 @@ export const userOrderLoader = async () => {
       status: 500
     });
   }
-
 };
+
+export const userOrderAction = async ({ request }: { request: Request }) => {
+  const formData = await request.formData();
+  const userId = formData.get('userId') as string;
+  const items = JSON.parse(formData.get('items') as string);
+  const name = formData.get('name') as string;
+  const email = formData.get('email') as string;
+  const phone = formData.get('phone') as string;
+  const shippingAddress = formData.get('shippingAddress') as string;
+  const totalAmount = parseFloat(formData.get('totalAmount') as string);
+
+  const order: Order = {
+    userId,
+    items,
+    name,
+    email,
+    phone,
+    shippingAddress,
+    status: 'ongoing',
+    paymentStatus: 'pending',
+    totalAmount: totalAmount,
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/checkout/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(order),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to place order');
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error placing order:", error);
+    throw new Response(JSON.stringify({ message: 'Failed to place order' }), {
+      status: 500
+    });
+  }
+}
