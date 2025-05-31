@@ -1,37 +1,48 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Cart } from "../models/CartModel";
 import { useNavigate } from "react-router-dom";
+import CheckoutItem from "../Components/CheckoutItem";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { cartActions, selectCart } from "../store/cart-slice";
 
 const Checkout: React.FC = () => {
-  const localCart = JSON.parse(localStorage.getItem('cart') || '{}') as Cart;
+  const cart = useAppSelector(selectCart);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [syncCart, setSyncCart] = useState<Cart>();
 
-  useEffect(() => {
-    if (!localCart.userId || !localCart.userEmail) {
-      navigate('/auth?mode=login', { replace: true });
-    }
-    syncCartWithServer(localCart)
-      .then((cart) => {
-        if (cart) {
-          setSyncCart(cart);
-          localStorage.setItem('cart', JSON.stringify(cart));
-        }
-      })
-      .catch((error) => {
-        console.error('Error syncing cart:', error);
-      });
 
-  }, [navigate]);
 
   return (
     <>
-      {!syncCart ?
+      {!cart ?
         (<div>
           <h1>Loading...</h1>
         </div>)
         :
-        (<div>This is checkout</div>)
+        (
+          <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">Checkout</h1>
+            <div className="bg-base-300 shadow-md rounded-lg p-6">
+              <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+              <ul className="space-y-4">
+                {cart.items.map((item, index) => (
+                  <li key={index} className="flex justify-between">
+                    <CheckoutItem item={item} />
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 border-t pt-4">
+                <div className="flex justify-between">
+                  <span className="font-semibold">Total:</span>
+                  <span className="font-bold text-2xl">${cart.totalPrice.toFixed(2)}</span>
+                </div>
+                <div className="mt-2">
+                  <button className="btn btn-primary w-full" onClick={() => navigate('/payment')}>Proceed to Payment</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
       }
     </>
   );
@@ -59,4 +70,4 @@ const syncCartWithServer = async (cart: Cart) => {
   } catch (error) {
     console.error('Error syncing cart:', error);
   }
-}
+};
