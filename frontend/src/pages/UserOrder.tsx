@@ -5,28 +5,37 @@ import { selectUser } from "../store/user-slice";
 import { Cart } from "../models/CartModel";
 import React, { useEffect } from "react";
 import { Order } from "../models/OrderModel";
+import { loadStripe } from "@stripe/stripe-js";
 
 const UserOrder: React.FC = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const cartServer = useLoaderData() as Cart;
   const cart = useAppSelector(selectCart);
-  const isOrdered = useActionData() as { message: string; success: boolean } | undefined;
-  const navigate = useNavigate();
+  const orderActionData = useActionData() as { message: string; success: boolean; sessionId: string } | undefined;
 
+  // Check if the user is logged in
   useEffect(() => {
-    if (isOrdered && isOrdered.success) {
-      localStorage.removeItem('cart'); // Clear local cart storage
-      dispatch(cartActions.clearCart());
-      navigate('/'); // Redirect to home or another page after order is placed
+    if (orderActionData && orderActionData.success && orderActionData.sessionId) {
+      // If order is successful, redirect to the payment page
+      const stripePromise = loadStripe('pk_test_51OmEm0F6YsUjKW1RPm1bKXCThVqZyNww09q4kbFHa6QvCVTYFHZkKswx8RBEhjkGGurPKAIflLHCG3VLMtiCcoU900NfyDXHLo');
+      if (!stripePromise) {
+        throw new Error('Stripe not initialized');
+      }
+      stripePromise.then((stripe) => {
+        if (stripe) {
+          stripe.redirectToCheckout({ sessionId: orderActionData.sessionId });
+        }
+      });
     }
-  }, [isOrdered, dispatch]);
+  }, [orderActionData, dispatch]);
 
+  // Sync client cart with server cart if they are not ordered
   useEffect(() => {
-    if (!isOrdered && cart && cartServer && JSON.stringify(cart) !== JSON.stringify(cartServer)) {
+    if (!orderActionData && cart && cartServer && JSON.stringify(cart) !== JSON.stringify(cartServer)) {
       dispatch(cartActions.setCart(cartServer));
     }
-  }, [cart, cartServer, dispatch, isOrdered]);
+  }, [cart, cartServer, dispatch, orderActionData]);
 
   if (user.loading) {
     return <div>Loading...</div>; // or a spinner component
@@ -76,7 +85,7 @@ const UserOrder: React.FC = () => {
         <input type="hidden" name="items" value={JSON.stringify(cartServer.items)} />
         <input type="hidden" name="totalAmount" value={cartServer.totalPrice.toFixed(2)} />
         <div className="flex-1 min-w-[45%]">
-          <button className="btn btn-primary w-full">
+          <button className="btn btn-primary w-full" type="submit">
             Place Order
           </button>
         </div>
@@ -129,6 +138,8 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
   }
 
   try {
+
+    // post the order to the server
     const response = await fetch('http://localhost:3000/checkout/order', {
       method: 'POST',
       headers: {
@@ -142,10 +153,38 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
       throw new Error('Failed to place order');
     }
 
-    return {
-      message: 'Order placed successfully',
-      success: true,
+    const data = await response.json();
+    console.log("Order placed successfully:", data);
+
+    // post payment to the server
+    const paymentResponse = await fetch('http://localhost:3000/checkout/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        userId,
+        items,
+        totalAmount,
+        orderId: data.orderId,
+      }),
+    });
+
+    if (!paymentResponse.ok) {
+      throw new Error('Failed to process payment');
     }
+
+    const paymentData = await paymentResponse.json();
+
+    const sessionId = paymentData.sessionId;
+
+    return {
+      message: 'Order placed successfully!',
+      success: true,
+      sessionId: sessionId,
+    };
+
   } catch (error) {
     console.error("Error placing order:", error);
     throw new Response(JSON.stringify({ message: 'Failed to place order' }), {
@@ -153,3 +192,22 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
     });
   }
 }
+
+// const stripePromise = await loadStripe('pk_test_51OmEm0F6YsUjKW1RPm1bKXCThVqZyNww09q4kbFHa6QvCVTYFHZkKswx8RBEhjkGGurPKAIflLHCG3VLMtiCcoU900NfyDXHLo');
+
+// if (!stripePromise) {
+//   throw new Error('Stripe not initialized');
+// }
+
+// const paymentResponse = await fetch('http://localhost:3000/checkout/payment', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+//   credentials: 'include',
+//   body: JSON.stringify({
+//     userId,
+//     items,
+//     totalAmount,
+//   }),
+// });

@@ -9,9 +9,11 @@ import { defaultErrorResponse } from './middleware/defaultErrorResponse';
 import { allowCORS } from './middleware/allowCORS';
 import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
+import { postPaymentConfirmation } from './controllers/order';
 
 const app = express();
 
+app.post('/checkout/webhook', express.raw({ type: 'application/json' }), postPaymentConfirmation);
 
 app.use(bodyParser.json());
 app.use(cookieParser());
