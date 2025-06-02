@@ -1,10 +1,10 @@
 import { RouterProvider } from 'react-router-dom';
 import router from './routes/AppRoutes'
 import { ThemeProvider } from './store/ThemeContext';
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { selectUser, userActions } from './store/user-slice';
-import { getUser } from './utils/auth';
+import { getCart, getUser, syncCartWithServer } from './utils/auth';
 import { cartActions } from './store/cart-slice';
 import { Cart } from './models/CartModel';
 import openSocket from 'socket.io-client';
@@ -13,7 +13,6 @@ import openSocket from 'socket.io-client';
 
 const App: React.FC = () => {
   const user = useAppSelector(selectUser);
-  const localCart = JSON.parse(localStorage.getItem('cart') || '{}') as Cart;
   const dispatch = useAppDispatch();
 
   // useEffect(() => {
@@ -28,12 +27,7 @@ const App: React.FC = () => {
   //   });
   // }, []);
 
-  useEffect(() => {
-    if (localCart.items && localCart.items.length > 0) {
-      dispatch(cartActions.setCart(localCart));
-    }
-  }, [localCart, dispatch]);
-
+  // Getting user
   useEffect(() => {
     const fetchUser = async () => {
       if (user.id === null) {
@@ -43,20 +37,11 @@ const App: React.FC = () => {
           const userData = await getUser();
           if (userData) {
             dispatch(userActions.setUserLogin(userData));
-            localCart.userId = userData.id;
-            localCart.userEmail = userData.email;
-            localStorage.setItem('cart', JSON.stringify(localCart));
-            dispatch(cartActions.setCart(localCart));
-            // Navigate to home after successful login
           }
         } catch (err: any) {
           if (err?.response?.status === 401 || err?.status === 401) {
             // If user is not authenticated, clear user data and cart
             dispatch(userActions.setUserLogout());
-            localCart.userId = null;
-            localCart.userEmail = null;
-            localStorage.setItem('cart', JSON.stringify(localCart));
-            dispatch(cartActions.setCart(localCart));
           } else {
             console.error(err);
           }
@@ -68,7 +53,36 @@ const App: React.FC = () => {
       }
     };
     fetchUser();
-  }, []);
+  }, [dispatch]);
+
+  // Syncing cart with server
+  useEffect(() => {
+    const localCart = JSON.parse(localStorage.getItem('cart') || '{}');
+    if (user.id) {
+      getCart()
+        .then((cart: Cart) => {
+          if (cart && localCart.items.length === 0) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            dispatch(cartActions.setCart(cart));
+          }
+          if (cart && localCart.items.length > 0) {
+            syncCartWithServer(localCart)
+              .then(() => {
+                dispatch(cartActions.setCart(localCart));
+              })
+              .catch((err: any) => {
+                console.error('Failed to sync cart with server:', err);
+              });
+
+          }
+        })
+        .catch((err: any) => {
+          console.error('Failed to fetch cart:', err);
+        });
+    } else {
+      dispatch(cartActions.setCart(localCart));
+    }
+  }, [user.id, dispatch]);
 
   return (
     <>

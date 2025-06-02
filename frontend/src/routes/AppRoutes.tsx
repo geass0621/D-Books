@@ -12,7 +12,7 @@ import Checkout from '../pages/Checkout';
 import ProtectedUserRoute from '../pages/ProtectedUserRoute';
 import UserOrder, { userOrderAction, userOrderLoader } from '../pages/UserOrder';
 import { syncCartWithServerAction } from '../pages/Checkout';
-import PaymentSuccess from '../pages/PaymentSuccess';
+import PaymentSuccess, { paymentSuccessLoader } from '../pages/PaymentSuccess';
 import PaymentCancel from '../pages/PaymentCancel';
 
 const router = createBrowserRouter(
@@ -68,7 +68,8 @@ const router = createBrowserRouter(
             },
             {
               path: 'payment-success',
-              element: <PaymentSuccess />
+              element: <PaymentSuccess />,
+              loader: paymentSuccessLoader
             },
             {
               path: 'payment-cancel',

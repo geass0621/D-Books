@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import User from "../models/user";
 import Book from "../models/book";
 
-export const syncCart: RequestHandler = async (req, res, next) => {
+export const postValidateCart: RequestHandler = async (req, res, next) => {
   const clientCart = req.body;
   const userId = req.userId;
 
@@ -112,4 +112,45 @@ export const getCart: RequestHandler = async (req, res, next) => {
   });
 
 }
+
+export const postSyncCart: RequestHandler = async (req, res, next) => {
+  const userId = req.userId;
+  const clientCart = req.body;
+
+  // Validate the cart structure
+  if (!clientCart || !clientCart.userId || !clientCart.userEmail || !Array.isArray(clientCart.items)) {
+    res.status(400).json({
+      message: 'Invalid cart structure. Please provide a valid cart.',
+    });
+    return;
+  }
+
+  // Fetch the user from the database
+  const user = await User.findById(userId);
+  if (!user) {
+    res.status(404).json({
+      message: 'User not found. Please log in.',
+    });
+    return;
+  }
+
+  // Update the user's cart in the database
+  user.cart = {
+    userId: clientCart.userId,
+    userEmail: clientCart.userEmail,
+    items: clientCart.items,
+    totalPrice: Number(clientCart.totalPrice.toFixed(2)),
+    totalQuantity: clientCart.totalQuantity,
+    isSync: true, // Mark the cart as synchronized
+  };
+
+  await user.save();
+
+  // Respond with success
+  res.status(200).json({
+    message: 'Cart synchronized successfully!',
+    cart: user.cart,
+  });
+}
+
 

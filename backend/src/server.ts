@@ -10,6 +10,7 @@ import { allowCORS } from './middleware/allowCORS';
 import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
 import { postPaymentConfirmation } from './controllers/order';
+import cartRoutes from './routes/cart';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(adminRoutes);
 app.use(authRoutes)
 app.use(bookRoutes);
 app.use(checkoutRoutes);
+app.use(cartRoutes);
 app.use(defaultErrorResponse);
 
 mongoose

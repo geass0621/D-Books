@@ -98,7 +98,7 @@ export const cartSlice = createSlice({
       state.totalPrice = 0;
       state.totalQuantity = 0;
       state.isSync = false;
-      localStorage.removeItem('cart');
+      localStorage.setItem('cart', JSON.stringify(state));
     }
   }
 })

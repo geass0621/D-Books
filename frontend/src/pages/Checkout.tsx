@@ -51,7 +51,7 @@ export default Checkout;
 export const syncCartWithServerAction = async ({ request }: { request: Request }) => {
   const formData = await request.formData();
   try {
-    const response = await fetch('http://localhost:3000/checkout', {
+    const response = await fetch('http://localhost:3000/cart/validate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

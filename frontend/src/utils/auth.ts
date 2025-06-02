@@ -82,3 +82,39 @@ export function checkAuthLoader() {
 
   return null
 }
+
+export const getCart = async () => {
+  const response = await fetch('http://localhost:3000/cart', {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Response(JSON.stringify({ message: 'Failed to fetch cart' }), {
+      status: response.status,
+    });
+  }
+
+  const data = await response.json();
+  return data.cart;
+}
+
+export const syncCartWithServer = async (cart: any) => {
+  const response = await fetch('http://localhost:3000/cart/sync', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(cart),
+  });
+
+  if (!response.ok) {
+    throw new Response(JSON.stringify({ message: 'Failed to sync cart with server' }), {
+      status: response.status,
+    });
+  }
+
+  const data = await response.json();
+  return data.cart;
+}

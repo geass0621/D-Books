@@ -46,16 +46,6 @@ export const postOrder: RequestHandler = async (req, res, next) => {
     return;
   }
 
-  // update the user's cart to empty it after placing the order
-  user.cart = {
-    userId: user.id,
-    userEmail: user.email,
-    items: [],
-    totalPrice: 0,
-    totalQuantity: 0,
-    isSync: false
-  };
-
   // update the user's orders
   if (!user.orders) {
     user.orders = [];
@@ -106,6 +96,7 @@ export const postPayment: RequestHandler = async (req, res, next) => {
     cancel_url: `http://localhost:5173/checkout/payment-cancel`,
     metadata: {
       orderId: orderId,
+      userId: userId,
     },
   });
 
@@ -136,23 +127,49 @@ export const postPaymentConfirmation: RequestHandler = async (req, res, next) =>
     return;
   }
 
+  // Handle the event
   if (event?.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
     const orderId = session.metadata?.orderId;
+    const userId = session.metadata?.userId;
 
     // Update the order status to 'paid'
     const orderResult = await Order.findByIdAndUpdate(orderId, {
       paymentStatus: 'paid',
     }, { new: true });
 
-    console.log("Order result after payment confirmation:", orderResult);
     if (!orderResult) {
       res.status(404).json({
         message: 'Order not found.',
       });
       return;
+    };
+
+    // Update the user's cart
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404).json({
+        message: 'User not found.',
+      });
+      return;
     }
-  }
+    // Clear the user's cart
+    user.cart = {
+      userId: user.id,
+      userEmail: user.email,
+      items: [],
+      totalPrice: 0,
+      totalQuantity: 0,
+      isSync: false,
+    } as ICart;
+
+    await user.save();
+  } else {
+    res.status(200).json({
+      message: `Unhandled event type ${event.type}`,
+    });
+    return;
+  };
 
   res.status(200).json({
     message: 'Payment confirmed successfully!'

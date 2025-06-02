@@ -98,7 +98,7 @@ export default UserOrder;
 
 export const userOrderLoader = async () => {
   try {
-    const response = await fetch('http://localhost:3000/checkout', {
+    const response = await fetch('http://localhost:3000/cart', {
       method: 'GET',
       credentials: 'include',
     });
@@ -192,22 +192,3 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
     });
   }
 }
-
-// const stripePromise = await loadStripe('pk_test_51OmEm0F6YsUjKW1RPm1bKXCThVqZyNww09q4kbFHa6QvCVTYFHZkKswx8RBEhjkGGurPKAIflLHCG3VLMtiCcoU900NfyDXHLo');
-
-// if (!stripePromise) {
-//   throw new Error('Stripe not initialized');
-// }
-
-// const paymentResponse = await fetch('http://localhost:3000/checkout/payment', {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-//   credentials: 'include',
-//   body: JSON.stringify({
-//     userId,
-//     items,
-//     totalAmount,
-//   }),
-// });
