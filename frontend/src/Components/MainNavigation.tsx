@@ -30,6 +30,9 @@ const MainNavigation: React.FC = (): JSX.Element => {
       dispatch(userActions.setUserLogout());
       // Only clear user info from cart, not the whole cart
       const updatedCart = { ...cart, userId: null, userEmail: null };
+      // Update local storage with the updated cart
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      // Update the cart in the store
       dispatch(cartActions.setCart(updatedCart));
       setIsModalOpen(false);
       navigate('/');
@@ -55,7 +58,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
           <ul className="menu menu-horizontal px-1">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/books">Books</Link></li>
-            <li><Link to="/orders">Orders</Link></li>
+            {user.id && <li><Link to="/orders">Orders</Link></li>}
             <li><Link to="/contact">Contact</Link></li>
           </ul>
         </div>

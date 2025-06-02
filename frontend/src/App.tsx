@@ -58,7 +58,7 @@ const App: React.FC = () => {
   // Syncing cart with server
   useEffect(() => {
     const localCart = JSON.parse(localStorage.getItem('cart') || '{}');
-    if (user.id) {
+    if (user.id && user.role !== 'admin') {
       getCart()
         .then((cart: Cart) => {
           if (cart && localCart.items.length === 0) {

@@ -96,6 +96,7 @@ const UserOrder: React.FC = () => {
 
 export default UserOrder;
 
+// Loader and Action for UserOrder component
 export const userOrderLoader = async () => {
   try {
     const response = await fetch('http://localhost:3000/cart', {

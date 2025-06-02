@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import { RequestHandler } from "express";
 import jwt from 'jsonwebtoken';
 import { CustomHttpError } from '../models/customError';
 
@@ -11,7 +11,8 @@ declare global {
   }
 }
 
-export const isUserAuth: RequestHandler = (req, res, next) => {
+
+export const isAuth: RequestHandler = (req, res, next) => {
   // Try to get token from cookie first
   let token = req.cookies?.token;
 
@@ -21,17 +22,25 @@ export const isUserAuth: RequestHandler = (req, res, next) => {
   }
 
   let decodedToken;
+  // Try USER_JWT_SECRET first
   try {
     decodedToken = jwt.verify(token, process.env.USER_JWT_SECRET as string);
-  } catch (err: any) {
-    err.statusCode = 500;
-    throw err;
+  } catch (errUser) {
+    // If fails, try ADMIN_JWT_SECRET
+    try {
+      decodedToken = jwt.verify(token, process.env.ADMIN_JWT_SECRET as string);
+    } catch (errAdmin) {
+      // If both fail, not authenticated
+      const error = new CustomHttpError('Not authenticated', 401, {});
+      throw error;
+    }
   }
 
   if (!decodedToken) {
     const error = new CustomHttpError('Not authenticated', 401, {});
     throw error;
   }
+
   req.userId = (decodedToken as any).userId;
   next();
 }

@@ -57,6 +57,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
   const email = req.body.email;
   const password = req.body.password;
+
   try {
     const user = await User.findOne({ email: email });
     if (!user) {
@@ -70,6 +71,7 @@ export const login: RequestHandler = async (req, res, next) => {
     }
     let token;
     if (user.role === 'admin') {
+      console.log('admin login');
       token = jwt.sign({
         email: user.email,
         userId: user.id.toString(),
