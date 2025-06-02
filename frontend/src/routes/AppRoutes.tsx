@@ -15,6 +15,8 @@ import { syncCartWithServerAction } from '../pages/Checkout';
 import PaymentSuccess, { paymentSuccessLoader } from '../pages/PaymentSuccess';
 import PaymentCancel from '../pages/PaymentCancel';
 import Orders, { ordersLoader } from '../pages/Orders';
+import ProtectedAdminRoute from '../pages/ProtectedAdminRoutes';
+import Admin from '../pages/Admin';
 
 const router = createBrowserRouter(
   [
@@ -88,6 +90,16 @@ const router = createBrowserRouter(
               loader: ordersLoader
             }
           ],
+        },
+        {
+          path: '/admin',
+          element: <ProtectedAdminRoute />,
+          children: [
+            {
+              index: true,
+              element: <Admin />
+            }
+          ]
         }
       ]
     }

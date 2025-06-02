@@ -16,7 +16,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDialogElement | null>(null);
   const cart = useAppSelector(selectCart);
-
+  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
 
   const logoutHandler = async () => {
     try {
@@ -58,7 +58,8 @@ const MainNavigation: React.FC = (): JSX.Element => {
           <ul className="menu menu-horizontal px-1">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/books">Books</Link></li>
-            {user.id && <li><Link to="/orders">Orders</Link></li>}
+            {user.id && user.role === 'user' && <li><Link to="/orders">Orders</Link></li>}
+            {user.role === 'admin' && user.email === adminEmail && <li><Link to="/admin">Admin</Link></li>}
             <li><Link to="/contact">Contact</Link></li>
           </ul>
         </div>
