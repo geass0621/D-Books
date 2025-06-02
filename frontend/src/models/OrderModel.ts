@@ -1,6 +1,7 @@
 import { CartItem } from "./CartItemsModel"
 
 export type Order = {
+  _id?: string,
   items: CartItem[],
   shippingAddress: string,
   email: string,

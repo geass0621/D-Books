@@ -174,4 +174,23 @@ export const postPaymentConfirmation: RequestHandler = async (req, res, next) =>
   res.status(200).json({
     message: 'Payment confirmed successfully!'
   });
-}
+};
+
+export const getOrders: RequestHandler = async (req, res, next) => {
+  const userId = req.userId;
+
+  // Fetch the user from the database
+  const user = await User.findById(userId).populate('orders');
+  if (!user) {
+    res.status(404).json({
+      message: 'User not found. Please log in.',
+    });
+    return;
+  }
+
+  // Respond with the user's orders
+  res.status(200).json({
+    message: 'Orders retrieved successfully.',
+    orders: user.orders,
+  });
+};

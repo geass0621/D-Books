@@ -55,7 +55,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
           <ul className="menu menu-horizontal px-1">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/books">Books</Link></li>
-            <li><Link to="/products">Products</Link></li>
+            <li><Link to="/orders">Orders</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>
         </div>

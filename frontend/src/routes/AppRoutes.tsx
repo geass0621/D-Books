@@ -14,6 +14,7 @@ import UserOrder, { userOrderAction, userOrderLoader } from '../pages/UserOrder'
 import { syncCartWithServerAction } from '../pages/Checkout';
 import PaymentSuccess, { paymentSuccessLoader } from '../pages/PaymentSuccess';
 import PaymentCancel from '../pages/PaymentCancel';
+import Orders, { ordersLoader } from '../pages/Orders';
 
 const router = createBrowserRouter(
   [
@@ -76,6 +77,17 @@ const router = createBrowserRouter(
               element: <PaymentCancel />
             }
           ]
+        },
+        {
+          path: 'orders',
+          element: <ProtectedUserRoute />,
+          children: [
+            {
+              index: true,
+              element: <Orders />,
+              loader: ordersLoader
+            }
+          ],
         }
       ]
     }

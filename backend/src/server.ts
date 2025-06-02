@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
 import { postPaymentConfirmation } from './controllers/order';
 import cartRoutes from './routes/cart';
+import ordersRoutes from './routes/orders';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(authRoutes)
 app.use(bookRoutes);
 app.use(checkoutRoutes);
 app.use(cartRoutes);
+app.use(ordersRoutes);
 app.use(defaultErrorResponse);
 
 mongoose
