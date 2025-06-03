@@ -1,9 +1,21 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import { Order } from "../models/OrderModel";
 import AdminOrderItem from "../Components/Admin/AdminOrderItem";
 
 const AdminOrders: React.FC = () => {
   const orders = useLoaderData() as Order[];
+  const submit = useSubmit();
+
+  const saveChangesHandler = (orderId: string, status: string, action: string) => {
+    submit(
+      { orderId, status, action },
+      {
+        method: 'post',
+        action: `/admin/orders`,
+      }
+    );
+    console.log(`Order ${orderId} status updated to ${status}`);
+  }
 
   return (
     <>
@@ -14,7 +26,7 @@ const AdminOrders: React.FC = () => {
         ) : (
           <div className="space-y-4">
             {orders.map((order) => (
-              <AdminOrderItem key={order._id} order={order} />
+              <AdminOrderItem key={order._id} order={order} saveChanges={saveChangesHandler} />
             ))}
           </div>
         )}
@@ -41,4 +53,54 @@ export const adminOrdersLoader = async () => {
 
   const data = await response.json();
   return data.orders;
+};
+
+export const adminOrdersAction = async ({ request }: { request: Request }) => {
+  const formData = await request.formData();
+  const orderId = formData.get('orderId') as string;
+  const status = formData.get('status') as string;
+  const action = formData.get('action') as string;
+
+  if (action === 'updateStatus') {
+    // Update the order status on the server
+    const response = await fetch(`http://localhost:3000/admin/orders/${orderId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ status }),
+    });
+
+    if (!response.ok) {
+      throw new Response(JSON.stringify({ message: 'Failed to update order status' }), {
+        status: response.status,
+      });
+    }
+
+    return null;
+  };
+  if (action === 'deleteOrder') {
+    // Delete the order on the server
+    const response = await fetch(`http://localhost:3000/admin/orders/${orderId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Response(JSON.stringify({ message: 'Failed to delete order' }), {
+        status: response.status,
+      });
+    }
+
+    return null;
+  };
+  if (action !== 'updateStatus' && action !== 'deleteOrder') {
+    throw new Response(JSON.stringify({ message: 'Unsupported action' }), {
+      status: 422,
+    });
+  };
+
+  return null;
+
 }

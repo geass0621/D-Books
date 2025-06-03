@@ -1,5 +1,5 @@
 import Book from '../models/book';
-import { RequestHandler } from 'express';
+import e, { RequestHandler } from 'express';
 import { CustomHttpError } from '../models/customError';
 import Order from '../models/order';
 
@@ -105,4 +105,43 @@ export const getAdminOrders: RequestHandler = async (req, res, next) => {
     }
     next(err);
   }
-}
+};
+
+export const patchOrderStatus: RequestHandler = async (req, res, next) => {
+  const orderId = req.params.orderId;
+  const status = req.body.status;
+  try {
+    const order = await Order.findById(orderId);
+    if (!order) {
+      const error = new CustomHttpError('Could not find order!', 404, {});
+      throw error;
+    }
+    order.status = status;
+    const updatedOrder = await order.save();
+    res.status(200).json({ message: 'Order status updated!', order: updatedOrder });
+  } catch (err: any) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+export const deleteOrder: RequestHandler = async (req, res, next) => {
+  const orderId = req.params.orderId;
+
+  try {
+    const order = await Order.findById(orderId);
+    if (!order) {
+      const error = new CustomHttpError('Could not find order!', 404, {});
+      throw error;
+    }
+    await Order.findByIdAndDelete(orderId);
+    res.status(200).json({ message: 'Order deleted successfully!', order: order });
+  } catch (err: any) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};

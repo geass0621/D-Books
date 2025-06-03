@@ -4,7 +4,7 @@ const AdminNavigation: React.FC = () => {
   return (
     <div className="navbar max-w-full h-0.5 bg-base-100" >
       <div className="navbar-start" >
-        <Link className="btn btn-ghost text-lg" to={"/admin/adminOrders"}>
+        <Link className="btn btn-ghost text-lg" to={"/admin/orders"}>
           Orders
         </Link>
         <button className="btn btn-ghost text-lg">
