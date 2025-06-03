@@ -1,7 +1,7 @@
 import { RouterProvider } from 'react-router-dom';
 import router from './routes/AppRoutes'
 import { ThemeProvider } from './store/ThemeContext';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { selectUser, userActions } from './store/user-slice';
 import { getCart, getUser, syncCartWithServer } from './utils/auth';
@@ -73,7 +73,6 @@ const App: React.FC = () => {
               .catch((err: any) => {
                 console.error('Failed to sync cart with server:', err);
               });
-
           }
         })
         .catch((err: any) => {

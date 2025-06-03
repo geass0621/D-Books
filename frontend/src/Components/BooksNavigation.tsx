@@ -65,7 +65,7 @@ const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSort
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default BooksNavigation;

@@ -17,7 +17,7 @@ export interface IOrder {
   phone: string,
   name: string,
   userId: string,
-  status: 'ongoing' | 'delivered',
+  status: 'ongoing' | 'delivered' | 'cancelled',
   paymentStatus: 'pending' | 'paid',
   totalAmount: number
 }
@@ -37,7 +37,7 @@ const orderSchema = new Schema<IOrder>({
   phone: { type: String, required: true },
   name: { type: String, required: true },
   userId: { type: String, required: true },
-  status: { type: String, enum: ['ongoing', 'delivered'], default: 'ongoing' },
+  status: { type: String, enum: ['ongoing', 'delivered', 'cancelled'], default: 'ongoing' },
   paymentStatus: { type: String, enum: ['pending', 'paid'], default: 'pending' },
   totalAmount: { type: Number, required: true }
 }, {

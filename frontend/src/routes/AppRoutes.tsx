@@ -16,7 +16,7 @@ import PaymentSuccess, { paymentSuccessLoader } from '../pages/PaymentSuccess';
 import PaymentCancel from '../pages/PaymentCancel';
 import Orders, { ordersLoader } from '../pages/Orders';
 import ProtectedAdminRoute from '../pages/ProtectedAdminRoutes';
-import Admin from '../pages/Admin';
+import AdminOrders, { adminOrdersLoader } from '../pages/AdminOrders';
 
 const router = createBrowserRouter(
   [
@@ -96,8 +96,9 @@ const router = createBrowserRouter(
           element: <ProtectedAdminRoute />,
           children: [
             {
-              index: true,
-              element: <Admin />
+              path: 'adminOrders',
+              element: <AdminOrders />,
+              loader: adminOrdersLoader
             }
           ]
         }

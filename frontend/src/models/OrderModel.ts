@@ -8,7 +8,7 @@ export type Order = {
   phone: string,
   name: string,
   userId: string,
-  status: 'ongoing' | 'delivered',
+  status: 'ongoing' | 'delivered' | 'cancelled',
   paymentStatus: 'pending' | 'paid',
   totalAmount: number
 }
