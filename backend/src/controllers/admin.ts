@@ -87,7 +87,7 @@ export const deleteBook: RequestHandler = async (req, res, next) => {
     }
 
     await Book.findByIdAndDelete(bookId);
-    res.status(200).json({ message: 'Post deleted successfully!', book: book });
+    res.status(200).json({ message: 'Post deleted successfully!', book: book, success: true });
   } catch (err: any) {
     if (!err.statusCode) {
       err.statusCode = 500;

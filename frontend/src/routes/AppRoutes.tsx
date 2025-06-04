@@ -18,6 +18,7 @@ import Orders, { ordersLoader } from '../pages/Orders';
 import ProtectedAdminRoute from '../pages/ProtectedAdminRoutes';
 import AdminOrders, { adminOrdersAction, adminOrdersLoader } from '../pages/AdminOrders';
 import AdminEditBook, { adminEditBookAction, adminEditBookLoader } from '../pages/AdminEditBook';
+import AdminDeleteBook, { AdminDeleteBookAction, AdminDeleteBookLoader } from '../pages/AdminDeleteBook';
 
 const router = createBrowserRouter(
   [
@@ -107,6 +108,12 @@ const router = createBrowserRouter(
               element: <AdminEditBook />,
               loader: adminEditBookLoader,
               action: adminEditBookAction
+            },
+            {
+              path: 'delete-book/:bookId',
+              element: <AdminDeleteBook />,
+              loader: AdminDeleteBookLoader,
+              action: AdminDeleteBookAction
             }
           ]
         }

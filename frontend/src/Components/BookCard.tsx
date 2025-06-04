@@ -76,7 +76,7 @@ const BookCard: React.FC<BookCardProps> = ({
           {adminEmail === user.email && user.role === 'admin' &&
             <>
               <Link to={`/admin/edit-book/${id}`} className="btn btn-info">Edit</Link>
-              <div className="btn btn-error">Delete</div>
+              <Link to={`/admin/delete-book/${id}`} className="btn btn-error">Delete</Link>
             </>
           }
 
