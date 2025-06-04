@@ -3,6 +3,7 @@ import { Book } from "../models/BookModel";
 import { useState } from "react";
 import { useAppDispatch } from "../store/hooks";
 import { cartActions } from "../store/cart-slice";
+import { toast } from "react-toastify";
 
 
 const BookDetail = () => {
@@ -15,6 +16,7 @@ const BookDetail = () => {
 
   const addToCartHandler = () => {
     dispatch(cartActions.addItemToCart(loaderBook));
+    toast.success(`Item added to cart!`);
   }
 
   return (

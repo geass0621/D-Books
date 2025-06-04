@@ -8,6 +8,7 @@ import Modal from "./Modal/Modal";
 import { selectCart, cartActions } from "../store/cart-slice";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import CartComponent from "./CartCompoent";
+import { toast } from "react-toastify";
 
 const MainNavigation: React.FC = (): JSX.Element => {
   const user = useAppSelector(selectUser);
@@ -35,6 +36,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
       // Update the cart in the store
       dispatch(cartActions.setCart(updatedCart));
       setIsModalOpen(false);
+      toast.success('Logged out successfully!');
       navigate('/');
     } catch (err) {
       console.error(err);

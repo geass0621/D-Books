@@ -4,6 +4,7 @@ import { Book } from "../models/BookModel";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { cartActions } from "../store/cart-slice";
 import { selectUser } from "../store/user-slice";
+import { toast } from "react-toastify";
 
 interface BookCardProps {
   id: string;
@@ -46,6 +47,7 @@ const BookCard: React.FC<BookCardProps> = ({
 
   const addToCartHandler = () => {
     dispatch(cartActions.addItemToCart(book));
+    toast.success(`Item added to cart!`)
   }
 
   return (
