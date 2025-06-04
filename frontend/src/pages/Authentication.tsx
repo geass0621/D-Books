@@ -32,7 +32,7 @@ const Authentication: React.FC = () => {
 
   useEffect(() => {
     if (createUser) {
-      console.log('User created successfully');
+      toast.success(`Account created successfully!`);
       navigate('/auth?mode=login', {
         replace: true
       });

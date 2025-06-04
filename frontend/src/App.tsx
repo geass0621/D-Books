@@ -88,7 +88,6 @@ const App: React.FC = () => {
     <>
       <ThemeProvider>
         <RouterProvider router={router}>
-
         </RouterProvider>
         <ToastContainer
           position="top-right"
