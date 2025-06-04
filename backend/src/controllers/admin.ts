@@ -2,6 +2,7 @@ import Book from '../models/book';
 import e, { RequestHandler } from 'express';
 import { CustomHttpError } from '../models/customError';
 import Order from '../models/order';
+import { validationResult } from 'express-validator';
 
 
 
@@ -36,6 +37,14 @@ export const postBook: RequestHandler = async (req, res, next) => {
 
 
 export const updateBook: RequestHandler = async (req, res, next) => {
+  const validationsErrors = validationResult(req);
+  if (!validationsErrors.isEmpty()) {
+    let errors: any[] = [];
+    validationsErrors.array().map(el => errors.push(el.msg));
+    res.status(422).json({ message: '', errors: errors });
+    return;
+  }
+
   const bookId = req.params.bookId;
   const name = req.body.name;
   const description = req.body.description;
@@ -57,7 +66,7 @@ export const updateBook: RequestHandler = async (req, res, next) => {
     book.discount = discount;
     book.imageUrl = imageUrl;
     const updatedBook = await book.save();
-    res.status(200).json({ message: 'Book updated!', book: updatedBook });
+    res.status(200).json({ message: 'Book updated!', book: updatedBook, success: true });
   } catch (err: any) {
     if (!err.statusCode) {
       err.statusCode = 500;

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { Link } from "react-router-dom";
 import { Book } from "../models/BookModel";
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { cartActions } from "../store/cart-slice";
+import { selectUser } from "../store/user-slice";
 
 interface BookCardProps {
   id: string;
@@ -40,6 +41,8 @@ const BookCard: React.FC<BookCardProps> = ({
     description
   }
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
 
   const addToCartHandler = () => {
     dispatch(cartActions.addItemToCart(book));
@@ -70,6 +73,13 @@ const BookCard: React.FC<BookCardProps> = ({
         <p>{description.length > 100 ? description.slice(0, 100) + '...' : description}</p>
         <div className="card-actions justify-end">
           <div className="btn btn-accent" onClick={addToCartHandler}>Add to Cart</div>
+          {adminEmail === user.email && user.role === 'admin' &&
+            <>
+              <Link to={`/admin/edit-book/${id}`} className="btn btn-info">Edit</Link>
+              <div className="btn btn-error">Delete</div>
+            </>
+          }
+
         </div>
       </div>
     </div>

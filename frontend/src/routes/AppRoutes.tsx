@@ -17,6 +17,7 @@ import PaymentCancel from '../pages/PaymentCancel';
 import Orders, { ordersLoader } from '../pages/Orders';
 import ProtectedAdminRoute from '../pages/ProtectedAdminRoutes';
 import AdminOrders, { adminOrdersAction, adminOrdersLoader } from '../pages/AdminOrders';
+import AdminEditBook, { adminEditBookAction, adminEditBookLoader } from '../pages/AdminEditBook';
 
 const router = createBrowserRouter(
   [
@@ -100,6 +101,12 @@ const router = createBrowserRouter(
               element: <AdminOrders />,
               loader: adminOrdersLoader,
               action: adminOrdersAction
+            },
+            {
+              path: 'edit-book/:bookId',
+              element: <AdminEditBook />,
+              loader: adminEditBookLoader,
+              action: adminEditBookAction
             }
           ]
         }
