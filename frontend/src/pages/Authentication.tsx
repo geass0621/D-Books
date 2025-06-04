@@ -1,25 +1,47 @@
-import { redirect, useActionData, useNavigate } from "react-router-dom"
+import { redirect, useActionData, useLocation, useNavigate } from "react-router-dom"
 import { AuthForm } from "../Components/AuthForm"
 import { useAppDispatch } from "../store/hooks"
 import { userActions } from "../store/user-slice"
 import { User } from "../models/UserModel"
 import { useEffect } from "react"
+import { cartActions } from "../store/cart-slice"
+import { toast } from "react-toastify"
 
 const Authentication: React.FC = () => {
-  const actionData = useActionData() as User | undefined;
+  const location = useLocation();
+  const mode = new URLSearchParams(location.search).get('mode') || 'login';
+  const actionData = useActionData();
+  const user = actionData?.user as User | undefined;
+  const createUser = actionData?.createdUser;
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (actionData && actionData.id) {
-      dispatch(userActions.setUserLogin(actionData));
+    if (user && user.id && !createUser) {
+      dispatch(userActions.setUserLogin(user));
+      const localCart = JSON.parse(localStorage.getItem('cart') || '{}');
+      localCart.userId = user.id;
+      localCart.userEmail = user.email;
+      localStorage.setItem('cart', JSON.stringify(localCart));
+      dispatch(cartActions.setCart(localCart));
+      toast.success(`Welcome, to D-books!`);
       navigate('/');
     }
-  }, [actionData, dispatch]);
+  }, [user, dispatch, createUser]);
+
+  useEffect(() => {
+    if (createUser) {
+      console.log('User created successfully');
+      navigate('/auth?mode=login', {
+        replace: true
+      });
+    }
+  }, [createUser]);
 
   return (
     <>
-      <AuthForm />
+      <AuthForm key={mode} />
     </>
   )
 }
@@ -75,21 +97,6 @@ export const action = async ({ request }: { request: Request }) => {
   };
 
   const responseData = await response.json();
-  const user: User = {
-    id: responseData.user.id,
-    email: responseData.user.email,
-    role: responseData.user.role,
-    status: responseData.user.status,
-  }
 
-  const localCart = JSON.parse(localStorage.getItem('cart') || '{}');
-  localCart.userId = user.id;
-  localCart.userEmail = user.email;
-  localStorage.setItem('cart', JSON.stringify(localCart));
-
-  if (mode === 'signup') {
-    return redirect('/auth?mode=login');
-  } else if (mode === 'login') {
-    return user;
-  }
+  return responseData;
 }

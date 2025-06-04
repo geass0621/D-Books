@@ -1,38 +1,74 @@
 import { Form, Link, useActionData, useNavigation, useSearchParams } from "react-router-dom";
 
 export const AuthForm: React.FC = () => {
-  const data = useActionData();
+  const actionData = useActionData();
   const [searchParams, setSearchParams] = useSearchParams();
   const isLogin = searchParams.get('mode') === 'login';
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
 
   return (
-    <Form method="post" className="max-w-2xl m-8">
-      <h1 className="mb-2 font-bold text-2xl">{isLogin ? 'Log in' : 'Create a new user'}</h1>
-      {data && data.errors && <ul>{
-        Object.values(data.errors as Record<string, string>).map(err => <li key={err}>{err}</li>)
-      }</ul>}
-      <p className="w-full block">
-        <label className="w-full block" htmlFor="email">Email</label>
-        <input className="w-full block bg-base-300" type="email" name="email" required />
-      </p>
-      <p className="w-full block">
-        <label className="w-full block" htmlFor="password">Password</label>
-        <input className="w-full block bg-base-300" type="password" name="password" required autoComplete="on" />
-      </p>
-      {!isLogin && <p className="w-full block">
-        <label className="w-full block" htmlFor="confirmPassword">Confirm Password</label>
-        <input className="w-full block bg-base-300" type="password" name="confirmPassword" required autoComplete="on" />
-      </p>}
-      <div className="flex gap-4 content-end justify-center">
-        <Link to={`?mode=${isLogin ? 'signup' : 'login'}`}>
-          {isLogin ? 'Create new user' : 'Login'}
-        </Link>
-        <button disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting...' : 'Save'}
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">{isLogin ? 'Login' : 'Sign Up'}</h1>
+      {actionData && actionData.errors && actionData.errors.length > 0 && (
+        <div className="alert alert-error mb-4">
+          <ul>
+            {actionData.errors.map((error: string, index: number) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <Form method="POST" className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium mb-2">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            autoComplete="email"
+            className="input w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium mb-2">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            autoComplete="current-password"
+            className="input w-full"
+          />
+        </div>
+        {!isLogin && (
+          <div>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+              autoComplete="new-password"
+              className="input w-full"
+            />
+          </div>
+        )}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`btn ${isSubmitting ? 'btn-disabled' : 'btn-primary'} w-full`}
+        >
+          {isSubmitting ? 'Submitting...' : isLogin ? 'Login' : 'Sign Up'}
         </button>
-      </div>
-    </Form>
+      </Form>
+      <p className="mt-4">
+        {isLogin ? "Don't have an account?" : 'Already have an account?'}
+        <Link to={`?mode=${isLogin ? 'signup' : 'login'}`} onClick={() => setSearchParams({ mode: isLogin ? 'signup' : 'login' })} className="text-blue-500 ml-1">
+          {isLogin ? 'Sign Up' : 'Login'}
+        </Link>
+      </p>
+    </div>
   )
 }

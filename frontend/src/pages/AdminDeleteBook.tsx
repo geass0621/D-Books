@@ -40,7 +40,6 @@ const AdminDeleteBook: React.FC = () => {
           <h1 className="text-3xl font-bold mb-6">Book Not Found</h1>
           <p className="text-lg text-red-600">The book you are trying to delete does not exist.</p>
         </>}
-      <ToastContainer />
     </div>
   );
 }
@@ -99,7 +98,6 @@ export const AdminDeleteBookAction = async ({ request }: { request: Request }) =
 
     return { message: 'Book deleted successfully', success: true };
   } catch (error) {
-    console.error("Error deleting book:", error);
     throw new Response(JSON.stringify({ message: 'Failed to delete book' }), {
       status: 500
     });

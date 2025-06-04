@@ -37,7 +37,7 @@ export const signup: RequestHandler = async (req, res, next) => {
     };
     await createdUser.save();
 
-    res.status(201).json({ message: 'User created successfully!' });
+    res.status(201).json({ message: 'User created successfully!', success: true, createdUser: true });
 
   } catch (err: any) {
     if (!err.statusCode) {
@@ -103,7 +103,11 @@ export const login: RequestHandler = async (req, res, next) => {
           email: user.email,
           role: user.role,
           status: user.status
-        }
+        },
+        message: 'User logged in successfully!',
+        success: true,
+        createdUser: false,
+        tokenExpiration: new Date(Date.now() + 60 * 60 * 1000).toISOString()
       });
     return;
 
