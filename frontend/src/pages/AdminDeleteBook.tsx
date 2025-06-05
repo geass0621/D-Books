@@ -1,15 +1,17 @@
-import { Form, LoaderFunctionArgs, useActionData, useLoaderData } from "react-router-dom";
+import { Form, LoaderFunctionArgs, useActionData, useLoaderData, useNavigate } from "react-router-dom";
 import { Book } from "../models/BookModel";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 const AdminDeleteBook: React.FC = () => {
+  const navigate = useNavigate();
   const book = useLoaderData().book as Book | undefined;
   const actionData = useActionData() as { message?: string; success?: boolean } | undefined;
   useEffect(() => {
     if (actionData) {
       if (actionData.success) {
         toast.success(actionData.message || 'Book deleted successfully');
+        navigate('/books');
       } else {
         toast.error(actionData.message || 'Failed to delete book');
       }

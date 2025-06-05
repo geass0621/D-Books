@@ -1,26 +1,25 @@
-import { useLoaderData, LoaderFunctionArgs, Form, useActionData, useNavigate } from "react-router-dom";
+import { Form, useActionData, useNavigate, useNavigation } from "react-router-dom";
 import { Book } from "../models/BookModel";
-import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
-const AdminEditBook: React.FC = () => {
-  const actionData = useActionData() as { errors?: string[]; message?: string; success?: boolean } | undefined;
-  const errors = actionData?.errors;
+const AdminAddBook: React.FC = () => {
+  const navigate = useNavigate();
+  const actionData = useActionData() as { message?: string; success?: boolean; errors?: string[] } | undefined;
   const successMessage = actionData?.message;
   const success = actionData?.success;
-  const book = useLoaderData().book as Book;
-  const navigate = useNavigate();
+  const errors = actionData?.errors;
+
   useEffect(() => {
     if (success) {
-      toast.success(successMessage || 'Book updated successfully');
-      navigate('/books');
+      toast.success(successMessage || 'Book added successfully');
+      navigate('/admin');
     }
-  }, [success, navigate, successMessage]);
-
+  }, [success, navigate])
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Edit Book</h1>
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Add New Book</h1>
       {errors && errors.length > 0 && (
         <div className="alert alert-error mb-4">
           <ul>
@@ -35,124 +34,90 @@ const AdminEditBook: React.FC = () => {
           <p>{successMessage}</p>
         </div>
       )}
-      <Form method="POST" action={`/admin/edit-book/${book.id}`}>
-        <div className="mb-4">
+      <Form method="POST" action="/admin/add-book" className="space-y-4">
+        <div>
           <label className="block text-sm font-medium mb-2" htmlFor="name">Book Name</label>
           <input
             type="text"
             id="name"
             name="name"
-            defaultValue={book.name}
             className="input w-full"
             required
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-sm font-medium mb-2" htmlFor="author">Author</label>
           <input
             type="text"
             id="author"
             name="author"
-            defaultValue={book.author}
             className="input w-full"
             required
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-sm font-medium mb-2" htmlFor="genre">Genre</label>
           <input
             type="text"
             id="genre"
             name="genre"
-            defaultValue={book.genre}
             className="input w-full"
             required
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-sm font-medium mb-2" htmlFor="imageUrl">Image URL</label>
           <input
             type="text"
             id="imageUrl"
             name="imageUrl"
-            defaultValue={book.imageUrl}
             className="input w-full"
             required
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-sm font-medium mb-2" htmlFor="description">Description</label>
           <textarea
             id="description"
             name="description"
-            defaultValue={book.description}
-            className="textarea w-full"
+            className="textarea w-full h-32"
             required
           ></textarea>
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-sm font-medium mb-2" htmlFor="price">Price</label>
           <input
             type="number"
             id="price"
             name="price"
-            defaultValue={book.price}
-            step="0.01"
+            step=".01"
             className="input w-full"
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="discount">Discount</label>
+        <div>
+          <label className="block text-sm font-medium mb-2" htmlFor="discount">Discount (%)</label>
           <input
             type="number"
             id="discount"
             name="discount"
-            defaultValue={(book.discount)} // Assuming discount is stored as a fraction
-            step="0.01"
+            step=".01"
             className="input w-full"
+            defaultValue="0"
           />
         </div>
-        <input type="hidden" name="id" value={book.id} />
-        <div className="mb-4">
-          <button type="submit" className="btn btn-primary">Save Changes</button>
-        </div>
+        <button type="submit" className="btn btn-primary w-full">
+          Add Book
+        </button>
       </Form>
     </div>
   );
 }
 
-export default AdminEditBook;
+export default AdminAddBook;
 
-export const adminEditBookLoader = async ({ params }: LoaderFunctionArgs) => {
-  const { bookId } = params;
-  if (!bookId) {
-    throw new Response(JSON.stringify({ message: 'Book ID is required' }), {
-      status: 400
-    });
-  }
-
-  try {
-    const response = await fetch(`http://localhost:3000/books/${bookId}`, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    if (!response.ok) {
-      throw new Error('Failed to fetch book details');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching book details:", error);
-    throw new Response(JSON.stringify({ message: 'Failed to fetch book details' }), {
-      status: 500
-    });
-  }
-};
-
-export const adminEditBookAction = async ({ request }: { request: Request }) => {
+export const adminAddBookAction = async ({ request }: { request: Request }) => {
   const formData = await request.formData();
-  const id = formData.get('id') as string;
   const name = formData.get('name') as string;
   const author = formData.get('author') as string;
   const genre = formData.get('genre') as string;
@@ -162,7 +127,6 @@ export const adminEditBookAction = async ({ request }: { request: Request }) => 
   const discount = parseFloat(formData.get('discount') as string) || 0;
 
   const book: Book = {
-    id,
     name,
     author,
     genre,
@@ -173,13 +137,13 @@ export const adminEditBookAction = async ({ request }: { request: Request }) => 
   };
 
   try {
-    const response = await fetch(`http://localhost:3000/admin/book/${id}`, {
-      method: 'PUT',
+    const response = await fetch(`http://localhost:3000/admin/book`, {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(book),
-      credentials: 'include',
+      credentials: 'include'
     });
 
     if (response.status === 422) {
@@ -187,13 +151,17 @@ export const adminEditBookAction = async ({ request }: { request: Request }) => 
     }
 
     if (!response.ok) {
-      throw new Response(JSON.stringify({ message: 'Failed to update book' }));
+      throw new Error('Failed to add book');
     }
 
-    return { success: true, message: 'Book updated successfully', errors: [] };
+    return {
+      message: 'Book added successfully',
+      success: true,
+      errors: []
+    };
   } catch (error) {
-    console.error("Error updating book:", error);
-    throw new Response(JSON.stringify({ message: 'Failed to update book' }), {
+    console.error("Error adding book:", error);
+    throw new Response(JSON.stringify({ message: 'Failed to add book' }), {
       status: 500
     });
   }

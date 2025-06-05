@@ -7,7 +7,16 @@ import { validationResult } from 'express-validator';
 
 
 export const postBook: RequestHandler = async (req, res, next) => {
+  const validationsErrors = validationResult(req);
+  if (!validationsErrors.isEmpty()) {
+    let errors: any[] = [];
+    validationsErrors.array().map(el => errors.push(el.msg));
+    res.status(422).json({ message: '', errors: errors });
+    return;
+  }
+
   const name = req.body.name;
+  const genre = req.body.genre;
   const description = req.body.description;
   const author = req.body.author;
   const price = +req.body.price;
@@ -17,6 +26,7 @@ export const postBook: RequestHandler = async (req, res, next) => {
   const newBook = new Book({
     name: name,
     description: description,
+    genre: genre.toLowerCase(),
     author: author,
     price: price,
     discount: discount,
@@ -25,7 +35,7 @@ export const postBook: RequestHandler = async (req, res, next) => {
 
   try {
     const book = await newBook.save();
-    res.status(201).json({ message: 'Book added successfully!', book: book });
+    res.status(201).json({ message: 'Book added successfully!', book: book, success: true });
 
   } catch (err: any) {
     if (!err.statusCode) {

@@ -19,6 +19,7 @@ import ProtectedAdminRoute from '../pages/ProtectedAdminRoutes';
 import AdminOrders, { adminOrdersAction, adminOrdersLoader } from '../pages/AdminOrders';
 import AdminEditBook, { adminEditBookAction, adminEditBookLoader } from '../pages/AdminEditBook';
 import AdminDeleteBook, { AdminDeleteBookAction, AdminDeleteBookLoader } from '../pages/AdminDeleteBook';
+import AdminAddBook, { adminAddBookAction } from '../pages/AdminAddBook';
 
 const router = createBrowserRouter(
   [
@@ -114,6 +115,11 @@ const router = createBrowserRouter(
               element: <AdminDeleteBook />,
               loader: AdminDeleteBookLoader,
               action: AdminDeleteBookAction
+            },
+            {
+              path: 'add-book',
+              element: <AdminAddBook />,
+              action: adminAddBookAction
             }
           ]
         }

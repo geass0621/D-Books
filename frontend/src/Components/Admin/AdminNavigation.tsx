@@ -7,9 +7,9 @@ const AdminNavigation: React.FC = () => {
         <Link className="btn btn-ghost text-lg" to={"/admin/orders"}>
           Orders
         </Link>
-        <button className="btn btn-ghost text-lg">
-          Books
-        </button>
+        <Link to={"/admin/add-book"} className="btn btn-ghost text-lg">
+          Add Book
+        </Link>
       </div>
       < div className="navbar-center hidden lg:flex" >
 
