@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { selectUser, userActions } from './store/user-slice';
 import { getCart, getUser, syncCartWithServer } from './utils/auth';
-import { cartActions } from './store/cart-slice';
+import { cartActions, selectCart } from './store/cart-slice';
 import { Cart } from './models/CartModel';
 import openSocket from 'socket.io-client';
 import { ToastContainer } from 'react-toastify';
@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 const App: React.FC = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+  const cart = useAppSelector(selectCart);
 
   // useEffect(() => {
   //   const socket = openSocket('http://localhost:3000', {
@@ -83,6 +84,11 @@ const App: React.FC = () => {
       dispatch(cartActions.setCart(localCart));
     }
   }, [user.id, dispatch]);
+
+  // Syncing cart with local storage
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   return (
     <>
