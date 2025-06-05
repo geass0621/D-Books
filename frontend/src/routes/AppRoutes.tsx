@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import RootLayout from '../pages/RootLayout';
+import RootLayout, { rootLayoutLogoutAction } from '../pages/RootLayout';
 import Home from '../pages/Home';
 import Authentication, { action as authAction } from '../pages/Authentication';
 import ErrorPage from '../pages/Error';
@@ -28,6 +28,7 @@ const router = createBrowserRouter(
       id: 'root',
       element: <RootLayout />,
       errorElement: <ErrorPage />,
+      action: rootLayoutLogoutAction,
       children: [
         {
           index: true,

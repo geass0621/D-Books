@@ -1,47 +1,21 @@
 import { JSX, useRef, useState } from "react";
 import ThemeController from "./ThemeSelector"
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { selectUser, userActions } from "../store/user-slice";
-import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
+import { selectUser } from "../store/user-slice";
+import { Form, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Modal from "./Modal/Modal";
-import { selectCart, cartActions } from "../store/cart-slice";
+import { selectCart } from "../store/cart-slice";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import CartComponent from "./CartCompoent";
-import { toast } from "react-toastify";
 
 const MainNavigation: React.FC = (): JSX.Element => {
   const user = useAppSelector(selectUser);
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDialogElement | null>(null);
   const cart = useAppSelector(selectCart);
   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
-
-  const logoutHandler = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        throw new Error('Logout failed');
-      }
-      dispatch(userActions.setUserLogout());
-      // Only clear user info from cart, not the whole cart
-      const updatedCart = { ...cart, userId: null, userEmail: null };
-      // Update local storage with the updated cart
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-      // Update the cart in the store
-      dispatch(cartActions.setCart(updatedCart));
-      setIsModalOpen(false);
-      toast.success('Logged out successfully!');
-      navigate('/');
-    } catch (err) {
-      console.error(err);
-    }
-  }
 
   const openModalHandler = () => {
     setIsModalOpen((prevValue) => !prevValue);
@@ -75,7 +49,10 @@ const MainNavigation: React.FC = (): JSX.Element => {
             <button className="btn btn-ghost" onClick={openModalHandler}><MdOutlineShoppingCartCheckout className="scale-150" /></button>
           </div>
           {user.id ?
-            <button className="btn btn-ghost" onClick={logoutHandler}>Logout</button> : <button className="btn btn-ghost" onClick={loginHandler}>Login</button>}
+            <Form method="POST" action="/" className="inline">
+              <button className="btn btn-ghost" type="submit">Logout</button>
+            </Form>
+            : <button className="btn btn-ghost" onClick={loginHandler}>Login</button>}
           <ThemeController />
         </div>
       </div>
