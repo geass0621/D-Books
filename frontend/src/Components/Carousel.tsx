@@ -7,8 +7,16 @@ interface CarouselProps {
 }
 const VISIBLE_COUNT = 4;
 
+const initialLoadingState = (books: Book[]) => {
+  return books.reduce((acc, book) => {
+    acc[book.id] = true;
+    return acc;
+  }, {} as { [key: string]: boolean });
+}
+
 const Carousel: React.FC<CarouselProps> = ({ books }) => {
   const [startIdx, setStartIdx] = useState(0);
+  const [imgLoading, setImgLoading] = useState(() => initialLoadingState(books));
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,7 +49,13 @@ const Carousel: React.FC<CarouselProps> = ({ books }) => {
                   src={book.imageUrl}
                   alt={`Slide ${idx + 1}`}
                   className="w-full h-96 object-cover rounded-box"
+                  loading="lazy"
+                  style={{ opacity: imgLoading[book.id] ? 0 : 1, transition: 'opacity 0.3s' }}
+                  onLoad={() => setImgLoading((prev) => ({ ...prev, [book.id]: false }))}
                 />
+                {imgLoading[book.id] && (
+                  <div className="skeleton w-full h-96 absolute top-0 left-0"></div>
+                )}
                 <div className="badge absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
                   {(book.discount * 100).toFixed(0)}% OFF
                 </div>

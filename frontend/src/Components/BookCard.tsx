@@ -53,15 +53,19 @@ const BookCard: React.FC<BookCardProps> = ({
   return (
     <div className="card bg-base-100 w-96 shadow-sm hover:border-accent-content hover:scale-102 transition-transform duration-300">
       <Link to={`/books/${id}`} className="card-image">
-        <figure className="relative w-96 h-fit">
-          {imgLoading && <div className="skeleton w-dvw h-96"></div>}
+        <figure className="relative w-96 h-[40rem]">
+          {imgLoading && (
+            <div className="skeleton absolute top-0 left-0 w-full h-full z-10"></div>
+          )}
           <img
             src={imageUrl}
-            className="h-auto w-full object-cover rounded-box"
+            className="h-full w-full object-cover rounded-box"
             loading="lazy"
             alt={name}
-            onLoad={() => setImgLoading(false)} />
-          <div className="badge badge-neutral border-0 absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
+            style={{ opacity: imgLoading ? 0 : 1, transition: 'opacity 0.3s' }}
+            onLoad={() => setImgLoading(false)}
+          />
+          <div className="badge badge-neutral border-0 absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold z-20">
             {formattedDiscount}% OFF
           </div>
         </figure>

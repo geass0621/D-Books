@@ -1,5 +1,4 @@
 import { Form, useActionData, useNavigate } from "react-router-dom";
-import { Book } from "../models/BookModel";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 
@@ -126,7 +125,7 @@ export const adminAddBookAction = async ({ request }: { request: Request }) => {
   const price = parseFloat(formData.get('price') as string);
   const discount = parseFloat(formData.get('discount') as string) || 0;
 
-  const book: Book = {
+  const book = {
     name,
     author,
     genre,
