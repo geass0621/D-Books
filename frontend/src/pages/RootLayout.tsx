@@ -4,6 +4,7 @@ import { Outlet, useActionData } from "react-router-dom"
 import { useAppDispatch } from "../store/hooks";
 import { userActions } from "../store/user-slice";
 import { toast } from "react-toastify";
+import Footer from "../Components/Footer";
 const RootLayout: React.FC = () => {
   const actionData = useActionData() as null | undefined;
   const dispatch = useAppDispatch();
@@ -29,8 +30,7 @@ const RootLayout: React.FC = () => {
     <main className="max-w-7xl m-auto p-8">
       <Outlet />
     </main>
-    <footer>
-    </footer>
+    <Footer />
   </>
 }
 

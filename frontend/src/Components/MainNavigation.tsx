@@ -25,26 +25,30 @@ const MainNavigation: React.FC = (): JSX.Element => {
     navigate('/auth?mode=login');
   }
   return <>
-    <header className="flex p-8 m-auto justify-center" >
-      <div className="navbar max-w-5xl h-0.5 bg-base-100" >
-        <div className="navbar-start" >
-          <a className="btn btn-ghost text-lg" > daisyUI </a>
+    <header className="sticky top-0 z-50 bg-base-100 shadow flex flex-col md:flex-row p-4 md:p-8 m-auto justify-center w-full h-30">
+      <div className="navbar w-full max-w-5xl h-auto bg-base-100 flex flex-col md:flex-row items-center justify-between">
+        <div className="navbar-start w-full md:w-auto flex justify-between items-center">
+          <a className="btn btn-ghost text-lg">D-Books</a>
+          {/* Hamburger for mobile */}
+          <div className="block lg:hidden">
+            {/* You can add a mobile menu button here if you want */}
+          </div>
         </div>
-        < div className="navbar-center hidden lg:flex" >
+        <div className="navbar-center w-full md:w-auto">
           <ul className="menu menu-horizontal px-1">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/books">Books</Link></li>
-            {user.id && user.role === 'user' && <li><Link to="/orders">Orders</Link></li>}
-            {user.role === 'admin' && user.email === adminEmail && <li><Link to="/admin">Admin</Link></li>}
-            <li><Link to="/contact">Contact</Link></li>
+            <li className="font-bold text-lg"><Link to="/">Home</Link></li>
+            <li className="font-bold text-lg"><Link to="/books">Books</Link></li>
+            {user.id && user.role === 'user' && <li className="font-bold text-lg"><Link to="/orders">Orders</Link></li>}
+            {user.role === 'admin' && user.email === adminEmail && <li className="font-bold text-lg"><Link to="/admin">Admin</Link></li>}
+            <li className="font-bold text-lg"><Link to="/contact">Contact</Link></li>
           </ul>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end w-full md:w-auto flex items-center justify-end mt-4 md:mt-0">
           {isModalOpen &&
             <Modal modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} >
               <CartComponent setIsModalOpen={setIsModalOpen} />
             </Modal>}
-          <div className="relative">
+          <div className="relative mr-2">
             <span className="badge badge-sm absolute ml-8 bg-base-300">{cart.totalQuantity}</span>
             <button className="btn btn-ghost" onClick={openModalHandler}><MdOutlineShoppingCartCheckout className="scale-150" /></button>
           </div>
