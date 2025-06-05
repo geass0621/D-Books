@@ -1,6 +1,7 @@
 import { Book } from "../models/BookModel";
 import { useLoaderData } from "react-router-dom";
 import Carousel from "../Components/Carousel";
+import banner from "../assets/banner.jpg";
 
 const Home: React.FC = () => {
   const loaderData = useLoaderData() as {
@@ -15,8 +16,17 @@ const Home: React.FC = () => {
         <p className="text-2xl sm:text-3xl font-bold text-center">Welcome to D-Books</p>
         <p className="text-lg sm:text-xl text-center text-gray-600">Discover the best books at unbeatable prices!</p>
       </div>
+      <div className="relative mb-6 mt-4 w-full">
+        <img
+          src={banner}
+          alt="Home Banner"
+          className="w-full h-auto rounded-lg shadow-lg"
+        />
+        <div className="absolute inset-0 rounded-lg pointer-events-none bg-gradient-to-r from-purple-500/30 via-transparent to-blue-500/30 animate-gradient-x"></div>
+      </div>
       <div className="mb-6 mt-4 w-full">
         <p className="text-2xl sm:text-3xl font-bold text-center">Most Discounted</p>
+        <p className="text-lg sm:text-xl text-center text-gray-600">Grab the best deals on your favorite books!</p>
       </div>
       <Carousel books={discountBooks} />
       <div className="my-8 w-full flex items-center">
@@ -26,6 +36,7 @@ const Home: React.FC = () => {
       </div>
       <div className="mb-6 w-full">
         <p className="text-2xl sm:text-3xl font-bold text-center">Newest</p>
+        <p className="text-lg sm:text-xl text-center text-gray-600">Explore the latest additions to our collection!</p>
       </div>
       <Carousel books={newestBooks} />
     </div>

@@ -23,6 +23,20 @@ function ErrorPage() {
       <PageContent title={title}>
         <p>{message}</p>
       </PageContent>
+      <div className="text-center mt-4">
+        <button
+          className="btn"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+        <button
+          className="btn ml-4"
+          onClick={() => window.history.back()}
+        >
+          Go Back
+        </button>
+      </div>
     </>
   );
 }

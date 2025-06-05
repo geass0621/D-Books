@@ -29,7 +29,7 @@ const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSort
               <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
             </svg>
           </div>
-          <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          <ul tabIndex={0} className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm">
             {
               BookGenres.map((genre, index) => (
                 <li key={index}>
@@ -59,7 +59,7 @@ const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSort
               <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
             </svg>
           </div>
-          <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          <ul tabIndex={0} className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm">
             {
               SortOptions.map((option, index) => (
                 <li key={index}>
