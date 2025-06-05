@@ -10,6 +10,7 @@ export const getBooks: RequestHandler = async (req, res, next) => {
   const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
   const sort = req.query.sort as string || 'name';
   const sortOrder = req.query.sortOrder as string || 'asc';
+  const search = req.query.search as string || '';
   console.log('Genre:', genre);
   console.log('Page:', page);
   console.log('Limit:', limit);
@@ -19,6 +20,9 @@ export const getBooks: RequestHandler = async (req, res, next) => {
     let filter: any = {};
     if (genre && genre !== 'all') {
       filter.genre = genre.toLowerCase();
+    }
+    if (search) {
+      filter.name = { $regex: search, $options: 'i' };
     }
     const totalBooks = await Book.countDocuments(filter);
     const books = await Book.find(filter)

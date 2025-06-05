@@ -27,7 +27,7 @@ const Books: React.FC = () => {
         {books?.map((book) => (
           <BookCard
             key={book.id}
-            id={book.id}
+            id={book.id ?? ""}
             name={book.name}
             genre={book.genre}
             author={book.author}

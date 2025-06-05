@@ -5,6 +5,13 @@ const BooksLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const searchChangeHandler = (search: string) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('search', search);
+    searchParams.set('page', '1');
+    navigate(`/books?${searchParams.toString()}`);
+  }
+
   const genreChangeHandler = (genre: string) => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set('genre', genre);
@@ -22,7 +29,10 @@ const BooksLayout = () => {
 
   return (
     <>
-      <BooksNavigation onGenreChange={genreChangeHandler} onSortChange={sortChangeHandler} />
+      <BooksNavigation
+        onGenreChange={genreChangeHandler}
+        onSortChange={sortChangeHandler}
+        onSearchChange={searchChangeHandler} />
       <Outlet />
     </>
   );
@@ -38,8 +48,9 @@ export const booksLoader = async ({ request }: { request: Request }) => {
   const limit = searchParams.get('limit') || '6';
   const sort = searchParams.get('sort') || 'name';
   const sortOrder = searchParams.get('sortOrder') || 'asc';
+  const search = searchParams.get('search') || '';
 
-  const response = await fetch(`http://localhost:3000/books?genre=${genre}&page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}`, {
+  const response = await fetch(`http://localhost:3000/books?genre=${genre}&page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}&search=${encodeURIComponent(search)}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

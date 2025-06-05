@@ -1,13 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Form, Link } from 'react-router-dom';
 import { BookGenres } from '../common/bookGenres';
 import { SortOptions } from '../common/sortOptions';
 
 interface BooksNavigationProps {
   onGenreChange: (genre: string) => void;
   onSortChange: (sort: string, order: string) => void;
+  onSearchChange: (search: string) => void;
 }
 
-const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSortChange }) => {
+const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSortChange, onSearchChange }) => {
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onSearchChange(event.target.value);
+  };
+
   return (
     <div className="navbar max-w-full h-0.5 bg-base-100" >
       <div className="navbar-start" >
@@ -38,7 +44,7 @@ const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSort
         </div>
       </div>
       < div className="navbar-center hidden lg:flex" >
-
+        <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" onChange={handleSearchChange} />
       </div>
       <div className="navbar-end">
         <div className="dropdown">
