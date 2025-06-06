@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { BookGenres } from '../common/bookGenres';
 import { SortOptions } from '../common/sortOptions';
 
@@ -6,9 +5,11 @@ interface BooksNavigationProps {
   onGenreChange: (genre: string) => void;
   onSortChange: (sort: string, order: string) => void;
   onSearchChange: (search: string) => void;
+  currentGenre: string;
+  currentSort: string;
 }
 
-const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSortChange, onSearchChange }) => {
+const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSortChange, onSearchChange, currentGenre, currentSort }) => {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onSearchChange(event.target.value);
@@ -18,7 +19,7 @@ const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSort
     <div className="navbar max-w-full h-0.5 bg-base-100" >
       <div className="navbar-start" >
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn m-1">Genres
+          <div tabIndex={0} role="button" className="btn m-1">{currentGenre} Genres
             <svg
               width="12px"
               height="12px"
@@ -37,9 +38,6 @@ const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSort
                 </li>
               ))
             }
-            <li>
-              <Link to={`/books?genre=all`} >All Books</Link>
-            </li>
           </ul>
         </div>
       </div>
@@ -48,7 +46,7 @@ const BooksNavigation: React.FC<BooksNavigationProps> = ({ onGenreChange, onSort
       </div>
       <div className="navbar-end">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn m-1">Sort
+          <div tabIndex={0} role="button" className="btn m-1">{!currentSort ? "Sort By" : currentSort}
             <svg
               width="12px"
               height="12px"

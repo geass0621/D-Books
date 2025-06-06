@@ -1,9 +1,13 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import BooksNavigation from "../Components/BooksNavigation";
+import { useState } from "react";
+import { BookGenreEnum } from "../common/bookGenres";
 
 const BooksLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [genre, setGenre] = useState<string>(BookGenreEnum.ALL);
+  const [sort, setSort] = useState<string>('');
 
   const searchChangeHandler = (search: string) => {
     const searchParams = new URLSearchParams(location.search);
@@ -13,13 +17,15 @@ const BooksLayout = () => {
   }
 
   const genreChangeHandler = (genre: string) => {
+    setGenre(genre);
     const searchParams = new URLSearchParams(location.search);
-    searchParams.set('genre', genre);
+    searchParams.set('genre', genre.toLowerCase());
     searchParams.set('page', '1');
     navigate(`/books?${searchParams.toString()}`);
   }
 
   const sortChangeHandler = (sort: string, order: string) => {
+    setSort(`${sort} ${order}`);
     const searchParams = new URLSearchParams(location.search);
     searchParams.set('sort', sort);
     searchParams.set('page', '1');
@@ -30,6 +36,8 @@ const BooksLayout = () => {
   return (
     <>
       <BooksNavigation
+        currentGenre={genre}
+        currentSort={sort}
         onGenreChange={genreChangeHandler}
         onSortChange={sortChangeHandler}
         onSearchChange={searchChangeHandler} />
