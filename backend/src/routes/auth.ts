@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signup, login, getUser, logout } from "../controllers/auth";
+import { putSignup, postLogin, getUser, postLogout } from "../controllers/auth";
 import { body } from "express-validator";
 import User from "../models/user";
 import { isAuth } from "../middleware/isAuth";
@@ -32,7 +32,7 @@ router.put('/signup',
         }
       })
       .withMessage('Passwords do not match!')
-  ], signup);
+  ], putSignup);
 
 router.post('/login',
   [
@@ -45,9 +45,9 @@ router.post('/login',
       .isAlphanumeric()
       .isLength({ min: 8, max: 20 })
       .withMessage('Password must be alphanumeric and between 8 and 20 characters!'),
-  ], login);
+  ], postLogin);
 
 router.get('/user', isAuth, getUser)
-router.post('/logout', isAuth, logout);
+router.post('/logout', isAuth, postLogout);
 
 export default router

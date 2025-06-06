@@ -29,7 +29,9 @@ router.put('/admin/book/:bookId', isAuth, [
 
 router.get('/admin/orders', isAuth, getAdminOrders);
 
-router.patch('/admin/orders/:orderId', isAuth, patchOrderStatus);
+router.patch('/admin/orders/:orderId', isAuth, [
+  body('status').notEmpty().withMessage('Order status is required').isIn(['pending', 'shipped', 'delivered', 'cancelled'])
+], patchOrderStatus);
 
 router.delete('/admin/orders/:orderId', isAuth, deleteOrder);
 

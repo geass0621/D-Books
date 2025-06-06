@@ -97,7 +97,7 @@ export const deleteBook: RequestHandler = async (req, res, next) => {
     }
 
     await Book.findByIdAndDelete(bookId);
-    res.status(200).json({ message: 'Post deleted successfully!', book: book, success: true });
+    res.status(200).json({ message: 'Book deleted successfully!', book: book, success: true });
   } catch (err: any) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -114,7 +114,7 @@ export const getAdminOrders: RequestHandler = async (req, res, next) => {
       throw error;
     }
     if (orders.length === 0) {
-      res.status(200).json({ message: 'No orders found.', orders: [] });
+      res.status(200).json({ message: 'No orders found.', orders: [], success: true });
       return;
     }
     res.status(200).json({ message: 'Orders fetched successfully!', orders: orders });
@@ -129,6 +129,14 @@ export const getAdminOrders: RequestHandler = async (req, res, next) => {
 export const patchOrderStatus: RequestHandler = async (req, res, next) => {
   const orderId = req.params.orderId;
   const status = req.body.status;
+  const validationsErrors = validationResult(req);
+  if (!validationsErrors.isEmpty()) {
+    let errors: any[] = [];
+    validationsErrors.array().map(el => errors.push(el.msg));
+    res.status(422).json({ message: '', errors: errors });
+    return;
+  }
+
   try {
     const order = await Order.findById(orderId);
     if (!order) {
@@ -137,7 +145,7 @@ export const patchOrderStatus: RequestHandler = async (req, res, next) => {
     }
     order.status = status;
     const updatedOrder = await order.save();
-    res.status(200).json({ message: 'Order status updated!', order: updatedOrder });
+    res.status(200).json({ message: 'Order status updated!', order: updatedOrder, success: true });
   } catch (err: any) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -156,7 +164,7 @@ export const deleteOrder: RequestHandler = async (req, res, next) => {
       throw error;
     }
     await Order.findByIdAndDelete(orderId);
-    res.status(200).json({ message: 'Order deleted successfully!', order: order });
+    res.status(200).json({ message: 'Order deleted successfully!', order: order, success: true });
   } catch (err: any) {
     if (!err.statusCode) {
       err.statusCode = 500;

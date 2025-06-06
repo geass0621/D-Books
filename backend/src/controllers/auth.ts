@@ -5,7 +5,7 @@ import { validationResult } from "express-validator";
 import { CustomHttpError } from "../models/customError";
 import jwt from 'jsonwebtoken';
 
-export const signup: RequestHandler = async (req, res, next) => {
+export const putSignup: RequestHandler = async (req, res, next) => {
   const validationsErrors = validationResult(req);
   if (!validationsErrors.isEmpty()) {
     let errors: any[] = [];
@@ -47,7 +47,7 @@ export const signup: RequestHandler = async (req, res, next) => {
   };
 };
 
-export const login: RequestHandler = async (req, res, next) => {
+export const postLogin: RequestHandler = async (req, res, next) => {
   const validationsErrors = validationResult(req);
   if (!validationsErrors.isEmpty()) {
     let errors: any[] = ['Wrong email or password!'];
@@ -145,7 +145,7 @@ export const getUser: RequestHandler = async (req, res, next) => {
 
 }
 
-export const logout: RequestHandler = async (req, res, next) => {
+export const postLogout: RequestHandler = async (req, res, next) => {
   const userId = req.userId;
   try {
     const user = await User.findById(userId);
