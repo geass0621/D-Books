@@ -157,7 +157,6 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
     }
 
     const data = await response.json();
-    console.log("Order placed successfully:", data);
 
     // post payment to the server
     const paymentResponse = await fetch('http://localhost:3000/checkout/payment', {

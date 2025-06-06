@@ -122,7 +122,6 @@ export const postPaymentConfirmation: RequestHandler = async (req, res, next) =>
   try {
     event = stripeInstance.webhooks.constructEvent(req.body, sig, webhookSecret as string);
   } catch (err: any) {
-    console.log(webhookSecret);
     res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }

@@ -11,11 +11,7 @@ export const getBooks: RequestHandler = async (req, res, next) => {
   const sort = req.query.sort as string || 'name';
   const sortOrder = req.query.sortOrder as string || 'asc';
   const search = req.query.search as string || '';
-  console.log('Genre:', genre);
-  console.log('Page:', page);
-  console.log('Limit:', limit);
-  console.log('Sort:', sort);
-  console.log('Sort Order:', sortOrder);
+
   try {
     let filter: any = {};
     if (genre && genre !== 'all') {

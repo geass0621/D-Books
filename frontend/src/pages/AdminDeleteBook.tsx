@@ -56,7 +56,6 @@ export default AdminDeleteBook;
 
 export const AdminDeleteBookLoader = async ({ params }: LoaderFunctionArgs) => {
   const { bookId } = params;
-  console.log("Loading book with ID:", bookId);
   if (!bookId) {
     throw new Response(JSON.stringify({ message: 'Book ID is required' }), {
       status: 400

@@ -1,17 +1,16 @@
-import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
+import { useRouteError, isRouteErrorResponse, useNavigate, Link } from 'react-router-dom';
 import PageContent from '../Components/PageContent';
 
 function ErrorPage() {
   const error = useRouteError();
+  const navigate = useNavigate();
   let title = 'An error occurred!';
   let message = 'Something went wrong!';
 
   if (isRouteErrorResponse(error)) {
-
     if (error.status === 500) {
       message = error.data.message;
     }
-
     if (error.status === 404) {
       title = 'Not found!';
       message = 'Could not find resource or page.';
@@ -24,15 +23,10 @@ function ErrorPage() {
         <p>{message}</p>
       </PageContent>
       <div className="text-center mt-4">
-        <button
-          className="btn"
-          onClick={() => window.location.reload()}
-        >
-          Reload Page
-        </button>
+        <Link to="/" className="btn">Go Home</Link>
         <button
           className="btn ml-4"
-          onClick={() => window.history.back()}
+          onClick={() => navigate(-1)}
         >
           Go Back
         </button>

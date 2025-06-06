@@ -13,7 +13,6 @@ const AdminEditBook: React.FC = () => {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
 
-
   useEffect(() => {
     if (success) {
       toast.success(successMessage || 'Book updated successfully');

@@ -15,7 +15,6 @@ const Books: React.FC = () => {
   const location = useLocation();
 
   const goToPage = (newPage: number) => {
-    console.log('Navigating to page:', currentPage);
     const searchParams = new URLSearchParams(location.search);
     searchParams.set('page', newPage.toString());
     navigate(`/books?${searchParams.toString()}`);

@@ -11,7 +11,6 @@ const PaymentSuccess: React.FC = () => {
 
   // clear cart items from local storage and reset cart state
   useEffect(() => {
-    console.log('Payment Success Cart:', cart);
     dispatch(cartActions.setCart(cart));
     const localCart = JSON.parse(localStorage.getItem('cart') || '{}');
     localCart.items = [];

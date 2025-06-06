@@ -71,7 +71,6 @@ export const postLogin: RequestHandler = async (req, res, next) => {
     }
     let token;
     if (user.role === 'admin') {
-      console.log('admin login');
       token = jwt.sign({
         email: user.email,
         userId: user.id.toString(),

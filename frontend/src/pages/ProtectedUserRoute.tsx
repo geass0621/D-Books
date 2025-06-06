@@ -3,7 +3,9 @@ import { selectUser } from '../store/user-slice';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedUserRoute: React.FC = () => {
+
   const user = useAppSelector(selectUser);
+
   if (user.loading) {
     return <div>Loading...</div>;
   }

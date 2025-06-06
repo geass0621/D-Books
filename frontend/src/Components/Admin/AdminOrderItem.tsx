@@ -18,9 +18,7 @@ const AdminOrderItem: React.FC<OrderItemProps> = ({ order, saveChanges }) => {
   };
 
   const selectStatus = (status: "ongoing" | "delivered" | "cancelled") => {
-    // This function can be used to handle status selection
     setOrderStatus(status);
-    console.log(`Status changed to: ${orderStatus}`);
   }
 
   return (
