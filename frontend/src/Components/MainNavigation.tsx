@@ -33,7 +33,7 @@ const MainNavigation: React.FC = (): JSX.Element => {
             <li className="font-bold text-lg"><Link to="/books">Books</Link></li>
             {user.id && user.role === 'user' && <li className="font-bold text-lg"><Link to="/orders">Orders</Link></li>}
             {user.role === 'admin' && user.email === adminEmail && <li className="font-bold text-lg"><Link to="/admin">Admin</Link></li>}
-            <li className="font-bold text-lg"><Link to="/contact">Contact</Link></li>
+            <li className="font-bold text-lg"><Link to="/about">About</Link></li>
           </ul>
         </div>
         <div className="navbar-center w-full md:w-auto">

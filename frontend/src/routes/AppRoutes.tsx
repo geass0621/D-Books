@@ -20,6 +20,7 @@ import AdminOrders, { adminOrdersAction, adminOrdersLoader } from '../pages/Admi
 import AdminEditBook, { adminEditBookAction, adminEditBookLoader } from '../pages/AdminEditBook';
 import AdminDeleteBook, { AdminDeleteBookAction, AdminDeleteBookLoader } from '../pages/AdminDeleteBook';
 import AdminAddBook, { adminAddBookAction } from '../pages/AdminAddBook';
+import About from '../pages/About';
 
 const router = createBrowserRouter(
   [
@@ -123,6 +124,10 @@ const router = createBrowserRouter(
               action: adminAddBookAction
             }
           ]
+        },
+        {
+          path: 'about',
+          element: <About />
         }
       ]
     }
