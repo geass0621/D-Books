@@ -20,7 +20,8 @@ router.post('/checkout/order', isAuth, [
     .normalizeEmail(),
   body('phone')
     .notEmpty()
-    .withMessage('Phone number is required!'),
+    .isNumeric()
+    .withMessage('Phone number must be numeric and not empty!'),
   body('items')
     .isArray({ min: 1 })
     .withMessage('At least one item is required in the order!'),

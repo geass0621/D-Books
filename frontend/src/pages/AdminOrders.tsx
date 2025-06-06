@@ -1,14 +1,17 @@
 import { useActionData, useLoaderData, useNavigate, useSubmit } from "react-router-dom";
 import { Order } from "../models/OrderModel";
 import AdminOrderItem from "../Components/Admin/AdminOrderItem";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "../store/hooks";
+import { userActions } from "../store/user-slice";
 
 const AdminOrders: React.FC = () => {
   const orders = useLoaderData() as Order[];
   const submit = useSubmit();
   const actionData = useActionData() as { message?: string; success?: boolean } | undefined;
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const saveChangesHandler = (orderId: string, status: string, action: string) => {
     submit(
@@ -26,7 +29,9 @@ const AdminOrders: React.FC = () => {
         toast.success(actionData.message || 'Changes saved successfully');
       } else {
         toast.error(actionData.message || 'Failed to save changes');
-        if (actionData.message === 'Unauthorized access') {
+        if (actionData.message === 'Unauthorized') {
+          toast.error('You are not authorized to perform this action.');
+          dispatch(userActions.setUserLogout());
           navigate('/login?mode=login');
         }
       }
@@ -107,7 +112,7 @@ export const adminOrdersAction = async ({ request }: { request: Request }) => {
     });
 
     if (response.status === 401) {
-      return { message: 'Unauthorized access', success: false, };
+      return { message: 'Unauthorized', success: false, };
     }
 
     if (!response.ok) {

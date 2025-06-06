@@ -2,6 +2,8 @@ import { useLoaderData, LoaderFunctionArgs, Form, useActionData, useNavigate, us
 import { Book } from "../models/BookModel";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "../store/hooks";
+import { userActions } from "../store/user-slice";
 
 const AdminEditBook: React.FC = () => {
   const actionData = useActionData() as { errors?: string[]; message?: string; success?: boolean } | undefined;
@@ -12,6 +14,7 @@ const AdminEditBook: React.FC = () => {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (success) {
@@ -19,6 +22,14 @@ const AdminEditBook: React.FC = () => {
       navigate('/books');
     }
   }, [success, navigate, successMessage]);
+
+  useEffect(() => {
+    if (actionData?.message === 'Unauthorized') {
+      toast.error('You are not authorized to perform this action.');
+      dispatch(userActions.setUserLogout());
+      navigate('/login');
+    }
+  })
 
 
   return (
@@ -189,6 +200,10 @@ export const adminEditBookAction = async ({ request }: { request: Request }) => 
 
     if (response.status === 422) {
       return response
+    }
+
+    if (response.status === 401) {
+      return { message: 'Unauthorized', success: false };
     }
 
     if (!response.ok) {

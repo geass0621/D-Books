@@ -2,10 +2,20 @@ import { RequestHandler } from "express";
 import User, { ICart } from "../models/user";
 import Order, { IOrder } from "../models/order";
 import Stripe from "stripe";
+import { validationResult } from "express-validator";
 
 export const postOrder: RequestHandler = async (req, res, next) => {
   const userId = req.userId;
   const orderData = req.body;
+  const validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
+    let errors: any[] = [];
+    validationErrors.array().map(el => errors.push(el.msg));
+    res.status(422).json({ message: 'Validation failed', errors: errors });
+    return;
+  }
+
+
   // Validate order data
   if (!orderData || !orderData.items || orderData.items.length === 0) {
     res.status(400).json({

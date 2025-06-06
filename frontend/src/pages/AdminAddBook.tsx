@@ -1,6 +1,8 @@
 import { Form, useActionData, useNavigate, useNavigation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { useAppDispatch } from "../store/hooks";
+import { userActions } from "../store/user-slice";
 
 const AdminAddBook: React.FC = () => {
   const navigate = useNavigate();
@@ -10,6 +12,7 @@ const AdminAddBook: React.FC = () => {
   const errors = actionData?.errors;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (success) {
@@ -18,6 +21,14 @@ const AdminAddBook: React.FC = () => {
     }
 
   }, [success, navigate])
+
+  useEffect(() => {
+    if (actionData?.message === 'Unauthorized') {
+      toast.error('You are not authorized to perform this action.');
+      dispatch(userActions.setUserLogout());
+      navigate('/login');
+    }
+  }, [actionData, navigate]);
 
   return (
     <div className="container mx-auto p-6">
@@ -150,11 +161,15 @@ export const adminAddBookAction = async ({ request }: { request: Request }) => {
 
     if (response.status === 422) {
       return response
+    };
+
+    if (response.status === 401) {
+      return { message: 'Unauthorized', success: false };
     }
 
     if (!response.ok) {
       throw new Error('Failed to add book');
-    }
+    };
 
     return {
       message: 'Book added successfully',

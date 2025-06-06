@@ -2,6 +2,8 @@ import { Form, LoaderFunctionArgs, useActionData, useLoaderData, useNavigate, us
 import { Book } from "../models/BookModel";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { useAppDispatch } from "../store/hooks";
+import { userActions } from "../store/user-slice";
 
 const AdminDeleteBook: React.FC = () => {
   const navigate = useNavigate();
@@ -9,12 +11,17 @@ const AdminDeleteBook: React.FC = () => {
   const actionData = useActionData() as { message?: string; success?: boolean } | undefined;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (actionData) {
       if (actionData.success) {
         toast.success(actionData.message || 'Book deleted successfully');
         navigate('/books');
+      } else if (actionData.message === 'Unauthorized') {
+        toast.error('You are not authorized to perform this action.');
+        dispatch(userActions.setUserLogout());
+        navigate('/login');
       } else {
         toast.error(actionData.message || 'Failed to delete book');
       }
@@ -97,6 +104,10 @@ export const AdminDeleteBookAction = async ({ request }: { request: Request }) =
       method: 'DELETE',
       credentials: 'include',
     });
+
+    if (response.status === 401) {
+      return { message: 'Unauthorized', success: false };
+    }
 
     if (!response.ok) {
       throw new Error('Failed to delete book');

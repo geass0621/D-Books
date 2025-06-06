@@ -12,7 +12,8 @@ const UserOrder: React.FC = () => {
   const dispatch = useAppDispatch();
   const cartServer = useLoaderData() as Cart;
   const cart = useAppSelector(selectCart);
-  const orderActionData = useActionData() as { message: string; success: boolean; sessionId: string } | undefined;
+  const orderActionData = useActionData() as { message: string; success: boolean; sessionId: string, errors: string[] } | undefined;
+  const errors = orderActionData?.errors;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
 
@@ -48,6 +49,17 @@ const UserOrder: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
+      {
+        errors && errors.length > 0 && (
+          <div className="alert alert-error mb-4">
+            <ul>
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
       <h1 className="text-2xl font-bold mb-4">Your Order</h1>
       <div className="bg-base-300 shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
@@ -92,6 +104,13 @@ const UserOrder: React.FC = () => {
           </button>
         </div>
       </Form>
+      <div className="alert alert-info mt-4">
+        <p className="font-semibold">Disclaimer:</p>
+        <ul className="list-disc list-inside text-sm mt-1">
+          <li>This is a demo bookstore. <span className="font-semibold">No real payments are processed.</span></li>
+          <li>To test checkout, use card number <span className="font-mono">4242 4242 4242 4242</span>, any valid expiration date, and any 3-digit CVC.</li>
+        </ul>
+      </div>
     </div>
   );
 }
@@ -152,9 +171,20 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
       body: JSON.stringify(order),
     });
 
+    if (response.status === 401) {
+      return { message: 'Unauthorized', success: false };
+    }
+
+    if (response.status === 422) {
+      const errorData = await response.json();
+      console.error("Validation errors:", errorData.errors);
+      return { message: errorData.message, success: false, errors: errorData.errors };
+    }
+
     if (!response.ok) {
       throw new Error('Failed to place order');
     }
+
 
     const data = await response.json();
 
