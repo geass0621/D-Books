@@ -1,4 +1,4 @@
-import { Form, useActionData, useNavigate } from "react-router-dom";
+import { Form, useActionData, useNavigate, useNavigation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 
@@ -8,12 +8,17 @@ const AdminAddBook: React.FC = () => {
   const successMessage = actionData?.message;
   const success = actionData?.success;
   const errors = actionData?.errors;
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
 
   useEffect(() => {
     if (success) {
       toast.success(successMessage || 'Book added successfully');
       navigate('/admin');
+    } else {
+      toast.error('Failed to add book');
     }
+
   }, [success, navigate])
 
   return (
@@ -105,8 +110,8 @@ const AdminAddBook: React.FC = () => {
             defaultValue="0"
           />
         </div>
-        <button type="submit" className="btn btn-primary w-full">
-          Add Book
+        <button type="submit" className="btn btn-primary w-full" disabled={isSubmitting}>
+          {isSubmitting ? <span className="loading loading-spinner loading-sm"></span> : 'Add Book'}
         </button>
       </Form>
     </div>

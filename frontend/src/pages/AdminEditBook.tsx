@@ -1,4 +1,4 @@
-import { useLoaderData, LoaderFunctionArgs, Form, useActionData, useNavigate } from "react-router-dom";
+import { useLoaderData, LoaderFunctionArgs, Form, useActionData, useNavigate, useNavigation } from "react-router-dom";
 import { Book } from "../models/BookModel";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
@@ -10,10 +10,16 @@ const AdminEditBook: React.FC = () => {
   const success = actionData?.success;
   const book = useLoaderData().book as Book;
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
+
+
   useEffect(() => {
     if (success) {
       toast.success(successMessage || 'Book updated successfully');
       navigate('/books');
+    } else {
+      toast.error('Failed to update book');
     }
   }, [success, navigate, successMessage]);
 
@@ -115,7 +121,9 @@ const AdminEditBook: React.FC = () => {
         </div>
         <input type="hidden" name="id" value={book.id} />
         <div className="mb-4">
-          <button type="submit" className="btn btn-primary">Save Changes</button>
+          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{
+            isSubmitting ? <span className="loading loading-spinner loading-sm"></span> : 'Update Book'
+          }</button>
         </div>
       </Form>
     </div>

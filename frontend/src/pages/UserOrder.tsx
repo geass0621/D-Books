@@ -1,4 +1,4 @@
-import { Form, Navigate, useActionData, useLoaderData, useNavigate } from "react-router-dom";
+import { Form, Navigate, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import { cartActions, selectCart } from "../store/cart-slice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/user-slice";
@@ -13,6 +13,8 @@ const UserOrder: React.FC = () => {
   const cartServer = useLoaderData() as Cart;
   const cart = useAppSelector(selectCart);
   const orderActionData = useActionData() as { message: string; success: boolean; sessionId: string } | undefined;
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
 
   // Check if the user is logged in
   useEffect(() => {
@@ -86,7 +88,7 @@ const UserOrder: React.FC = () => {
         <input type="hidden" name="totalAmount" value={cartServer.totalPrice.toFixed(2)} />
         <div className="flex-1 min-w-[45%]">
           <button className="btn btn-primary w-full" type="submit">
-            Place Order
+            {isSubmitting ? <span className="loading loading-spinner loading-sm"></span> : 'Place Order'}
           </button>
         </div>
       </Form>

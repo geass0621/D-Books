@@ -60,7 +60,7 @@ export const AuthForm: React.FC = () => {
           disabled={isSubmitting}
           className={`btn ${isSubmitting ? 'btn-disabled' : 'btn-primary'} w-full`}
         >
-          {isSubmitting ? 'Submitting...' : isLogin ? 'Login' : 'Sign Up'}
+          {isSubmitting ? <span className="loading loading-spinner loading-sm"></span> : isLogin ? 'Login' : 'Sign Up'}
         </button>
       </Form>
       <p className="mt-4">

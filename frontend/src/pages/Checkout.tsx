@@ -35,7 +35,7 @@ const Checkout: React.FC = () => {
                 <Form method="post" className="mt-2">
                   <input type="hidden" name="cart" value={JSON.stringify(cart)} />
                   <button className="btn btn-primary w-full" disabled={isSubmitting}>{
-                    isSubmitting ? 'Submitting' : 'Order Now!'}</button>
+                    isSubmitting ? <span className="loading loading-spinner loading-sm"></span> : 'Order Now!'}</button>
                 </Form>
               </div>
             </div>

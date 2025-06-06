@@ -1,10 +1,14 @@
-import { useLoaderData, useSubmit } from "react-router-dom";
+import { useActionData, useLoaderData, useNavigate, useSubmit } from "react-router-dom";
 import { Order } from "../models/OrderModel";
 import AdminOrderItem from "../Components/Admin/AdminOrderItem";
+import { use, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const AdminOrders: React.FC = () => {
   const orders = useLoaderData() as Order[];
   const submit = useSubmit();
+  const actionData = useActionData() as { message?: string; success?: boolean } | undefined;
+  const navigate = useNavigate();
 
   const saveChangesHandler = (orderId: string, status: string, action: string) => {
     submit(
@@ -14,8 +18,20 @@ const AdminOrders: React.FC = () => {
         action: `/admin/orders`,
       }
     );
-    console.log(`Order ${orderId} status updated to ${status}`);
   }
+
+  useEffect(() => {
+    if (actionData) {
+      if (actionData.success) {
+        toast.success(actionData.message || 'Changes saved successfully');
+      } else {
+        toast.error(actionData.message || 'Failed to save changes');
+        if (actionData.message === 'Unauthorized access') {
+          navigate('/login?mode=login');
+        }
+      }
+    }
+  }, [actionData, navigate]);
 
   return (
     <>
@@ -72,13 +88,16 @@ export const adminOrdersAction = async ({ request }: { request: Request }) => {
       body: JSON.stringify({ status }),
     });
 
+    if (response.status === 401) {
+      return { message: 'Unauthorized access', success: false, };
+    }
     if (!response.ok) {
       throw new Response(JSON.stringify({ message: 'Failed to update order status' }), {
         status: response.status,
       });
     }
 
-    return null;
+    return { message: 'Order status updated successfully', success: true };
   };
   if (action === 'deleteOrder') {
     // Delete the order on the server
@@ -87,13 +106,17 @@ export const adminOrdersAction = async ({ request }: { request: Request }) => {
       credentials: 'include',
     });
 
+    if (response.status === 401) {
+      return { message: 'Unauthorized access', success: false, };
+    }
+
     if (!response.ok) {
       throw new Response(JSON.stringify({ message: 'Failed to delete order' }), {
         status: response.status,
       });
     }
 
-    return null;
+    return { message: 'Order deleted successfully', success: true };
   };
   if (action !== 'updateStatus' && action !== 'deleteOrder') {
     throw new Response(JSON.stringify({ message: 'Unsupported action' }), {

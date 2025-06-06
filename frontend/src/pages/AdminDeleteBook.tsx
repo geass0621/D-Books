@@ -1,4 +1,4 @@
-import { Form, LoaderFunctionArgs, useActionData, useLoaderData, useNavigate } from "react-router-dom";
+import { Form, LoaderFunctionArgs, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import { Book } from "../models/BookModel";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
@@ -7,6 +7,9 @@ const AdminDeleteBook: React.FC = () => {
   const navigate = useNavigate();
   const book = useLoaderData().book as Book | undefined;
   const actionData = useActionData() as { message?: string; success?: boolean } | undefined;
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
+
   useEffect(() => {
     if (actionData) {
       if (actionData.success) {
@@ -35,7 +38,9 @@ const AdminDeleteBook: React.FC = () => {
         </div>
         <Form method="POST" action={`/admin/delete-book/${book?.id}`} className="mt-6">
           <input type="hidden" name="bookId" value={book?.id} />
-          <button type="submit" className="btn btn-warning">Delete Book</button>
+          <button type="submit" className="btn btn-warning" disabled={isSubmitting}>{
+            isSubmitting ? <span className="loading loading-spinner loading-sm"></span> : 'Delete Book'
+          }</button>
         </Form>
       </> :
         <>

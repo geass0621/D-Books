@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Order } from "../../models/OrderModel";
+import { useNavigation } from "react-router-dom";
 
 interface OrderItemProps {
   order: Order;
@@ -9,6 +10,8 @@ interface OrderItemProps {
 const AdminOrderItem: React.FC<OrderItemProps> = ({ order, saveChanges }) => {
   const [isDetailsVisible, setDetailsVisible] = useState(false);
   const [orderStatus, setOrderStatus] = useState(order.status);
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
 
   const toggleDetails = () => {
     setDetailsVisible(prev => !prev);
@@ -22,9 +25,11 @@ const AdminOrderItem: React.FC<OrderItemProps> = ({ order, saveChanges }) => {
 
   return (
     <div className="bg-base-300 shadow-md rounded-lg p-6 mb-4">
-      <div className="mb-4 flex justify-between items-center">
-        <h2 className="text-xl font-semibold mb-4">Order ID: {order._id}</h2>
-        <p className="mb-4 font-bold">Payment: {order.paymentStatus}</p>
+      <div className="mb-4 flex flex-wrap justify-between items-start gap-2">
+        <h2 className="text-xl font-semibold mb-4 min-w-[180px]">Order ID: {order._id}</h2>
+        <div className="flex flex-col items-start min-w-[180px]">
+          <p className="mb-4 font-bold">Payment: {order.paymentStatus}</p>
+        </div>
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className={`btn ${orderStatus === 'ongoing'
             ? 'btn-neutral'
@@ -32,7 +37,7 @@ const AdminOrderItem: React.FC<OrderItemProps> = ({ order, saveChanges }) => {
               ? 'btn-primary'
               : orderStatus === 'cancelled'
                 ? 'btn-error'
-                : ''} m-1`}>
+                : ''} m-1 min-w-[120px]`}>
             Status: {orderStatus}</label>
           <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
             <li><a className="font-semibold" onClick={() => selectStatus('ongoing')}>Ongoing</a></li>
@@ -40,9 +45,15 @@ const AdminOrderItem: React.FC<OrderItemProps> = ({ order, saveChanges }) => {
             <li><a className="font-semibold" onClick={() => selectStatus('cancelled')}>Cancelled</a></li>
           </ul>
         </div>
-        <button className="btn btn-secondary" onClick={() => saveChanges(order._id ?? '', orderStatus, 'updateStatus')}>Save</button>
-        <button className="btn btn-info" onClick={toggleDetails}>View Details</button>
-        <button className="btn btn-error" onClick={() => saveChanges(order._id ?? '', orderStatus, 'deleteOrder')}>Delete</button>
+        <div className="flex flex-row gap-x-2 items-start">
+          <button className="btn btn-secondary min-w-[100px]" disabled={isSubmitting} onClick={() => saveChanges(order._id ?? '', orderStatus, 'updateStatus')}>{
+            isSubmitting ? <span className="loading loading-spinner loading-sm"></span> : 'Save'
+          }</button>
+          <button className="btn btn-info min-w-[100px]" onClick={toggleDetails}>View Details</button>
+          <button className="btn btn-error min-w-[100px]" disabled={isSubmitting} onClick={() => saveChanges(order._id ?? '', orderStatus, 'deleteOrder')}>{
+            isSubmitting ? <span className="loading loading-spinner loading-sm"></span> : 'Delete'
+          }</button>
+        </div>
       </div>
       {isDetailsVisible && <div>
         <h2 className="text-xl font-semibold mb-4">Order Summary</h2>

@@ -51,7 +51,7 @@ const BookCard: React.FC<BookCardProps> = ({
   }
 
   return (
-    <div className="card bg-base-100 w-96 shadow-sm hover:border-accent-content hover:scale-102 transition-transform duration-300">
+    <div className="card bg-base-200 w-96 shadow-sm hover:border-accent-content hover:scale-102 transition-transform duration-300">
       <Link to={`/books/${id}`} className="card-image">
         <figure className="relative w-96 h-[40rem]">
           {imgLoading && (

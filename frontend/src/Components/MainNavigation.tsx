@@ -25,9 +25,9 @@ const MainNavigation: React.FC = (): JSX.Element => {
     navigate('/auth?mode=login');
   }
   return <>
-    <header className="sticky top-0 z-50 bg-base-100 shadow flex flex-col md:flex-row p-4 md:p-8 m-auto justify-center w-full h-25">
-      <div className="navbar w-full max-w-5xl h-auto bg-base-100 flex flex-col md:flex-row items-center justify-between">
-        <div className="navbar-start w-full md:w-auto flex justify-between items-center">
+    <header className="sticky top-0 z-50 bg-base-200 shadow flex flex-col md:flex-row p-4 md:p-8 m-auto justify-center w-full h-25">
+      <div className="navbar w-full max-w-5xl h-auto bg-base-200 flex flex-col md:flex-row items-center justify-between">
+        <div className="navbar-start flex-1 flex items-center">
           <ul className="menu menu-horizontal px-1">
             <li className="font-bold text-lg"><Link to="/">Home</Link></li>
             <li className="font-bold text-lg"><Link to="/books">Books</Link></li>
@@ -36,9 +36,12 @@ const MainNavigation: React.FC = (): JSX.Element => {
             <li className="font-bold text-lg"><Link to="/about">About</Link></li>
           </ul>
         </div>
-        <div className="navbar-center w-full md:w-auto">
+        <div className="navbar-center">
+          <Link to="/" className="btn btn-ghost text-2xl font-bold animate-gradient-text bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+            D-Books
+          </Link>
         </div>
-        <div className="navbar-end w-full md:w-auto flex items-center justify-end mt-4 md:mt-0">
+        <div className="navbar-end flex-1 flex items-center justify-end mt-4 md:mt-0">
           {isModalOpen &&
             <Modal modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} >
               <CartComponent setIsModalOpen={setIsModalOpen} />
