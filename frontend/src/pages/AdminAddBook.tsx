@@ -15,8 +15,6 @@ const AdminAddBook: React.FC = () => {
     if (success) {
       toast.success(successMessage || 'Book added successfully');
       navigate('/admin');
-    } else {
-      toast.error('Failed to add book');
     }
 
   }, [success, navigate])

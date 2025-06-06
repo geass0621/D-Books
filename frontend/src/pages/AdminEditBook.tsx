@@ -18,8 +18,6 @@ const AdminEditBook: React.FC = () => {
     if (success) {
       toast.success(successMessage || 'Book updated successfully');
       navigate('/books');
-    } else {
-      toast.error('Failed to update book');
     }
   }, [success, navigate, successMessage]);
 

@@ -56,7 +56,7 @@ const Carousel: React.FC<CarouselProps> = ({ books }) => {
                 {imgLoading[book.id] && (
                   <div className="skeleton w-full h-96 absolute top-0 left-0"></div>
                 )}
-                <div className="badge absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
+                <div className="badge badge-neutral border-0 absolute top-2 right-2 bg-accent-content bg-opacity-80 font-bold">
                   {(book.discount * 100).toFixed(0)}% OFF
                 </div>
               </div>

@@ -21,6 +21,7 @@ import AdminEditBook, { adminEditBookAction, adminEditBookLoader } from '../page
 import AdminDeleteBook, { AdminDeleteBookAction, AdminDeleteBookLoader } from '../pages/AdminDeleteBook';
 import AdminAddBook, { adminAddBookAction } from '../pages/AdminAddBook';
 import About from '../pages/About';
+import Admin from '../pages/Admin';
 
 const router = createBrowserRouter(
   [
@@ -100,6 +101,10 @@ const router = createBrowserRouter(
           path: '/admin',
           element: <ProtectedAdminRoute />,
           children: [
+            {
+              index: true,
+              element: <Admin />,
+            },
             {
               path: 'orders',
               element: <AdminOrders />,

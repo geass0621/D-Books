@@ -7,7 +7,6 @@ import { selectUser, userActions } from './store/user-slice';
 import { getCart, getUser, syncCartWithServer } from './utils/auth';
 import { cartActions, selectCart } from './store/cart-slice';
 import { Cart } from './models/CartModel';
-import openSocket from 'socket.io-client';
 import { ToastContainer } from 'react-toastify';
 
 
@@ -16,18 +15,6 @@ const App: React.FC = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const cart = useAppSelector(selectCart);
-
-  // useEffect(() => {
-  //   const socket = openSocket('http://localhost:3000', {
-  //     withCredentials: true,
-  //   });
-  //   socket.on('connect', () => {
-  //     console.log('Connected to WebSocket server');
-  //   });
-  //   socket.on('disconnect', () => {
-  //     console.log('Disconnected from WebSocket server');
-  //   });
-  // }, []);
 
   // Getting user
   useEffect(() => {
