@@ -84,7 +84,7 @@ export const cartSlice = createSlice({
       state.userId = cart.userId;
       state.userEmail = cart.userEmail;
       state.items = cart.items;
-      state.totalPrice = Number(cart.totalPrice.toFixed(2));
+      state.totalPrice = Number(cart.totalPrice); // removed toFixed
       state.totalQuantity = cart.totalQuantity;
       state.isSync = cart.isSync;
     },
