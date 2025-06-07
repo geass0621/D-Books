@@ -144,7 +144,8 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ## 🙋‍♂️ Contact
 - **Author:** Dong
-- [Your LinkedIn or Email Here]
+- email: dongcoung0621@gmail.com
+- LinkedIn: https://www.linkedin.com/in/dong-cuong-35b166341/
 
 ---
 
