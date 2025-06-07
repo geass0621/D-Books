@@ -126,6 +126,10 @@ backend/    # Express API, MongoDB models, Stripe integration
 frontend/   # React app, Redux store, UI components
 ```
 
+## 🧪 Test Accounts
+
+> For testing admin features, please contact the project maintainer for temporary admin credentials.
+
 ---
 
 ## 🤝 Contributing
