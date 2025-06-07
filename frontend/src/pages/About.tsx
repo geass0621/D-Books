@@ -26,7 +26,7 @@ const About: React.FC = () => {
       </div>
       <p className="text-base text-center max-w-2xl mb-2">
         <span className="font-semibold">About the Developer:</span> I am a passionate web developer focused on building robust, scalable, and user-centric applications. Connect with me on{" "}
-        <a href="https://github.com/your-github" className="text-blue-500 underline" target="_blank" rel="noopener noreferrer">GitHub</a> or{" "}
+        <a href="https://github.com/geass0621" className="text-blue-500 underline" target="_blank" rel="noopener noreferrer">GitHub</a> or{" "}
         <a href="mailto:dongcuong0621@gmail.com" className="text-blue-500 underline">email: dongcuong0621@gmail.com</a>.
       </p>
       <p className="text-sm text-gray-500 text-center">This project is for demonstration purposes only. No real purchases are processed.</p>
