@@ -45,6 +45,11 @@ D-Books is a fullstack web application for an online bookstore, built to showcas
 
 ---
 
+## 🌎 Live Demo
+- Visit the website: [D-Books on Render](https://d-books.onrender.com/)
+
+---
+
 ## 🖼️ Screenshots
 - **Home Page:**
   <img src="frontend/public/screenshots/homepage.png" alt="Home Page" width="80%"/>
@@ -118,10 +123,6 @@ npm install
   `/api/*` → backend, all other routes → `index.html` (see Render docs)
 - Stripe webhook endpoint must match your deployed backend URL.
 
----
-
-## 🌎 Live Demo
-- Visit the website: [D-Books on Render](https://d-books.onrender.com/)
 
 ---
 
