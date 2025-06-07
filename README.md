@@ -45,7 +45,7 @@ D-Books is a fullstack web application for an online bookstore, built to showcas
 
 ## 🖼️ Screenshots
 - **Home Page:**
-  <img src="<!-- ADD HOMEPAGE SCREENSHOT HERE -->" alt="Home Page" width="80%"/>
+  <img src="frontend/public/screenshots/homepage.png" alt="Home Page" width="80%"/>
 - **Books Page:**
   <img src="<!-- ADD BOOKS PAGE SCREENSHOT HERE -->" alt="Books Page" width="80%"/>
 - **Cart & Checkout:**
