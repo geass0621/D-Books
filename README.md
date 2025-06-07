@@ -1,7 +1,7 @@
 # D-Books: Fullstack Online Book Store
 
 <p align="center">
-  <img src="https://drive.google.com/drive/u/0/folders/1_vynj_444S4RDkj0GYAhwHScdmw3x0Eh" alt="D-Books Home Page" width="80%"/>
+  <img src="frontend/public/screenshots/homepage.png" alt="D-Books Home Page" width="80%"/>
 </p>
 
 ## 📚 Introduction
@@ -45,15 +45,15 @@ D-Books is a fullstack web application for an online bookstore, built to showcas
 
 ## 🖼️ Screenshots
 - **Home Page:**
-  <img src="<!-- ADD HOMEPAGE SCREENSHOT HERE -->" alt="Home Page" width="80%"/>
+  <img src="frontend/public/screenshots/homepage.png" alt="Home Page" width="80%"/>
 - **Books Page:**
-  <img src="<!-- ADD BOOKS PAGE SCREENSHOT HERE -->" alt="Books Page" width="80%"/>
+  <img src="frontend/public/screenshots/bookspage.png" alt="Books Page" width="80%"/>
 - **Cart & Checkout:**
-  <img src="<!-- ADD CART/CHECKOUT SCREENSHOT HERE -->" alt="Cart and Checkout" width="80%"/>
+  <img src="frontend/public/screenshots/checkout.png" alt="Cart and Checkout" width="80%"/>
 - **Stripe Payment:**
-  <img src="<!-- ADD PAYMENT SCREENSHOT HERE -->" alt="Stripe Payment" width="80%"/>
+  <img src="frontend/public/screenshots/payment.png" alt="Stripe Payment" width="80%"/>
 - **Admin Dashboard:**
-  <img src="<!-- ADD ADMIN DASHBOARD SCREENSHOT HERE -->" alt="Admin Dashboard" width="80%"/>
+  <img src="frontend/public/screenshots/admin.png" alt="Admin Dashboard" width="80%"/>
 
 ---
 
