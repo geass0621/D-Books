@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useAppDispatch } from "../store/hooks";
 import { userActions } from "../store/user-slice";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const AdminDeleteBook: React.FC = () => {
   const navigate = useNavigate();
   const book = useLoaderData().book as Book | undefined;
@@ -70,7 +72,7 @@ export const AdminDeleteBookLoader = async ({ params }: LoaderFunctionArgs) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/books/${bookId}`, {
+    const response = await fetch(`${API_URL}/books/${bookId}`, {
       method: 'GET',
       credentials: 'include',
     });
@@ -100,7 +102,7 @@ export const AdminDeleteBookAction = async ({ request }: { request: Request }) =
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/admin/book/${bookId}`, {
+    const response = await fetch(`${API_URL}/admin/book/${bookId}`, {
       method: 'DELETE',
       credentials: 'include',
     });

@@ -4,6 +4,7 @@ import { cartActions } from "../store/cart-slice";
 import { useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const PaymentSuccess: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +38,7 @@ export default PaymentSuccess;
 
 export const paymentSuccessLoader = async () => {
   // get the cart from server
-  const response = await fetch('http://localhost:3000/cart', {
+  const response = await fetch(`${API_URL}/cart`, {
     method: 'GET',
     credentials: 'include',
   });

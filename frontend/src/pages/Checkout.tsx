@@ -3,6 +3,8 @@ import CheckoutItem from "../Components/CheckoutItem";
 import { useAppSelector } from "../store/hooks";
 import { selectCart } from "../store/cart-slice";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const Checkout: React.FC = () => {
   const cart = useAppSelector(selectCart);
   const navigation = useNavigation();
@@ -51,7 +53,7 @@ export default Checkout;
 export const syncCartWithServerAction = async ({ request }: { request: Request }) => {
   const formData = await request.formData();
   try {
-    const response = await fetch('http://localhost:3000/cart/validate', {
+    const response = await fetch(`${API_URL}/cart/validate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

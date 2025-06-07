@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { useAppDispatch } from "../store/hooks";
 import { userActions } from "../store/user-slice";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const AdminEditBook: React.FC = () => {
   const actionData = useActionData() as { errors?: string[]; message?: string; success?: boolean } | undefined;
   const errors = actionData?.errors;
@@ -149,7 +151,7 @@ export const adminEditBookLoader = async ({ params }: LoaderFunctionArgs) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/books/${bookId}`, {
+    const response = await fetch(`${API_URL}/books/${bookId}`, {
       method: 'GET',
       credentials: 'include',
     });
@@ -189,7 +191,7 @@ export const adminEditBookAction = async ({ request }: { request: Request }) => 
   };
 
   try {
-    const response = await fetch(`http://localhost:3000/admin/book/${id}`, {
+    const response = await fetch(`${API_URL}/admin/book/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

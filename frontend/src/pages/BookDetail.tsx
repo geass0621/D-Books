@@ -5,6 +5,7 @@ import { useAppDispatch } from "../store/hooks";
 import { cartActions } from "../store/cart-slice";
 import { toast } from "react-toastify";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const BookDetail = () => {
   const loaderBook = useLoaderData() as Book;
@@ -60,7 +61,7 @@ export const bookDetailLoader = async ({ params }: LoaderFunctionArgs) => {
     throw new Response('Book ID is required', { status: 400 });
   };
 
-  const response = await fetch(`http://localhost:3000/books/${bookId}`, {
+  const response = await fetch(`${API_URL}/books/${bookId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

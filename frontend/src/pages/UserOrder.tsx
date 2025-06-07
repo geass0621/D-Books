@@ -7,6 +7,8 @@ import React, { useEffect } from "react";
 import { Order } from "../models/OrderModel";
 import { loadStripe } from "@stripe/stripe-js";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const UserOrder: React.FC = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
@@ -120,7 +122,7 @@ export default UserOrder;
 // Loader and Action for UserOrder component
 export const userOrderLoader = async () => {
   try {
-    const response = await fetch('http://localhost:3000/cart', {
+    const response = await fetch(`${API_URL}/cart`, {
       method: 'GET',
       credentials: 'include',
     });
@@ -162,7 +164,7 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
   try {
 
     // post the order to the server
-    const response = await fetch('http://localhost:3000/checkout/order', {
+    const response = await fetch(`${API_URL}/checkout/order`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -189,7 +191,7 @@ export const userOrderAction = async ({ request }: { request: Request }) => {
     const data = await response.json();
 
     // post payment to the server
-    const paymentResponse = await fetch('http://localhost:3000/checkout/payment', {
+    const paymentResponse = await fetch(`${API_URL}/checkout/payment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

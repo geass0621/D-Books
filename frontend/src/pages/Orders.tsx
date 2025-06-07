@@ -2,6 +2,8 @@ import { useLoaderData } from "react-router-dom";
 import OrderItem from "../Components/OrderItem";
 import { Order } from "../models/OrderModel";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const Orders: React.FC = () => {
   const orders = useLoaderData();
 
@@ -25,7 +27,7 @@ export default Orders;
 
 export const ordersLoader = async () => {
   // Fetch orders from the server
-  const response = await fetch('http://localhost:3000/orders', {
+  const response = await fetch(`${API_URL}/orders`, {
     method: 'GET',
     credentials: 'include',
   });

@@ -3,6 +3,8 @@ import BooksNavigation from "../Components/BooksNavigation";
 import { useState } from "react";
 import { BookGenreEnum } from "../common/bookGenres";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const BooksLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -58,7 +60,7 @@ export const booksLoader = async ({ request }: { request: Request }) => {
   const sortOrder = searchParams.get('sortOrder') || 'asc';
   const search = searchParams.get('search') || '';
 
-  const response = await fetch(`http://localhost:3000/books?genre=${genre}&page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}&search=${encodeURIComponent(search)}`, {
+  const response = await fetch(`${API_URL}/books?genre=${genre}&page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}&search=${encodeURIComponent(search)}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

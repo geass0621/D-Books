@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { useAppDispatch } from "../store/hooks";
 import { userActions } from "../store/user-slice";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const AdminOrders: React.FC = () => {
   const orders = useLoaderData() as Order[];
   const submit = useSubmit();
@@ -61,7 +63,7 @@ export default AdminOrders;
 
 export const adminOrdersLoader = async () => {
   // Fetch admin orders from the server
-  const response = await fetch('http://localhost:3000/admin/orders', {
+  const response = await fetch(`${API_URL}/admin/orders`, {
     method: 'GET',
     credentials: 'include',
   });
@@ -84,7 +86,7 @@ export const adminOrdersAction = async ({ request }: { request: Request }) => {
 
   if (action === 'updateStatus') {
     // Update the order status on the server
-    const response = await fetch(`http://localhost:3000/admin/orders/${orderId}`, {
+    const response = await fetch(`${API_URL}/admin/orders/${orderId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +108,7 @@ export const adminOrdersAction = async ({ request }: { request: Request }) => {
   };
   if (action === 'deleteOrder') {
     // Delete the order on the server
-    const response = await fetch(`http://localhost:3000/admin/orders/${orderId}`, {
+    const response = await fetch(`${API_URL}/admin/orders/${orderId}`, {
       method: 'DELETE',
       credentials: 'include',
     });

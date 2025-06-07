@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useAppDispatch } from "../store/hooks";
 import { userActions } from "../store/user-slice";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const AdminAddBook: React.FC = () => {
   const navigate = useNavigate();
   const actionData = useActionData() as { message?: string; success?: boolean; errors?: string[] } | undefined;
@@ -150,7 +152,7 @@ export const adminAddBookAction = async ({ request }: { request: Request }) => {
   };
 
   try {
-    const response = await fetch(`http://localhost:3000/admin/book`, {
+    const response = await fetch(`${API_URL}/admin/book`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

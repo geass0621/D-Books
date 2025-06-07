@@ -3,6 +3,8 @@ import { useLoaderData } from "react-router-dom";
 import Carousel from "../Components/Carousel";
 import banner from "../assets/banner.jpg";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const Home: React.FC = () => {
   const loaderData = useLoaderData() as {
     discountBooks: Book[];
@@ -48,7 +50,7 @@ export default Home;
 
 export const homeLoader = async () => {
   // fetching 10 most discounted books
-  const discountBooksResponse = await fetch('http://localhost:3000/books?sort=discount&sortOrder=desc&limit=10');
+  const discountBooksResponse = await fetch(`${API_URL}/books?sort=discount&sortOrder=desc&limit=10`);
 
   if (!discountBooksResponse.ok) {
     throw new Response('Failed to fetch discounted books', { status: discountBooksResponse.status });
@@ -56,7 +58,7 @@ export const homeLoader = async () => {
   const discountBooksData = await discountBooksResponse.json();
 
   //fetching 10 newest books
-  const newestBooksResponse = await fetch('http://localhost:3000/books?sort=createdAt&sortOrder=desc&limit=10');
+  const newestBooksResponse = await fetch(`${API_URL}/books?sort=createdAt&sortOrder=desc&limit=10`);
 
   if (!newestBooksResponse.ok) {
     throw new Response('Failed to fetch newest books', { status: newestBooksResponse.status });

@@ -5,6 +5,7 @@ import { useAppDispatch } from "../store/hooks";
 import { userActions } from "../store/user-slice";
 import { toast } from "react-toastify";
 import Footer from "../Components/Footer";
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const RootLayout: React.FC = () => {
   const actionData = useActionData() as null | undefined;
   const dispatch = useAppDispatch();
@@ -37,7 +38,7 @@ const RootLayout: React.FC = () => {
 export default RootLayout
 
 export const rootLayoutLogoutAction = async () => {
-  const response = await fetch('http://localhost:3000/logout', {
+  const response = await fetch(`${API_URL}/logout`, {
     method: 'POST',
     credentials: 'include',
   });

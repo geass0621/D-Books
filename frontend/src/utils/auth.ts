@@ -1,5 +1,7 @@
 import { redirect } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export const getTokenDuration = (): number => {
   const storedExpirationDate = localStorage.getItem('tokenExpiration');
   if (!storedExpirationDate) {
@@ -38,7 +40,7 @@ export const tokenLoader = async (): Promise<{ user: any } | null> => {
     return null;
   }
 
-  const response = await fetch(`http://localhost:3000/user/${userId}`, {
+  const response = await fetch(`${API_URL}/user/${userId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -55,7 +57,7 @@ export const tokenLoader = async (): Promise<{ user: any } | null> => {
 }
 
 export const getUser = async () => {
-  const response = await fetch('http://localhost:3000/user/', {
+  const response = await fetch(`${API_URL}/user/`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +86,7 @@ export function checkAuthLoader() {
 }
 
 export const getCart = async () => {
-  const response = await fetch('http://localhost:3000/cart', {
+  const response = await fetch(`${API_URL}/cart`, {
     method: 'GET',
     credentials: 'include',
   });
@@ -100,7 +102,7 @@ export const getCart = async () => {
 }
 
 export const syncCartWithServer = async (cart: any) => {
-  const response = await fetch('http://localhost:3000/cart/sync', {
+  const response = await fetch(`${API_URL}/cart/sync`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

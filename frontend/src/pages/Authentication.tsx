@@ -7,6 +7,8 @@ import { useEffect } from "react"
 import { cartActions } from "../store/cart-slice"
 import { toast } from "react-toastify"
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const Authentication: React.FC = () => {
   const location = useLocation();
   const mode = new URLSearchParams(location.search).get('mode') || 'login';
@@ -77,7 +79,7 @@ export const action = async ({ request }: { request: Request }) => {
     };
   }
 
-  const response = await fetch('http://localhost:3000/' + mode, {
+  const response = await fetch(`${API_URL}/` + mode, {
     method: mode === "signup" ? "PUT" : "POST",
     headers: {
       'Content-Type': 'application/json'
