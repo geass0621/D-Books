@@ -1,12 +1,12 @@
 import Book from '../models/book';
-import e, { RequestHandler } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { CustomHttpError } from '../models/customError';
 import Order from '../models/order';
 import { validationResult } from 'express-validator';
 
 
 
-export const postBook: RequestHandler = async (req, res, next) => {
+export const postBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const validationsErrors = validationResult(req);
   if (!validationsErrors.isEmpty()) {
     let errors: any[] = [];
@@ -46,7 +46,7 @@ export const postBook: RequestHandler = async (req, res, next) => {
 };
 
 
-export const updateBook: RequestHandler = async (req, res, next) => {
+export const updateBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const validationsErrors = validationResult(req);
   if (!validationsErrors.isEmpty()) {
     let errors: any[] = [];
@@ -86,7 +86,7 @@ export const updateBook: RequestHandler = async (req, res, next) => {
 
 }
 
-export const deleteBook: RequestHandler = async (req, res, next) => {
+export const deleteBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const bookId = req.params.bookId;
 
   try {
@@ -106,7 +106,7 @@ export const deleteBook: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const getAdminOrders: RequestHandler = async (req, res, next) => {
+export const getAdminOrders: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
     if (!orders) {
@@ -126,7 +126,7 @@ export const getAdminOrders: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const patchOrderStatus: RequestHandler = async (req, res, next) => {
+export const patchOrderStatus: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const orderId = req.params.orderId;
   const status = req.body.status;
   const validationsErrors = validationResult(req);
@@ -154,7 +154,7 @@ export const patchOrderStatus: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const deleteOrder: RequestHandler = async (req, res, next) => {
+export const deleteOrder: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const orderId = req.params.orderId;
 
   try {

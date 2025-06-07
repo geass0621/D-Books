@@ -1,8 +1,8 @@
 import Book from '../models/book';
-import { RequestHandler } from 'express';
+import { NextFunction, RequestHandler, Request, Response } from 'express';
 import { CustomHttpError } from '../models/customError';
 
-export const getBooks: RequestHandler = async (req, res, next) => {
+export const getBooks: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const genre = req.query.genre as string;
   const page = req.query.page ? parseInt(req.query.page as string) : 1;
   const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
@@ -52,7 +52,7 @@ export const getBooks: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const getBook: RequestHandler = async (req, res, next) => {
+export const getBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const bookId = req.params.bookId;
   try {
     const book = await Book.findById(bookId);

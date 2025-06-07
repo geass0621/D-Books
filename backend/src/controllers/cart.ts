@@ -1,8 +1,8 @@
-import { RequestHandler } from "express";
+import { NextFunction, RequestHandler, Request, Response } from "express";
 import User from "../models/user";
 import Book from "../models/book";
 
-export const postValidateCart: RequestHandler = async (req, res, next) => {
+export const postValidateCart: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const clientCart = req.body;
   const userId = req.userId;
 
@@ -94,7 +94,7 @@ export const postValidateCart: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const getCart: RequestHandler = async (req, res, next) => {
+export const getCart: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.userId;
 
   // Fetch the user from the database
@@ -127,7 +127,7 @@ export const getCart: RequestHandler = async (req, res, next) => {
 
 }
 
-export const postSyncCart: RequestHandler = async (req, res, next) => {
+export const postSyncCart: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.userId;
   const clientCart = req.body;
 

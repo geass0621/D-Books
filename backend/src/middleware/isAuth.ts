@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { NextFunction, RequestHandler, Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 import { CustomHttpError } from '../models/customError';
 
@@ -12,7 +12,7 @@ declare global {
 }
 
 
-export const isAuth: RequestHandler = (req, res, next) => {
+export const isAuth: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
   // Try to get token from cookie first
   let token = req.cookies?.token;
 

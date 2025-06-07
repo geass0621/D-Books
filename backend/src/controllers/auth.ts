@@ -1,11 +1,11 @@
-import { RequestHandler } from "express";
+import { NextFunction, RequestHandler, Request, Response } from "express";
 import bcrypt from 'bcryptjs'
 import User from "../models/user";
 import { validationResult } from "express-validator";
 import { CustomHttpError } from "../models/customError";
 import jwt from 'jsonwebtoken';
 
-export const putSignup: RequestHandler = async (req, res, next) => {
+export const putSignup: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const validationsErrors = validationResult(req);
   if (!validationsErrors.isEmpty()) {
     let errors: any[] = [];
@@ -47,7 +47,7 @@ export const putSignup: RequestHandler = async (req, res, next) => {
   };
 };
 
-export const postLogin: RequestHandler = async (req, res, next) => {
+export const postLogin: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const validationsErrors = validationResult(req);
   if (!validationsErrors.isEmpty()) {
     let errors: any[] = ['Wrong email or password!'];
@@ -118,7 +118,7 @@ export const postLogin: RequestHandler = async (req, res, next) => {
   };
 };
 
-export const getUser: RequestHandler = async (req, res, next) => {
+export const getUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.userId;
   try {
     const user = await User.findById(userId).select('id email role status');
@@ -144,7 +144,7 @@ export const getUser: RequestHandler = async (req, res, next) => {
 
 }
 
-export const postLogout: RequestHandler = async (req, res, next) => {
+export const postLogout: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.userId;
   try {
     const user = await User.findById(userId);

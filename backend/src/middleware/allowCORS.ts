@@ -1,6 +1,6 @@
-import { RequestHandler } from 'express';
+import { RequestHandler, Request, Response, NextFunction } from 'express';
 
-export const allowCORS: RequestHandler = (req, res, next) => {
+export const allowCORS: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
   const allowedOrigins = [
     process.env.FRONTEND_URL, // Default to localhost if not set
     'https://your-other-frontend.com', // Add more allowed origins as needed

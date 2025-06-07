@@ -1,11 +1,11 @@
-import { RequestHandler } from "express";
+import { NextFunction, RequestHandler, Request, Response } from "express";
 import User, { ICart } from "../models/user";
 import Order, { IOrder } from "../models/order";
 import Stripe from "stripe";
 import { validationResult } from "express-validator";
 
 
-export const postOrder: RequestHandler = async (req, res, next) => {
+export const postOrder: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.userId;
   const orderData = req.body;
   const validationErrors = validationResult(req);
@@ -80,7 +80,7 @@ export const postOrder: RequestHandler = async (req, res, next) => {
 
 }
 
-export const postPayment: RequestHandler = async (req, res, next) => {
+export const postPayment: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.userId;
   const { items, totalAmount, orderId } = req.body;
 
@@ -142,7 +142,7 @@ export const postPayment: RequestHandler = async (req, res, next) => {
 
 };
 
-export const postPaymentConfirmation: RequestHandler = async (req, res, next) => {
+export const postPaymentConfirmation: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const stripeInstance = new Stripe(process.env.STRIPE_KEY as string);
   const sig = req.headers['stripe-signature'] as string;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -211,7 +211,7 @@ export const postPaymentConfirmation: RequestHandler = async (req, res, next) =>
   }
 };
 
-export const getOrders: RequestHandler = async (req, res, next) => {
+export const getOrders: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.userId;
 
   try {

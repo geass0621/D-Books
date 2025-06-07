@@ -1,6 +1,6 @@
-import { ErrorRequestHandler } from 'express';
+import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 
-export const defaultErrorResponse: ErrorRequestHandler = (error, req, res, next) => {
+export const defaultErrorResponse: ErrorRequestHandler = (error, req: Request, res: Response, next: NextFunction) => {
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;
