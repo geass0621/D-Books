@@ -4,6 +4,7 @@ import Order, { IOrder } from "../models/order";
 import Stripe from "stripe";
 import { validationResult } from "express-validator";
 
+
 export const postOrder: RequestHandler = async (req, res, next) => {
   const userId = req.userId;
   const orderData = req.body;
