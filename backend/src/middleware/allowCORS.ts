@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 
 export const allowCORS: RequestHandler = (req, res, next) => {
   const allowedOrigins = [
-    'http://localhost:5173',
+    process.env.FRONTEND_URL, // Default to localhost if not set
     'https://your-other-frontend.com', // Add more allowed origins as needed
   ];
   const origin = req.headers.origin;
