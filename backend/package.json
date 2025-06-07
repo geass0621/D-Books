@@ -4,6 +4,7 @@
   "description": "Backend for D-books",
   "main": "server.js",
   "scripts": {
+    "build": "tsc",
     "test": "tsc",
     "start": "node dist/server.js"
   },
