@@ -5,7 +5,7 @@ import { Order } from "../models/OrderModel";
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const Orders: React.FC = () => {
-  const orders = useLoaderData();
+  const orders = (useLoaderData() as Order[]) ?? [];
 
   return (
     <div className="container mx-auto p-4">

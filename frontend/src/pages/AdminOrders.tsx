@@ -9,7 +9,7 @@ import { userActions } from "../store/user-slice";
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const AdminOrders: React.FC = () => {
-  const orders = useLoaderData() as Order[];
+  const orders = (useLoaderData() as Order[]) ?? [];
   const submit = useSubmit();
   const actionData = useActionData() as { message?: string; success?: boolean } | undefined;
   const navigate = useNavigate();
