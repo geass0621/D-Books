@@ -1,7 +1,7 @@
 # D-Books: Fullstack Online Book Store
 
 <p align="center">
-  <img src="https://drive.google.com/drive/u/0/folders/1_vynj_444S4RDkj0GYAhwHScdmw3x0Eh" alt="D-Books Home Page" width="80%"/>
+  <img src="frontend/public/screenshots/homepage.png" alt="D-Books Home Page" width="80%"/>
 </p>
 
 ## 📚 Introduction
