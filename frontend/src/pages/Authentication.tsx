@@ -1,4 +1,4 @@
-import { redirect, useActionData, useLocation, useNavigate } from "react-router-dom"
+import { useActionData, useLocation, useNavigate } from "react-router-dom"
 import { AuthForm } from "../Components/AuthForm"
 import { useAppDispatch } from "../store/hooks"
 import { userActions } from "../store/user-slice"

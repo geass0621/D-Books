@@ -8,6 +8,7 @@ import { Order } from "../models/OrderModel";
 import { loadStripe } from "@stripe/stripe-js";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const STRIPE_KEY = import.meta.env.VITE_STRIPE_KEY;
 
 const UserOrder: React.FC = () => {
   const user = useAppSelector(selectUser);
@@ -23,7 +24,7 @@ const UserOrder: React.FC = () => {
   useEffect(() => {
     if (orderActionData && orderActionData.success && orderActionData.sessionId) {
       // If order is successful, redirect to the payment page
-      const stripePromise = loadStripe('pk_test_51OmEm0F6YsUjKW1RPm1bKXCThVqZyNww09q4kbFHa6QvCVTYFHZkKswx8RBEhjkGGurPKAIflLHCG3VLMtiCcoU900NfyDXHLo');
+      const stripePromise = loadStripe(STRIPE_KEY);
       if (!stripePromise) {
         throw new Error('Stripe not initialized');
       }

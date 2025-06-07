@@ -112,8 +112,8 @@ export const postPayment: RequestHandler = async (req: Request, res: Response, n
       payment_method_types: ['card'],
       mode: 'payment',
       line_items: lineProducts,
-      success_url: `http://localhost:5173/checkout/payment-success`,
-      cancel_url: `http://localhost:5173/checkout/payment-cancel`,
+      success_url: `${process.env.FRONTEND_URL}/checkout/payment-success`,
+      cancel_url: `${process.env.FRONTEND_URL}/checkout/payment-cancel`,
       metadata: {
         orderId: orderId,
         userId: userId,
