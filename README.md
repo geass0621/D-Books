@@ -13,7 +13,8 @@ D-Books is a fullstack web application for an online bookstore, built to showcas
 - **Frontend:** React, Redux, TypeScript, TailwindCSS, DaisyUI, Vite
 - **Backend:** Node.js, Express.js, TypeScript
 - **Database:** MongoDB (Mongoose ODM)
-- **Authentication:** JWT (jsonwebtoken), bcryptjs
+- **Authentication:** JWT (jsonwebtoken), bcryptjs, http-only cookies
+- **Validation:** express-validator
 - **Payments:** Stripe
 - **Deployment:** Render.com (separate frontend & backend services)
 
@@ -31,12 +32,13 @@ D-Books is a fullstack web application for an online bookstore, built to showcas
 ---
 
 ## ✨ Features
-- User registration, login, and JWT authentication
+- User registration, login, and JWT authentication (token stored in http-only cookie)
 - Admin and normal user roles
 - Browse, search, and filter books
 - Shopping cart and order management
 - Secure Stripe payment integration
 - Admin dashboard for managing books and orders
+- Input validation with express-validator
 - Responsive UI with TailwindCSS & DaisyUI
 - Client-side routing (React Router)
 - Production-ready CORS, environment variables, and error handling
