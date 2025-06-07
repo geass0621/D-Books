@@ -11,6 +11,9 @@ import cookieParser from 'cookie-parser';
 import { postPaymentConfirmation } from './controllers/order';
 import cartRoutes from './routes/cart';
 import ordersRoutes from './routes/orders';
+import 'dotenv/config';
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -31,6 +34,11 @@ mongoose
   .connect(process.env.MONGO_CONNECTION || '')
   .then(() => {
     console.log('connected');
-    const server = app.listen(3000);
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+    server.on('error', (err) => {
+      console.error('Server error:', err);
+    });
   })
   .catch(err => console.log(err));
