@@ -83,8 +83,8 @@ export const cartSlice = createSlice({
       const cart = action.payload;
       state.userId = cart.userId;
       state.userEmail = cart.userEmail;
-      state.items = cart.items;
-      state.totalPrice = Number(cart.totalPrice); // removed toFixed
+      state.items = Array.isArray(cart.items) ? cart.items : [];
+      state.totalPrice = Number(cart.totalPrice);
       state.totalQuantity = cart.totalQuantity;
       state.isSync = cart.isSync;
     },
