@@ -120,6 +120,11 @@ npm install
 
 ---
 
+## 🌎 Live Demo
+- Visit the website: [D-Books on Render](https://d-books.onrender.com/)
+
+---
+
 ## 📂 Project Structure
 ```
 backend/    # Express API, MongoDB models, Stripe integration
@@ -129,6 +134,11 @@ frontend/   # React app, Redux store, UI components
 ## 🧪 Test Accounts
 
 > For testing admin features, please contact the project maintainer for temporary admin credentials.
+
+---
+
+## 🚦 Planned Improvements
+- Add automated testing using Mocha and Chai for backend API endpoints.
 
 ---
 
