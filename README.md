@@ -123,6 +123,41 @@ npm install
   `/api/*` → backend, all other routes → `index.html` (see Render docs)
 - Stripe webhook endpoint must match your deployed backend URL.
 
+---
+
+## 📖 API Endpoints
+
+### Authentication
+- `PUT /api/signup` — Register a new user (email, password, confirmPassword). Validates input.
+- `POST /api/login` — Log in a user (email, password). Returns JWT in http-only cookie.
+- `GET /api/user` — Get current authenticated user info (requires login).
+- `POST /api/logout` — Log out the current user (clears cookie).
+
+### Books
+- `GET /api/books` — Get all books. Supports optional query parameters for filtering, searching, sorting, and pagination (e.g. `?search=title&genre=Fiction&page=1&limit=10`).
+- `GET /api/books/:bookId` — Get details for a single book.
+
+### Cart
+- `GET /api/cart` — Get the current user's cart (requires login).
+- `POST /api/cart/validate` — Validate the cart's contents and prices (requires login).
+- `POST /api/cart/sync` — Sync local cart with server (requires login).
+
+### Orders
+- `GET /api/orders` — Get all orders for the current user (requires login).
+
+### Checkout
+- `POST /api/checkout/order` — Place a new order (requires login, validates shipping info, items, etc).
+- `POST /api/checkout/payment` — Create a Stripe payment session for the order (requires login).
+
+### Admin
+- `POST /api/admin/book` — Add a new book (admin only, validates input).
+- `PUT /api/admin/book/:bookId` — Update a book (admin only, validates input).
+- `DELETE /api/admin/book/:bookId` — Delete a book (admin only).
+- `GET /api/admin/orders` — Get all orders (admin only).
+- `PATCH /api/admin/orders/:orderId` — Update order status (admin only, validates status).
+- `DELETE /api/admin/orders/:orderId` — Delete an order (admin only).
+
+> All endpoints (except signup/login/books) require authentication via JWT in an http-only cookie. Admin endpoints require admin role.
 
 ---
 
