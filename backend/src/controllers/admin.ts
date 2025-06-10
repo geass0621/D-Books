@@ -11,7 +11,7 @@ export const postBook: RequestHandler = async (req: Request, res: Response, next
   if (!validationsErrors.isEmpty()) {
     let errors: any[] = [];
     validationsErrors.array().map(el => errors.push(el.msg));
-    res.status(422).json({ message: '', errors: errors });
+    res.status(422).json({ message: '', errors: errors, success: false });
     return;
   }
 

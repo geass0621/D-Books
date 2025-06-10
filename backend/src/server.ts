@@ -30,17 +30,20 @@ app.use(cartRoutes);
 app.use(ordersRoutes);
 app.use(defaultErrorResponse);
 
-mongoose
-  .connect(process.env.MONGO_CONNECTION || '')
-  .then(() => {
-    console.log('connected');
-    const server = app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-    server.on('error', (err) => {
-      console.error('Server error:', err);
-    });
-  })
-  .catch(err => console.log(err));
+if (require.main === module) {
+  // Only start the server if this file is run directly
+  mongoose
+    .connect(process.env.MONGO_CONNECTION || '')
+    .then(() => {
+      console.log('connected');
+      const server = app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+      server.on('error', (err) => {
+        console.error('Server error:', err);
+      });
+    })
+    .catch(err => console.log(err));
+}
 
 export default app;

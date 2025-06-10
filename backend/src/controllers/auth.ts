@@ -10,7 +10,7 @@ export const putSignup: RequestHandler = async (req: Request, res: Response, nex
   if (!validationsErrors.isEmpty()) {
     let errors: any[] = [];
     validationsErrors.array().map(el => errors.push(el.msg))
-    res.status(422).json({ message: '', errors: errors });
+    res.status(422).json({ message: '', errors: errors, success: false });
     return;
   }
   const email = req.body.email;
