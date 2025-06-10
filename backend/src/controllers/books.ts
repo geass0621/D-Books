@@ -1,6 +1,7 @@
 import Book from '../models/book';
 import { NextFunction, RequestHandler, Request, Response } from 'express';
 import { CustomHttpError } from '../models/customError';
+import mongoose from 'mongoose';
 
 export const getBooks: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const genre = req.query.genre as string;
@@ -54,11 +55,22 @@ export const getBooks: RequestHandler = async (req: Request, res: Response, next
 
 export const getBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const bookId = req.params.bookId;
+  // Check for valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(bookId)) {
+    res.status(404).json({
+      message: 'Book not found!',
+      success: false
+    });
+    return;
+  }
   try {
     const book = await Book.findById(bookId);
     if (!book) {
-      const error = new CustomHttpError('Book not found!', 404, {});
-      throw error;
+      res.status(404).json({
+        message: 'Book not found!',
+        success: false
+      });
+      return;
     }
     const responseBook = {
       id: book._id.toString(),
@@ -73,7 +85,8 @@ export const getBook: RequestHandler = async (req: Request, res: Response, next:
 
     res.status(200).json({
       message: 'Book fetched successfully!',
-      book: responseBook
+      book: responseBook,
+      success: true
     });
 
   } catch (err: any) {

@@ -68,13 +68,13 @@ export const postLogin: RequestHandler = async (req: Request, res: Response, nex
   try {
     const user = await User.findOne({ email: email });
     if (!user) {
-      const error = new CustomHttpError('A user with this email can not be found!', 401, {});
-      throw error;
+      res.status(401).json({ message: 'Wrong email or password!', errors: ['Wrong email or password!'] });
+      return;
     }
     const isEqual = await bcrypt.compare(password, user.password);
     if (!isEqual) {
-      const error = new CustomHttpError('Wrong password!', 401, {});
-      throw error;
+      res.status(401).json({ message: 'Wrong email or password!', errors: ['Wrong email or password!'] });
+      return;
     }
     let token;
     if (user.role === 'admin') {
@@ -92,7 +92,6 @@ export const postLogin: RequestHandler = async (req: Request, res: Response, nex
     }
 
     user.status = 'online';
-
     await user.save();
 
     res.status(200)
@@ -118,7 +117,6 @@ export const postLogin: RequestHandler = async (req: Request, res: Response, nex
     return;
 
   } catch (err: any) {
-
     if (!err.statusCode) {
       err.statusCode = 500;
     }

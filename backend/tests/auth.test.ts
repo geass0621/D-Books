@@ -70,4 +70,44 @@ describe('Auth Endpoints', () => {
     expect(res.body.errors[0]).to.include('Email already exists!');
     expect(res.body.success).to.be.false;
   });
+
+  it('should register a new user', async () => {
+    const uniqueEmail = `newUser_${Date.now()}@Test.com`;
+    const res = await request(app)
+      .put('/signup')
+      .send({ email: uniqueEmail, password: '12345678', confirmPassword: '12345678' });
+    expect(res.status).to.equal(201);
+    expect(res.body).to.have.property('message', 'User created successfully!');
+    expect(res.body).to.have.property('success', true);
+    expect(res.body).to.have.property('createdUser', true);
+  }
+  );
+
+  it('should not login with invalid email', async () => {
+    const res = await request(app)
+      .post('/login')
+      .send({ email: 'bad', password: '12345678' });
+    expect(res.status).to.equal(422);
+    expect(res.body).to.have.property('message');
+    expect(res.body.errors).length.to.be.greaterThan(0);
+    expect(res.body.errors[0]).to.include('Wrong email or password!');
+  }
+  );
+
+  it('should not log in with invalid password', async () => {
+    // Ensure the user exists
+    const uniqueEmail = `newUser_${Date.now()}@Test.com`;
+    await request(app)
+      .put('/signup')
+      .send({ email: uniqueEmail, password: 'correctpassword', confirmPassword: 'correctpassword' });
+    // Attempt login with wrong password
+    const res = await request(app)
+      .post('/login')
+      .send({ email: uniqueEmail, password: 'wrongpassword' });
+    expect(res.status).to.equal(401);
+    expect(res.body).to.have.property('message');
+    expect(res.body.errors).length.to.be.greaterThan(0);
+    expect(res.body.errors[0]).to.include('Wrong email or password!');
+  }
+  );
 });
