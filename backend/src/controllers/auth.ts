@@ -38,12 +38,19 @@ export const putSignup: RequestHandler = async (req: Request, res: Response, nex
     await createdUser.save();
 
     res.status(201).json({ message: 'User created successfully!', success: true, createdUser: true });
+    return;
 
   } catch (err: any) {
+    // Handle MongoDB duplicate key error (email already exists)
+    if (err.code === 11000 && err.keyPattern && err.keyPattern.email) {
+      res.status(422).json({ message: '', errors: ['Email already exists!'], success: false });
+      return;
+    }
     if (!err.statusCode) {
       err.statusCode = 500;
     }
     next(err);
+    return;
   };
 };
 
@@ -111,6 +118,7 @@ export const postLogin: RequestHandler = async (req: Request, res: Response, nex
     return;
 
   } catch (err: any) {
+
     if (!err.statusCode) {
       err.statusCode = 500;
     }

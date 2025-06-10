@@ -1,8 +1,9 @@
-import app from '../src/server'; // or wherever your Express app is exported
+/// <reference types="mocha" />
+import app from '../src/server';
 import request from 'supertest';
 import { expect } from 'chai';
 import mongoose from 'mongoose';
-import { after, before, describe, it } from 'node:test';
+
 
 describe('Auth Endpoints', () => {
   before(async () => {
@@ -40,6 +41,33 @@ describe('Auth Endpoints', () => {
     expect(res.body).to.have.property('message');
     expect(res.body.errors).length.to.be.greaterThan(0);
     expect(res.body.errors[0]).to.include('Password must be alphanumeric and between 8 and 20 characters!');
+    expect(res.body.success).to.be.false;
+  });
+
+  it('should not register with non-matching passwords', async () => {
+    const res = await request(app)
+      .put('/signup')
+      .send({ email: 'unitTest@Test.com', password: '12345678', confirmPassword: '87654321' });
+    expect(res.status).to.equal(422);
+    expect(res.body).to.have.property('message');
+    expect(res.body.errors).length.to.be.greaterThan(0);
+    expect(res.body.errors[0]).to.include('Passwords do not match!');
+    expect(res.body.success).to.be.false;
+  });
+
+  it('should not register with existing email', async () => {
+    // First, register the user
+    await request(app)
+      .put('/signup')
+      .send({ email: 'unitTest@Test.com', password: '12345678', confirmPassword: '12345678' });
+    // Then, try to register again with the same email
+    const res = await request(app)
+      .put('/signup')
+      .send({ email: 'unitTest@Test.com', password: '12345678', confirmPassword: '12345678' });
+    expect(res.status).to.equal(422);
+    expect(res.body).to.have.property('message');
+    expect(res.body.errors).length.to.be.greaterThan(0);
+    expect(res.body.errors[0]).to.include('Email already exists!');
     expect(res.body.success).to.be.false;
   });
 });
