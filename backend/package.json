@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "tsc",
-    "test": "tsc",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
     "start": "node dist/server.js"
   },
   "author": "Dong Ngoc Cuong",
