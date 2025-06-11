@@ -167,6 +167,21 @@ backend/    # Express API, MongoDB models, Stripe integration
 frontend/   # React app, Redux store, UI components
 ```
 
+## 🧪 Testing
+
+### Integration Tests
+- Integration tests for backend API endpoints are located in `backend/tests/integration/`.
+- These tests cover authentication, books, cart, admin, and order/payment flows using Mocha, Chai, and Supertest.
+- Tests run against a test MongoDB database and mock external services (e.g., Stripe) where appropriate.
+
+#### Run all integration tests:
+```bash
+cd backend
+npm test
+# or
+npx mocha -r ts-node/register tests/integration/**/*.test.ts
+```
+
 ## 🧪 Test Accounts
 
 > For testing admin features, please contact the project maintainer for temporary admin credentials.
