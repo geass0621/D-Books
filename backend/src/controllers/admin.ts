@@ -92,12 +92,22 @@ export const deleteBook: RequestHandler = async (req: Request, res: Response, ne
   try {
     const book = await Book.findById(bookId);
     if (!book) {
-      const error = new CustomHttpError('Could not find post!', 404, {});
+      const error = new CustomHttpError('Could not find book!', 404, {});
       throw error;
     }
 
     await Book.findByIdAndDelete(bookId);
-    res.status(200).json({ message: 'Book deleted successfully!', book: book, success: true });
+    const responseBook = {
+      id: book._id.toString(),
+      name: book.name,
+      genre: book.genre,
+      author: book.author,
+      description: book.description,
+      imageUrl: book.imageUrl,
+      price: book.price,
+      discount: book.discount
+    };
+    res.status(200).json({ message: 'Book deleted successfully!', book: responseBook, success: true });
   } catch (err: any) {
     if (!err.statusCode) {
       err.statusCode = 500;
