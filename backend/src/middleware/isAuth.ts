@@ -7,6 +7,7 @@ declare global {
   namespace Express {
     interface Request {
       userId?: string;
+      role?: string;
     }
   }
 }
@@ -42,5 +43,6 @@ export const isAuth: RequestHandler = (req: Request, res: Response, next: NextFu
   }
 
   req.userId = (decodedToken as any).userId;
+  req.role = (decodedToken as any).role;
   next();
 }
