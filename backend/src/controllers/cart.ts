@@ -1,4 +1,5 @@
 import { NextFunction, RequestHandler, Request, Response } from "express";
+import mongoose from 'mongoose';
 import User from "../models/user";
 import Book from "../models/book";
 
@@ -33,8 +34,24 @@ export const postValidateCart: RequestHandler = async (req: Request, res: Respon
     }
 
     // validate cart items with the database
+
+    // Check for valid MongoDB ObjectIds first
+    if (!clientCart.items.every((item: { bookId: string }) => mongoose.Types.ObjectId.isValid(item.bookId))) {
+      res.status(400).json({
+        message: 'Some book IDs in the cart are not valid.',
+      });
+      return;
+    }
     const bookIds = clientCart.items.map((item: { bookId: string; }) => item.bookId);
     const dbBooks = await Book.find({ _id: { $in: bookIds } });
+
+    // Check if all books in the cart exist in the database
+    if (!dbBooks || dbBooks.length !== clientCart.items.length) {
+      res.status(400).json({
+        message: 'Some books in the cart do not exist in the database.',
+      });
+      return;
+    }
 
     let totalPrice = 0;
     let totalQuantity = 0;
@@ -83,8 +100,9 @@ export const postValidateCart: RequestHandler = async (req: Request, res: Respon
 
     // Respond with success
     res.status(200).json({
-      message: 'Cart synchronized successfully!',
+      message: 'Cart validated successfully!',
       cart: user.cart,
+      success: true,
     });
   } catch (err: any) {
     if (!err.statusCode) {
@@ -139,6 +157,16 @@ export const postSyncCart: RequestHandler = async (req: Request, res: Response, 
     return;
   }
 
+  if (clientCart.totalPrice === undefined ||
+    clientCart.totalQuantity === undefined ||
+    clientCart.totalPrice < 0 ||
+    clientCart.totalQuantity < 0) {
+    res.status(400).json({
+      message: 'Invalid cart totals. Please provide valid total price and quantity.',
+    });
+    return;
+  }
+
   try {
     // Fetch the user from the database
     const user = await User.findById(userId);
@@ -165,6 +193,7 @@ export const postSyncCart: RequestHandler = async (req: Request, res: Response, 
     res.status(200).json({
       message: 'Cart synchronized successfully!',
       cart: user.cart,
+      success: true,
     });
 
   } catch (err: any) {
