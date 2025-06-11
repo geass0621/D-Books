@@ -48,7 +48,7 @@ export const postOrder: RequestHandler = async (req: Request, res: Response, nex
       totalAmount: orderData.totalAmount,
     } as IOrder);
 
-    // Save the order to the database (assuming you have an Order model)
+    // Save the order to the database
     const order = await newOrder.save();
 
     if (!order) {
