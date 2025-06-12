@@ -1,6 +1,16 @@
 import { NextFunction, RequestHandler, Request, Response } from "express";
 import { CustomHttpError } from '../models/customError';
 
+// Extend Express Request interface to include userId and role
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: string;
+      role?: string;
+    }
+  }
+}
+
 const isAdmin: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
   // Check if user is authenticated
   if (!req.userId || !req.role) {

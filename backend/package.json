@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc",
     "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "test:unit": "mocha -r ts-node/register tests/unit/**/*.test.ts",
+    "test:integration": "mocha -r ts-node/register tests/integration/**/*.test.ts",
     "start": "node dist/server.js"
   },
   "author": "Dong Ngoc Cuong",

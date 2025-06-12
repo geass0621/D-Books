@@ -108,6 +108,5 @@ describe('Auth Endpoints', () => {
     expect(res.body).to.have.property('message');
     expect(res.body.errors).length.to.be.greaterThan(0);
     expect(res.body.errors[0]).to.include('Wrong email or password!');
-  }
-  );
+  });
 });
